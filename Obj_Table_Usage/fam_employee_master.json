@@ -1,0 +1,28 @@
+{
+  "object_name": "fam_employee_master",
+  "tables": {
+    "FAM_EMPLOYEE_MASTER": [
+      "CHG_USER",
+      "BRANCH_CODE",
+      "EMPLOYEE_NAME",
+      "CHG_DATE",
+      "ADD_USER",
+      "DESIGNATION",
+      "ADD_DATE",
+      "STATUS",
+      "EMPLOYEE_CODE",
+      "CHG_TERM",
+      "ID",
+      "ADD_TERM",
+      "DEPARTMENT_CODE"
+    ],
+    "FAM_BRANCH_MASTER": [
+      "BRANCH_NAME",
+      "BRANCH_CODE"
+    ],
+    "FAM_DEPARTMENT_MASTER": [
+      "DEPARTMENT_NAME",
+      "DEPARTMENT_CODE"
+    ]
+  }
+}

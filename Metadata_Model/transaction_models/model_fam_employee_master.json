@@ -1,0 +1,604 @@
+{
+  "transaction": {
+    "obj_name": "fam_employee_master",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Employee Master",
+          "form_descr": "Lightweight employee directory used solely to assign custody of assets; not an authentication or HR record",
+          "form_no": "1",
+          "main_table": "FAM_EMPLOYEE_MASTER",
+          "columns": [
+            {
+              "column": {
+                "name": "employee_code",
+                "db_name": "EMPLOYEE_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Employee Code",
+                "descr": "Unique code identifying the employee",
+                "key": true,
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Employee code unique",
+                    "error_code": "EMP_CODE_UNIQUE",
+                    "message": "Employee code {form.employee_code} already exists.",
+                    "builtin": {
+                      "kind": "must_be_unique"
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "employee_name",
+                "db_name": "EMPLOYEE_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Employee Name",
+                "descr": "Full name of the employee",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "branch_code",
+                "db_name": "BRANCH_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Branch Code",
+                "descr": "Branch the employee is attached to",
+                "mandatory": true,
+                "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+                "must_exist_in": "FAM_BRANCH_MASTER",
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "branch_name",
+                "db_name": "BRANCH_NAME",
+                "table_name": "FAM_BRANCH_MASTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Branch Name",
+                "descr": "Branch name from Branch Master (display only)",
+                "protect": "1",
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_display_name": "Branch master (lookup for branch name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "department_code",
+                "db_name": "DEPARTMENT_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Department Code",
+                "descr": "Department the employee belongs to (within the selected branch)",
+                "mandatory": true,
+                "lookup": "FAM_DEPARTMENT_MASTER(DEPARTMENT_NAME, DEPARTMENT_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.branch_code}",
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Department exists in branch",
+                    "error_code": "DEPT_MUST_EXIST_IN_BRANCH",
+                    "message": "Department code {form.department_code} does not exist for branch {form.branch_code}.",
+                    "builtin": {
+                      "kind": "must_exist_in_master",
+                      "table": "FAM_DEPARTMENT_MASTER",
+                      "match_column": "DEPARTMENT_CODE",
+                      "conditions": [
+                        {
+                          "column": "BRANCH_CODE",
+                          "op": "=",
+                          "source": "form",
+                          "value": "branch_code"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "department_name",
+                "db_name": "DEPARTMENT_NAME",
+                "table_name": "FAM_DEPARTMENT_MASTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Department Name",
+                "descr": "Department name from Department Master (display only)",
+                "protect": "1",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_display_name": "Department master (lookup for department name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "designation",
+                "db_name": "DESIGNATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Designation",
+                "descr": "Job designation/title of the employee",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "60",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Active, Inactive or Transferred status of the employee",
+                "default_value": "A",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "A",
+                      "display": "Active"
+                    },
+                    {
+                      "data": "I",
+                      "display": "Inactive"
+                    },
+                    {
+                      "data": "T",
+                      "display": "Transferred"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "A",
+                      "color": "green",
+                      "icon": "\u25cf",
+                      "label": "Active"
+                    },
+                    {
+                      "when": "I",
+                      "color": "grey",
+                      "icon": "\u25cf",
+                      "label": "Inactive"
+                    },
+                    {
+                      "when": "T",
+                      "color": "amber",
+                      "icon": "\u25cf",
+                      "label": "Transferred"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "1",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "Id",
+                "descr": "Internal sequence identifier",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 1,
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Record creation timestamp",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "descr": "Terminal/IP that created the record",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "descr": "Record last-change timestamp",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed Terminal",
+                "descr": "Terminal/IP that last changed the record",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "table_display_name": "Employee master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_EMPLOYEE_MASTER",
+                  "main_table": true,
+                  "table_descr": "Employee master (main table)"
+                },
+                {
+                  "table": "FAM_BRANCH_MASTER",
+                  "main_table": false,
+                  "table_descr": "Branch master (lookup for branch name)",
+                  "column": "BRANCH_CODE",
+                  "join_table": "FAM_EMPLOYEE_MASTER",
+                  "join_column": "BRANCH_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_DEPARTMENT_MASTER",
+                  "main_table": false,
+                  "table_descr": "Department master (lookup for department name)",
+                  "column": "DEPARTMENT_CODE",
+                  "join_table": "FAM_EMPLOYEE_MASTER",
+                  "join_column": "DEPARTMENT_CODE",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "business_logic",
+                  "name": "Employee unused check",
+                  "message": "This employee cannot be deleted because one or more assets are currently assigned to them.",
+                  "business_logic": {
+                    "method": "check_employee_unused",
+                    "description": "Block delete when the employee has assets assigned to them",
+                    "spec": "Given the current row's EMPLOYEE_CODE, check whether any row exists in the Asset Register (FAM_ASSET_REGISTER) with ASSIGNED_EMPLOYEE_CODE matching this employee. If at least one such asset exists, return an error so the delete is blocked; otherwise return NULL/no error to allow the delete to proceed.",
+                    "language": "plpgsql"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Activate",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "activate_employee",
+                "description": "Activate the employee",
+                "spec": "UPDATE FAM_EMPLOYEE_MASTER SET STATUS = 'A', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE EMPLOYEE_CODE = the payload's EMPLOYEE_CODE. Return a confirmation message that the employee was activated.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must not already be active",
+                  "message": "Employee {form.employee_code} is already Active.",
+                  "expression": "{form.status} != \"A\""
+                }
+              ]
+            },
+            {
+              "name": "Deactivate",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "deactivate_employee",
+                "description": "Deactivate the employee and flag their assigned assets for reassignment",
+                "spec": "UPDATE FAM_EMPLOYEE_MASTER SET STATUS = 'I', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE EMPLOYEE_CODE = the payload's EMPLOYEE_CODE. Then, for every row in the Asset Register (FAM_ASSET_REGISTER) whose ASSIGNED_EMPLOYEE_CODE matches this employee, mark/flag it as needing reassignment (e.g. set a REMARKS note or a pending-reassignment indicator) so it surfaces for handling via the Asset Transfer process. Return a confirmation message that the employee was deactivated and how many assets were flagged for reassignment.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must not already be inactive",
+                  "message": "Employee {form.employee_code} is already Inactive.",
+                  "expression": "{form.status} != \"I\""
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "follow_up_actions": [],
+    "attach_docs": []
+  }
+}

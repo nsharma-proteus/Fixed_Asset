@@ -1,0 +1,31 @@
+{
+  "table_name": "FAM_ASSET_INSTALLATION",
+  "objects": [
+    {
+      "object_name": "fam_asset_installation",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "CHG_TERM",
+        "INSTALLED_BY",
+        "INSTALLATION_DATE",
+        "ASSET_CODE",
+        "INSTALLATION_CERTIFICATE_ATTACHMENT",
+        "CHG_USER",
+        "REMARKS",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "ID",
+        "ADD_TERM",
+        "INSTALLATION_LOCATION_CONFIRMED"
+      ],
+      "join_info": {
+        "column": "INSTALLED_BY",
+        "join_table": "FAM_EMPLOYEE_MASTER",
+        "join_column": "EMPLOYEE_CODE"
+      }
+    }
+  ]
+}

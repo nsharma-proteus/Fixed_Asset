@@ -1,0 +1,1 @@
+[1] Dep Rate - Income Tax: block_code(V20), block_description(V200), rate_pct(N5,2), effective_from_date(D), id(N), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)

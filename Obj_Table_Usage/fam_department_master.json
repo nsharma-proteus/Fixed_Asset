@@ -1,0 +1,23 @@
+{
+  "object_name": "fam_department_master",
+  "tables": {
+    "FAM_DEPARTMENT_MASTER": [
+      "COST_CENTRE_CODE",
+      "CHG_USER",
+      "BRANCH_CODE",
+      "DEPARTMENT_NAME",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "STATUS",
+      "CHG_TERM",
+      "ID",
+      "ADD_TERM",
+      "DEPARTMENT_CODE"
+    ],
+    "FAM_BRANCH_MASTER": [
+      "BRANCH_NAME",
+      "BRANCH_CODE"
+    ]
+  }
+}

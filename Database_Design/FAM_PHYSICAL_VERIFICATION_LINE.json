@@ -1,0 +1,169 @@
+{
+  "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "VERIFICATION_CYCLE_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Parent verification cycle",
+      "sequence": 1
+    },
+    {
+      "column_name": "LINE_NO",
+      "data_type": "NUMBER",
+      "size": "5",
+      "key": true,
+      "description": "Line sequence number within the cycle",
+      "sequence": 2
+    },
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset being verified",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "PHYSICAL_STATUS_FOUND",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Outcome of the physical check for this asset",
+      "sequence": 4,
+      "allowed_values": [
+        {
+          "value": "FOUND",
+          "label": "Found"
+        },
+        {
+          "value": "NOT_FOUND",
+          "label": "Not Found"
+        },
+        {
+          "value": "DAMAGED",
+          "label": "Damaged"
+        },
+        {
+          "value": "EXTRA_UNREGISTERED",
+          "label": "Extra - Unregistered"
+        }
+      ]
+    },
+    {
+      "column_name": "VERIFIED_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date this asset was physically verified (stamped by the Scan/Mark actions, or entered manually)",
+      "sequence": 5
+    },
+    {
+      "column_name": "REMARKS",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Notes on this finding (e.g. damage description, reason not found)",
+      "sequence": 6
+    },
+    {
+      "column_name": "EXPECTED_LOCATION_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Location the asset was expected to be found at",
+      "sequence": 7,
+      "lookup": {
+        "table": "FAM_LOCATION_MASTER",
+        "display_column": "LOCATION_NAME",
+        "value_column": "LOCATION_CODE"
+      }
+    },
+    {
+      "column_name": "expected_location_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected location name (display only)",
+      "sequence": 8
+    },
+    {
+      "column_name": "EXPECTED_EMPLOYEE_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Employee the asset was expected to be assigned to",
+      "sequence": 9,
+      "lookup": {
+        "table": "FAM_EMPLOYEE_MASTER",
+        "display_column": "EMPLOYEE_NAME",
+        "value_column": "EMPLOYEE_CODE"
+      }
+    },
+    {
+      "column_name": "expected_employee_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected custodian name (display only)",
+      "sequence": 10
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 11
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 12
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 13
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 14
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 15
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 16
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "table_name": "FAM_ASSET_DISPOSAL",
+  "objects": [
+    {
+      "object_name": "fam_asset_disposal",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "DISPOSAL_DATE",
+        "SALE_VALUE",
+        "BUYER_OR_SCRAP_VENDOR_CODE",
+        "ASSET_CODE",
+        "CHG_USER",
+        "CAPITALIZATION_DATE",
+        "DISPOSAL_NO",
+        "DISPOSAL_TYPE",
+        "DISPOSAL_REASON",
+        "ADD_USER",
+        "CHG_DATE",
+        "NET_BOOK_VALUE_AS_ON_DISPOSAL",
+        "STATUS",
+        "PROFIT_LOSS_ON_DISPOSAL",
+        "ADD_DATE",
+        "CHG_TERM",
+        "ADD_TERM",
+        "ASSET_NAME"
+      ]
+    }
+  ]
+}

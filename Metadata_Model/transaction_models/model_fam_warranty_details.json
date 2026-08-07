@@ -1,0 +1,457 @@
+{
+  "transaction": {
+    "obj_name": "fam_warranty_details",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Warranty Details",
+          "form_descr": "Record manufacturer/vendor warranty coverage for a capitalized asset",
+          "form_no": "1",
+          "main_table": "FAM_WARRANTY_DETAILS",
+          "columns": [
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "col_type": "NUMBER",
+                "group_name": "Others",
+                "heading": "ID",
+                "descr": "Auto-generated internal identifier",
+                "key": true,
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "mandatory": true,
+                "x": "80",
+                "y": "80",
+                "col_id": "1",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "",
+                "width": 50,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Asset Code",
+                "descr": "Asset covered by this warranty",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "must_exist_in": "FAM_ASSET_REGISTER",
+                "validations": [
+                  {
+                    "type": "business_logic",
+                    "name": "Asset must be Capitalized",
+                    "message": "Asset must exist and be in Capitalized status to record warranty details",
+                    "business_logic": {
+                      "method": "validate_asset_capitalized_for_warranty",
+                      "description": "Ensure the asset is Capitalized before allowing warranty details to be recorded",
+                      "spec": "Verify ASSET_CODE exists in FAM_ASSET_REGISTER and is in Capitalized status, returning an error if not (dependency: FAM_ASSET_REGISTER currently only carries ASSET_CODE, ASSET_NAME, CAPITALIZATION_DATE -- it does not yet have a STATUS column, so until that column is added only existence can be checked here; revisit once STATUS exists).",
+                      "language": "plpgsql"
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "2",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "table_name": "FAM_ASSET_REGISTER",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Asset Name",
+                "descr": "Asset name from the register (display only)",
+                "protect": "1",
+                "x": "20",
+                "y": "20",
+                "col_id": "3",
+                "table_display_name": "Asset register (asset name display)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_provider_vendor_code",
+                "db_name": "WARRANTY_PROVIDER_VENDOR_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Warranty Provider / Vendor",
+                "descr": "Vendor providing the warranty. Assumption: modeled as free text since no Vendor/Supplier Master table exists yet in this project -- wire a lookup once that master is designed.",
+                "mandatory": true,
+                "x": "30",
+                "y": "30",
+                "col_id": "4",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_start_date",
+                "db_name": "WARRANTY_START_DATE",
+                "col_type": "DATE",
+                "group_name": "Basic",
+                "heading": "Warranty Start Date",
+                "descr": "Date the warranty coverage begins",
+                "mandatory": true,
+                "x": "40",
+                "y": "40",
+                "col_id": "5",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_end_date",
+                "db_name": "WARRANTY_END_DATE",
+                "col_type": "DATE",
+                "group_name": "Basic",
+                "heading": "Warranty End Date",
+                "descr": "Date the warranty coverage ends",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "End date after start date",
+                    "message": "Warranty end date must be later than the warranty start date.",
+                    "expression": "{form.warranty_end_date} > {form.warranty_start_date}"
+                  }
+                ],
+                "x": "50",
+                "y": "50",
+                "col_id": "6",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_terms",
+                "db_name": "WARRANTY_TERMS",
+                "col_type": "VARCHAR",
+                "group_name": "Documentation",
+                "heading": "Warranty Terms",
+                "descr": "Coverage terms and conditions of the warranty",
+                "x": "60",
+                "y": "60",
+                "col_id": "7",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_document_attachment",
+                "db_name": "WARRANTY_DOCUMENT_ATTACHMENT",
+                "col_type": "VARCHAR",
+                "group_name": "Documentation",
+                "heading": "Warranty Document",
+                "descr": "Uploaded warranty document/certificate",
+                "edit_mask": {
+                  "mask": "document"
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "8",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Added On",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added By",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added From",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Changed On",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed By",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed From",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_WARRANTY_DETAILS",
+                "table_display_name": "Warranty coverage records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_WARRANTY_DETAILS",
+                  "main_table": true,
+                  "table_descr": "Warranty coverage records"
+                },
+                {
+                  "table": "FAM_ASSET_REGISTER",
+                  "main_table": false,
+                  "table_descr": "Asset register (asset name display)",
+                  "column": "ASSET_CODE",
+                  "join_table": "FAM_WARRANTY_DETAILS",
+                  "join_column": "ASSET_CODE"
+                }
+              ]
+            }
+          },
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

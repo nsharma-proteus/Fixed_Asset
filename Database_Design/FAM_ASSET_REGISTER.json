@@ -1,0 +1,390 @@
+{
+  "table_name": "FAM_ASSET_REGISTER",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "System-generated unique code identifying the asset",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "ASSET_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Asset name from the Asset Register (display only)",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "CAPITALIZATION_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Capitalization date from the Asset Register (display only); installation date cannot be earlier than this",
+      "sequence": 21,
+      "mandatory": true
+    },
+    {
+      "column_name": "CATEGORY_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset category, used to default useful life, depreciation method and residual value",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_CATEGORY_MASTER",
+        "display_column": "CATEGORY_NAME",
+        "value_column": "CATEGORY_CODE"
+      }
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Lifecycle status of the asset record",
+      "sequence": 4,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "DRAFT",
+          "label": "Draft"
+        },
+        {
+          "value": "PENDING_APPROVAL",
+          "label": "Pending Approval"
+        },
+        {
+          "value": "CAPITALIZED",
+          "label": "Capitalized"
+        },
+        {
+          "value": "UNDER_TRANSFER",
+          "label": "Under Transfer"
+        },
+        {
+          "value": "DISPOSED",
+          "label": "Disposed"
+        },
+        {
+          "value": "UNDER_INVESTIGATION",
+          "label": "Under Investigation"
+        }
+      ]
+    },
+    {
+      "column_name": "SERIAL_NO",
+      "data_type": "VARCHAR",
+      "size": "60",
+      "key": false,
+      "description": "Manufacturer serial number; must be unique within the asset's category",
+      "sequence": 5
+    },
+    {
+      "column_name": "MAKE",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Manufacturer/brand of the asset",
+      "sequence": 6
+    },
+    {
+      "column_name": "MODEL",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Model number/name of the asset",
+      "sequence": 7
+    },
+    {
+      "column_name": "DESCRIPTION",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Free text description of the asset",
+      "sequence": 8
+    },
+    {
+      "column_name": "ASSET_PHOTO",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Photo of the asset",
+      "sequence": 9
+    },
+    {
+      "column_name": "QR_BARCODE_TAG",
+      "data_type": "VARCHAR",
+      "size": "200",
+      "key": false,
+      "description": "Generated QR code / barcode tag value identifying this asset (use the Generate QR/Barcode Tag action)",
+      "sequence": 10
+    },
+    {
+      "column_name": "BRANCH_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Branch where the asset is located",
+      "sequence": 11,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_BRANCH_MASTER",
+        "display_column": "BRANCH_NAME",
+        "value_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "column_name": "LOCATION_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Physical location (building/floor/room/site) within the branch",
+      "sequence": 12,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_LOCATION_MASTER",
+        "display_column": "LOCATION_NAME",
+        "value_column": "LOCATION_CODE"
+      }
+    },
+    {
+      "column_name": "DEPARTMENT_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Department/cost centre the asset belongs to",
+      "sequence": 13,
+      "lookup": {
+        "table": "FAM_DEPARTMENT_MASTER",
+        "display_column": "DEPARTMENT_NAME",
+        "value_column": "DEPARTMENT_CODE"
+      }
+    },
+    {
+      "column_name": "ASSIGNED_EMPLOYEE_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Employee currently in custody of the asset",
+      "sequence": 14,
+      "lookup": {
+        "table": "FAM_EMPLOYEE_MASTER",
+        "display_column": "EMPLOYEE_NAME",
+        "value_column": "EMPLOYEE_CODE"
+      }
+    },
+    {
+      "column_name": "VENDOR_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Free text vendor/supplier name; not validated against a master",
+      "sequence": 15
+    },
+    {
+      "column_name": "PURCHASE_INVOICE_NO",
+      "data_type": "VARCHAR",
+      "size": "50",
+      "key": false,
+      "description": "Vendor invoice number for the purchase",
+      "sequence": 16
+    },
+    {
+      "column_name": "PURCHASE_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the asset was purchased",
+      "sequence": 17,
+      "mandatory": true
+    },
+    {
+      "column_name": "PURCHASE_COST",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Base purchase cost of the asset",
+      "sequence": 18,
+      "mandatory": true
+    },
+    {
+      "column_name": "OTHER_CAPITALIZED_COST",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Freight, installation, duties and other costs capitalized with the asset",
+      "sequence": 19
+    },
+    {
+      "column_name": "TOTAL_CAPITALIZED_COST",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Computed as Purchase Cost + Other Capitalized Cost",
+      "sequence": 20
+    },
+    {
+      "column_name": "COMPANIES_ACT_USEFUL_LIFE_YEARS",
+      "data_type": "NUMBER",
+      "size": "5,2",
+      "key": false,
+      "description": "Useful life in years under the Companies Act; defaulted from the asset's category and editable",
+      "sequence": 22,
+      "mandatory": true
+    },
+    {
+      "column_name": "COMPANIES_ACT_METHOD",
+      "data_type": "VARCHAR",
+      "size": "3",
+      "key": false,
+      "description": "Depreciation method under the Companies Act; defaulted from the asset's category and editable",
+      "sequence": 23,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "SLM",
+          "label": "SLM - Straight Line Method"
+        },
+        {
+          "value": "WDV",
+          "label": "WDV - Written Down Value"
+        }
+      ]
+    },
+    {
+      "column_name": "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
+      "data_type": "NUMBER",
+      "size": "5,2",
+      "key": false,
+      "description": "Residual value percentage defaulted from the asset's category; used to compute Residual Value",
+      "sequence": 24
+    },
+    {
+      "column_name": "COMPANIES_ACT_RESIDUAL_VALUE",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Computed as Total Capitalized Cost x Residual Value %",
+      "sequence": 25
+    },
+    {
+      "column_name": "INCOME_TAX_BLOCK_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Income Tax block-of-assets code; defaulted from the asset's category and editable",
+      "sequence": 26,
+      "lookup": {
+        "table": "FAM_DEP_RATE_IT_MASTER",
+        "display_column": "BLOCK_DESCRIPTION",
+        "value_column": "BLOCK_CODE"
+      }
+    },
+    {
+      "column_name": "WARRANTY_START_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Start date of the manufacturer/vendor warranty",
+      "sequence": 27
+    },
+    {
+      "column_name": "WARRANTY_END_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "End date of the manufacturer/vendor warranty",
+      "sequence": 28
+    },
+    {
+      "column_name": "AMC_APPLICABLE",
+      "data_type": "VARCHAR",
+      "size": "1",
+      "key": false,
+      "description": "Whether an Annual Maintenance Contract currently covers this asset",
+      "sequence": 29,
+      "allowed_values": [
+        {
+          "value": "Y",
+          "label": "Yes"
+        },
+        {
+          "value": "N",
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "column_name": "REMARKS",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Free text remarks about the asset",
+      "sequence": 30
+    },
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": false,
+      "description": "Internal surrogate identifier",
+      "sequence": 31
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Date/time the record was created",
+      "sequence": 32
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who created the record",
+      "sequence": 33
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was created",
+      "sequence": 34
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Date/time the record was last changed",
+      "sequence": 35
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who last changed the record",
+      "sequence": 36
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was last changed",
+      "sequence": 37
+    }
+  ]
+}

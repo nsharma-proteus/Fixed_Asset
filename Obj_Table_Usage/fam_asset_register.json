@@ -1,0 +1,68 @@
+{
+  "object_name": "fam_asset_register",
+  "tables": {
+    "FAM_ASSET_REGISTER": [
+      "ASSET_CODE",
+      "BRANCH_CODE",
+      "WARRANTY_END_DATE",
+      "QR_BARCODE_TAG",
+      "AMC_APPLICABLE",
+      "MODEL",
+      "OTHER_CAPITALIZED_COST",
+      "STATUS",
+      "ID",
+      "COMPANIES_ACT_USEFUL_LIFE_YEARS",
+      "CHG_USER",
+      "INCOME_TAX_BLOCK_CODE",
+      "CATEGORY_CODE",
+      "LOCATION_CODE",
+      "CAPITALIZATION_DATE",
+      "TOTAL_CAPITALIZED_COST",
+      "PURCHASE_INVOICE_NO",
+      "DEPARTMENT_CODE",
+      "PURCHASE_COST",
+      "ADD_DATE",
+      "SERIAL_NO",
+      "COMPANIES_ACT_RESIDUAL_VALUE",
+      "ADD_TERM",
+      "CHG_DATE",
+      "MAKE",
+      "ASSET_PHOTO",
+      "VENDOR_NAME",
+      "COMPANIES_ACT_METHOD",
+      "WARRANTY_START_DATE",
+      "ASSIGNED_EMPLOYEE_CODE",
+      "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
+      "DESCRIPTION",
+      "ADD_USER",
+      "REMARKS",
+      "PURCHASE_DATE",
+      "ASSET_NAME",
+      "CHG_TERM"
+    ],
+    "FAM_ASSET_CATEGORY_MASTER": [
+      "CATEGORY_CODE",
+      "CATEGORY_NAME"
+    ],
+    "FAM_BRANCH_MASTER": [
+      "BRANCH_CODE",
+      "BRANCH_NAME"
+    ],
+    "FAM_LOCATION_MASTER": [
+      "LOCATION_NAME",
+      "LOCATION_CODE"
+    ],
+    "FAM_DEPARTMENT_MASTER": [
+      "DEPARTMENT_NAME",
+      "DEPARTMENT_CODE"
+    ],
+    "FAM_EMPLOYEE_MASTER": [
+      "EMPLOYEE_NAME",
+      "EMPLOYEE_CODE"
+    ],
+    "FAM_DEP_RATE_IT_MASTER": [
+      "BLOCK_DESCRIPTION",
+      "BLOCK_CODE"
+    ]
+  }
+}

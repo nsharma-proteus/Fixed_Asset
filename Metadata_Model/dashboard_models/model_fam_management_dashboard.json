@@ -1,0 +1,154 @@
+{
+  "DASHBOARD": {
+    "DASHBOARD_ID": "FAM_MANAGEMENT_DASHBOARD",
+    "DASHBOARD_TYPE": "S",
+    "DASHBOARD_NAME": "Management Dashboard",
+    "DASHBOARD_DESCR": "Consolidated asset, depreciation and verification KPIs for the Asset/Finance Manager. Assumption: only fam_warranty_amc_expiry (V, Grid) exists on disk today; the other 10 tiles below reference visual obj_names (fam_total_gross_asset_value, fam_total_net_book_value, fam_assets_pending_approval, fam_warranty_amc_expiring_30d, fam_asset_value_by_category, fam_asset_count_by_location, fam_monthly_depreciation_trend_ca, fam_depreciation_comparison_ca_it, fam_physical_verification_status, fam_asset_disposal_value_waterfall, fam_depreciation_posting_compliance) that are expected to be materialised by a follow-up visual-authoring pass / the cascading visual generator, using financial_year/branch_code as their prompt vars to match this dashboard's CRITERIA_BINDINGS (mirrors the branch_code convention already used by fam_warranty_amc_expiry). Assumption: BRANCH_CODE defaults to All ('%') rather than the logged-in user's branch, since a per-session default cannot be expressed in a static dashboard model; the user can pick their own branch via the FAM_BRANCH_MASTER lookup. Assumption: drill-through to Asset Register Report and Depreciation Register (obj_type R print reports, and not yet declared as project objects) is intentionally left unwired, since this dashboard's DRILL_THROUGH only targets dashboard/visual/self, not a report; only the Warranty/AMC Expiring card drills through today, to the existing fam_warranty_amc_expiry visual.",
+    "CREATED_BY": "admin",
+    "CREATED_DATE": "2026-08-01",
+    "REFRESH_INTERVAL_SECONDS": 0,
+
+    "GLOBAL_CRITERIA": [
+      {
+        "PARAM_NAME": "FINANCIAL_YEAR",
+        "PROMPT_LABEL": "Financial Year",
+        "DEFAULT_VALUE": "2026-27",
+        "DATA_TYPE": "string",
+        "OPERATOR": "=",
+        "BROADCAST_TO": [
+          "VIS_001", "VIS_002", "VIS_007", "VIS_008", "VIS_010", "VIS_011"
+        ]
+      },
+      {
+        "PARAM_NAME": "BRANCH_CODE",
+        "PROMPT_LABEL": "Branch",
+        "DEFAULT_VALUE": "%",
+        "DATA_TYPE": "string",
+        "OPERATOR": "like",
+        "BROADCAST_TO": [
+          "VIS_001", "VIS_002", "VIS_003", "VIS_004", "VIS_005", "VIS_006",
+          "VIS_007", "VIS_008", "VIS_009", "VIS_010", "VIS_011"
+        ],
+        "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+        "lookup_title": "Select a branch (All if left blank)"
+      }
+    ],
+
+    "VISUALS": [
+      {
+        "VISUAL_ID": "VIS_001",
+        "VISUAL_NAME": "Total Gross Asset Value",
+        "POSITION": { "X": 0, "Y": 0, "WIDTH": 3, "HEIGHT": 2 },
+        "VISUAL_CONFIG_REF": "model_fam_total_gross_asset_value.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_002",
+        "VISUAL_NAME": "Total Net Book Value",
+        "POSITION": { "X": 3, "Y": 0, "WIDTH": 3, "HEIGHT": 2 },
+        "VISUAL_CONFIG_REF": "model_fam_total_net_book_value.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_003",
+        "VISUAL_NAME": "Assets Pending Approval",
+        "POSITION": { "X": 6, "Y": 0, "WIDTH": 3, "HEIGHT": 2 },
+        "VISUAL_CONFIG_REF": "model_fam_assets_pending_approval.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_004",
+        "VISUAL_NAME": "Warranty/AMC Expiring in 30 Days",
+        "POSITION": { "X": 9, "Y": 0, "WIDTH": 3, "HEIGHT": 2 },
+        "VISUAL_CONFIG_REF": "model_fam_warranty_amc_expiring_30d.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_005",
+        "VISUAL_NAME": "Asset Value by Category",
+        "POSITION": { "X": 0, "Y": 2, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_asset_value_by_category.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_006",
+        "VISUAL_NAME": "Asset Count by Location",
+        "POSITION": { "X": 6, "Y": 2, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_asset_count_by_location.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_007",
+        "VISUAL_NAME": "Monthly Depreciation Trend - Companies Act",
+        "POSITION": { "X": 0, "Y": 6, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_monthly_depreciation_trend_ca.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_008",
+        "VISUAL_NAME": "Depreciation Comparison - Companies Act vs Income Tax",
+        "POSITION": { "X": 6, "Y": 6, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_depreciation_comparison_ca_it.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_009",
+        "VISUAL_NAME": "Physical Verification Status",
+        "POSITION": { "X": 0, "Y": 10, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_physical_verification_status.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_010",
+        "VISUAL_NAME": "Asset Disposal Value - Sale vs Scrap",
+        "POSITION": { "X": 6, "Y": 10, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_asset_disposal_value_waterfall.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_011",
+        "VISUAL_NAME": "Monthly Depreciation Posting Compliance",
+        "POSITION": { "X": 0, "Y": 14, "WIDTH": 3, "HEIGHT": 2 },
+        "VISUAL_CONFIG_REF": "model_fam_depreciation_posting_compliance.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
+          { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
+        ]
+      }
+    ],
+
+    "DRILL_THROUGH": [
+      {
+        "SOURCE_VISUAL_ID": "VIS_004",
+        "TARGET_TYPE": "visual",
+        "TARGET_VISUAL_ID": "fam_warranty_amc_expiry",
+        "PARAM_MAPPING": { "BRANCH_CODE": "branch_code" }
+      }
+    ]
+  }
+}

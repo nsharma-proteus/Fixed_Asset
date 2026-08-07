@@ -1,0 +1,27 @@
+{
+  "table_name": "FAM_PHYSICAL_VERIFICATION",
+  "objects": [
+    {
+      "object_name": "fam_physical_verification",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "VERIFIER_EMPLOYEE_CODE",
+        "CHG_USER",
+        "LOCATION_CODE",
+        "BRANCH_CODE",
+        "VERIFICATION_CYCLE_NO",
+        "location_name",
+        "CHG_DATE",
+        "ADD_USER",
+        "branch_name",
+        "STATUS",
+        "ADD_DATE",
+        "CHG_TERM",
+        "ADD_TERM",
+        "verifier_employee_name",
+        "VERIFICATION_DATE"
+      ]
+    }
+  ]
+}

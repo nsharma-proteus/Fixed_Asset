@@ -1,0 +1,43 @@
+{
+  "DASHBOARD": {
+    "DASHBOARD_ID": "FAM_ASSET_DEPRECIATION_RECONCILIATION",
+    "DASHBOARD_TYPE": "S",
+    "DASHBOARD_NAME": "Asset Depreciation Reconciliation",
+    "DASHBOARD_DESCR": "Per-asset depreciation reconciliation: pick ONE asset to see its real, period-wise Companies Act depreciation side by side with the Income Tax context of the block it belongs to (block-level, plus an estimated pro-rata allocation to the asset).",
+    "CREATED_BY": "admin",
+    "CREATED_DATE": "2026-08-03",
+    "REFRESH_INTERVAL_SECONDS": 0,
+    "GLOBAL_CRITERIA": [
+      {
+        "PARAM_NAME": "ASSET_CODE",
+        "PROMPT_LABEL": "Asset",
+        "DEFAULT_VALUE": "1",
+        "DATA_TYPE": "string",
+        "OPERATOR": "=",
+        "BROADCAST_TO": ["VIS_CA_DETAIL", "VIS_IT_CONTEXT"],
+        "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)"
+      }
+    ],
+    "VISUALS": [
+      {
+        "VISUAL_ID": "VIS_CA_DETAIL",
+        "VISUAL_NAME": "Companies Act - Period-Wise Depreciation (Real)",
+        "POSITION": { "X": 0, "Y": 0, "WIDTH": 12, "HEIGHT": 6 },
+        "VISUAL_CONFIG_REF": "model_fam_dep_ca_period_detail.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "asset_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "ASSET_CODE" }
+        ]
+      },
+      {
+        "VISUAL_ID": "VIS_IT_CONTEXT",
+        "VISUAL_NAME": "Income Tax - Block Level Context (Not Asset-Specific) + Estimated Allocation",
+        "POSITION": { "X": 0, "Y": 6, "WIDTH": 12, "HEIGHT": 6 },
+        "VISUAL_CONFIG_REF": "model_fam_dep_it_block_context.json",
+        "CRITERIA_BINDINGS": [
+          { "VISUAL_PARAM": "asset_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "ASSET_CODE" }
+        ]
+      }
+    ],
+    "DRILL_THROUGH": []
+  }
+}

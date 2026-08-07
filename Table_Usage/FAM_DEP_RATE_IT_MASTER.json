@@ -1,0 +1,51 @@
+{
+  "table_name": "FAM_DEP_RATE_IT_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_dep_rate_it_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "CHG_TERM",
+        "BLOCK_DESCRIPTION",
+        "EFFECTIVE_FROM_DATE",
+        "CHG_USER",
+        "RATE_PCT",
+        "BLOCK_CODE",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "ID",
+        "ADD_TERM"
+      ]
+    },
+    {
+      "object_name": "fam_asset_category_master",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "BLOCK_DESCRIPTION",
+        "BLOCK_CODE"
+      ],
+      "join_info": {
+        "column": "BLOCK_CODE",
+        "join_table": "FAM_ASSET_CATEGORY_MASTER",
+        "join_column": "INCOME_TAX_BLOCK_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "BLOCK_DESCRIPTION",
+        "BLOCK_CODE"
+      ],
+      "join_info": {
+        "column": "BLOCK_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "INCOME_TAX_BLOCK_CODE"
+      }
+    }
+  ]
+}

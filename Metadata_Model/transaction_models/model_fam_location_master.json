@@ -1,0 +1,516 @@
+{
+  "transaction": {
+    "obj_name": "fam_location_master",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Location Master",
+          "form_descr": "Maintain physical locations (building/floor/room/site) within a branch where assets are placed",
+          "form_no": "1",
+          "main_table": "FAM_LOCATION_MASTER",
+          "columns": [
+            {
+              "column": {
+                "name": "branch_code",
+                "db_name": "BRANCH_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Branch Code",
+                "descr": "Branch this location belongs to",
+                "key": true,
+                "mandatory": true,
+                "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+                "must_exist_in": "FAM_BRANCH_MASTER",
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "20",
+                "width": 96,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "branch_name",
+                "db_name": "BRANCH_NAME",
+                "table_name": "FAM_BRANCH_MASTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Branch Name",
+                "descr": "Branch name from Branch Master (display only)",
+                "protect": "1",
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_display_name": "Branch master (lookup for branch name)",
+                "db_size": "100",
+                "width": 182,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "location_code",
+                "db_name": "LOCATION_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Location Code",
+                "descr": "Unique location code within the branch",
+                "key": true,
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Location code unique within branch",
+                    "error_code": "LOC_CODE_UNIQUE_IN_BRANCH",
+                    "message": "Location code {form.location_code} already exists for branch {form.branch_code}.",
+                    "builtin": {
+                      "kind": "must_be_unique",
+                      "conditions": [
+                        {
+                          "column": "BRANCH_CODE",
+                          "op": "=",
+                          "source": "form",
+                          "value": "branch_code"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "20",
+                "width": 138,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "location_name",
+                "db_name": "LOCATION_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Location Name",
+                "descr": "Name of the location (building/floor/room/site)",
+                "mandatory": true,
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "100",
+                "width": 186,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "address_descr",
+                "db_name": "ADDRESS_DESCR",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Address / Description",
+                "descr": "Address or descriptive detail of the location",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "300",
+                "width": 229,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Active or Inactive status of the location",
+                "default_value": "A",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "A",
+                      "display": "Active"
+                    },
+                    {
+                      "data": "I",
+                      "display": "Inactive"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "A",
+                      "color": "green",
+                      "icon": "\u25cf",
+                      "label": "Active"
+                    },
+                    {
+                      "when": "I",
+                      "color": "grey",
+                      "icon": "\u25cf",
+                      "label": "Inactive"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "1",
+                "width": 89,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "Id",
+                "descr": "Internal sequence identifier",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 1,
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Record creation timestamp",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "70",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "",
+                "width": 149,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "80",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "10",
+                "width": 118,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "descr": "Terminal/IP that created the record",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "descr": "Record last-change timestamp",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "90",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "",
+                "width": 86,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "100",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed Terminal",
+                "descr": "Terminal/IP that last changed the record",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_LOCATION_MASTER",
+                "table_display_name": "Location master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_LOCATION_MASTER",
+                  "main_table": true,
+                  "table_descr": "Location master (main table)"
+                },
+                {
+                  "table": "FAM_BRANCH_MASTER",
+                  "main_table": false,
+                  "table_descr": "Branch master (lookup for branch name)",
+                  "column": "BRANCH_CODE",
+                  "join_table": "FAM_LOCATION_MASTER",
+                  "join_column": "BRANCH_CODE",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "business_logic",
+                  "name": "Location unused check",
+                  "message": "This location cannot be deleted because it is referenced by one or more assets in the Asset Register.",
+                  "business_logic": {
+                    "method": "check_location_unused",
+                    "description": "Block delete when the location is referenced by any asset",
+                    "spec": "Given the current row's BRANCH_CODE and LOCATION_CODE, check whether any row exists in the Asset Register (FAM_ASSET_REGISTER) with matching BRANCH_CODE and LOCATION_CODE. If at least one such asset exists, return an error so the delete is blocked; otherwise return NULL/no error to allow the delete to proceed.",
+                    "language": "plpgsql"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Activate",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "activate_location",
+                "description": "Activate the location",
+                "spec": "UPDATE FAM_LOCATION_MASTER SET STATUS = 'A', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE BRANCH_CODE = the payload's BRANCH_CODE and LOCATION_CODE = the payload's LOCATION_CODE. Return a confirmation message that the location was activated.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must not already be active",
+                  "message": "Location {form.location_code} is already Active.",
+                  "expression": "{form.status} != \"A\""
+                }
+              ]
+            },
+            {
+              "name": "Deactivate",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "deactivate_location",
+                "description": "Deactivate the location",
+                "spec": "UPDATE FAM_LOCATION_MASTER SET STATUS = 'I', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE BRANCH_CODE = the payload's BRANCH_CODE and LOCATION_CODE = the payload's LOCATION_CODE. Return a confirmation message that the location was deactivated.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must not already be inactive",
+                  "message": "Location {form.location_code} is already Inactive.",
+                  "expression": "{form.status} != \"I\""
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "follow_up_actions": [],
+    "attach_docs": []
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "table_name": "FAM_BRANCH_MASTER",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "BRANCH_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Unique code identifying the branch",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "BRANCH_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Name of the branch",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "ADDRESS",
+      "data_type": "VARCHAR",
+      "size": "300",
+      "key": false,
+      "description": "Postal address of the branch",
+      "sequence": 3
+    },
+    {
+      "column_name": "CITY",
+      "data_type": "VARCHAR",
+      "size": "60",
+      "key": false,
+      "description": "City in which the branch is located",
+      "sequence": 4
+    },
+    {
+      "column_name": "STATE",
+      "data_type": "VARCHAR",
+      "size": "60",
+      "key": false,
+      "description": "State in which the branch is located",
+      "sequence": 5
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "1",
+      "key": false,
+      "description": "Active/Inactive status of the branch",
+      "sequence": 6,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "A",
+          "label": "Active"
+        },
+        {
+          "value": "I",
+          "label": "Inactive"
+        }
+      ]
+    },
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": false,
+      "description": "System generated sequence number",
+      "sequence": 7
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Timestamp when the record was created",
+      "sequence": 8
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who created the record",
+      "sequence": 9
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was created",
+      "sequence": 10
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Timestamp when the record was last changed",
+      "sequence": 11
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who last changed the record",
+      "sequence": 12
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was last changed",
+      "sequence": 13
+    }
+  ]
+}

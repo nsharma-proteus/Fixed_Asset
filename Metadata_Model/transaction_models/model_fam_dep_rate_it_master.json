@@ -1,0 +1,457 @@
+{
+  "transaction": {
+    "obj_name": "fam_dep_rate_it_master",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Dep Rate - Income Tax",
+          "form_descr": "Maintain block-of-assets rates as prescribed under the Income Tax Act/Rules",
+          "form_no": "1",
+          "main_table": "FAM_DEP_RATE_IT_MASTER",
+          "columns": [
+            {
+              "column": {
+                "name": "block_code",
+                "db_name": "BLOCK_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Block Code",
+                "descr": "Income Tax block-of-assets code. Only one rate record is maintained per block at a time (the block code is the record key).",
+                "key": true,
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "One rate per block",
+                    "error_code": "BLOCK_RATE_UNIQUE",
+                    "message": "A depreciation rate for block {form.block_code} already exists. Only one active rate per block is allowed at a time \u2014 edit the existing record instead.",
+                    "builtin": {
+                      "kind": "must_be_unique"
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "block_description",
+                "db_name": "BLOCK_DESCRIPTION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Block Description",
+                "descr": "Description of the block of assets",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "200",
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "rate_pct",
+                "db_name": "RATE_PCT",
+                "group_name": "Basic",
+                "col_type": "NUMBER",
+                "heading": "Rate %",
+                "descr": "Depreciation rate as a percentage of the block's Written Down Value (0-100)",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Rate 0-100",
+                    "error_code": "RATE_PCT_RANGE",
+                    "message": "Rate % must be between 0 and 100.",
+                    "builtin": {
+                      "kind": "value_in_range",
+                      "min": {
+                        "source": "const",
+                        "value": "0"
+                      },
+                      "max": {
+                        "source": "const",
+                        "value": "100"
+                      }
+                    }
+                  }
+                ],
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "5,2",
+                "width": 60,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "effective_from_date",
+                "db_name": "EFFECTIVE_FROM_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Effective From",
+                "descr": "Date from which this block rate is effective",
+                "mandatory": true,
+                "default_value": "today()",
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "opening_wdv",
+                "db_name": "OPENING_WDV",
+                "group_name": "Opening Balance",
+                "col_type": "NUMBER",
+                "heading": "Opening WDV (Block)",
+                "descr": "Aggregate Written-Down Value of ALL assets already in this Income Tax block, as on the date in Opening WDV As On Date, for a company adopting this system with pre-existing blocks. Leave blank for a block with no assets predating this system. The annual Income Tax depreciation process uses this as the block's opening balance for the first Assessment Year it processes after that date; blank means the block starts from an opening WDV of zero.",
+                "mandatory": false,
+                "default_value": "",
+                "x": "41",
+                "y": "41",
+                "col_id": "4a",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "opening_wdv_as_on_date",
+                "db_name": "OPENING_WDV_AS_ON_DATE",
+                "group_name": "Opening Balance",
+                "col_type": "DATE",
+                "heading": "Opening WDV As On Date",
+                "descr": "Date (typically a financial-year-end, e.g. 31-Mar) as of which Opening WDV (Block) is stated. The Income Tax depreciation process only uses Opening WDV (Block) for an Assessment Year whose financial-year-start is after this date.",
+                "mandatory": false,
+                "default_value": "",
+                "x": "42",
+                "y": "42",
+                "col_id": "4b",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "",
+                "width": 150,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "ID",
+                "descr": "System generated sequence number",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 0,
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Timestamp when the record was created",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added From",
+                "descr": "Terminal/IP from which the record was created",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "descr": "Timestamp when the record was last changed",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed From",
+                "descr": "Terminal/IP from which the record was last changed",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "table_display_name": "Income Tax depreciation rate master table",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_DEP_RATE_IT_MASTER",
+                  "main_table": true,
+                  "table_descr": "Income Tax depreciation rate master table"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "Delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "business_logic",
+                  "name": "Rate not in use",
+                  "error_code": "DEP_RATE_IT_IN_USE",
+                  "message": "This Income Tax block rate cannot be deleted because it is referenced by the Asset Category Master or has been used in a posted Income Tax depreciation run.",
+                  "business_logic": {
+                    "method": "check_dep_rate_it_unused",
+                    "description": "Block delete if the block rate is referenced elsewhere",
+                    "spec": "Given BLOCK_CODE in the payload, check whether it is referenced by FAM_ASSET_CATEGORY_MASTER.INCOME_TAX_BLOCK_CODE or by any posted Income Tax annual depreciation generation record for that block (only tables that exist in the project at deploy time need to be checked). If any matching reference exists, return an error indicating the block rate is in use and cannot be deleted. Otherwise return no error so the delete proceeds.",
+                    "language": "plpgsql"
+                  }
+                }
+              ]
+            }
+          ],
+          "validations": [
+            {
+              "type": "expression",
+              "name": "Opening WDV as-on date required with block Opening WDV",
+              "error_code": "IT_BLOCK_OPENING_WDV_DATE_REQUIRED",
+              "message": "Block {form.block_code}: Opening WDV As On Date is required when Opening WDV (Block) is entered.",
+              "expression": "is_empty({form.opening_wdv}) or {form.opening_wdv} <= 0 or not_empty({form.opening_wdv_as_on_date})"
+            }
+          ]
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "follow_up_actions": [],
+    "attach_docs": []
+  }
+}

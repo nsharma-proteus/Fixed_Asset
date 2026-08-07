@@ -1,0 +1,1 @@
+[1] Asset Installation: asset_code(V20), asset_name(V100), capitalization_date(D), installation_date(D), installed_by(V20), installed_by_name(V100), installation_location_confirmed(V1), installation_certificate_attachment(V500), remarks(V500), status(V20), id(N), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)

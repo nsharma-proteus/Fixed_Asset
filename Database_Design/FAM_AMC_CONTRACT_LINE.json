@@ -1,0 +1,95 @@
+{
+  "table_name": "FAM_AMC_CONTRACT_LINE",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "AMC_CONTRACT_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "LINE_NO",
+      "data_type": "NUMBER",
+      "size": "5",
+      "key": true,
+      "description": "",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset covered under this AMC contract",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "COVERAGE_REMARKS",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Notes on the scope/terms of coverage for this asset",
+      "sequence": 4
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 5
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 6
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 7
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 8
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 9
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 10
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "table_name": "FAM_DEPARTMENT_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_department_master",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "CHG_TERM",
+        "COST_CENTRE_CODE",
+        "CHG_USER",
+        "BRANCH_CODE",
+        "DEPARTMENT_NAME",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "ID",
+        "ADD_TERM",
+        "DEPARTMENT_CODE"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_BRANCH_MASTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_employee_master",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "DEPARTMENT_NAME",
+        "DEPARTMENT_CODE"
+      ],
+      "join_info": {
+        "column": "DEPARTMENT_CODE",
+        "join_table": "FAM_EMPLOYEE_MASTER",
+        "join_column": "DEPARTMENT_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "DEPARTMENT_NAME",
+        "DEPARTMENT_CODE"
+      ],
+      "join_info": {
+        "column": "DEPARTMENT_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "DEPARTMENT_CODE"
+      }
+    }
+  ]
+}

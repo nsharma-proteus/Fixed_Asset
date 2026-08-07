@@ -1,0 +1,1 @@
+[1] Asset Disposal: disposal_no(V20), disposal_date(D), asset_code(V20), asset_name(V100), capitalization_date(D), status(V20), disposal_type(V10), sale_value(N14,2), buyer_or_scrap_vendor_code(V20), net_book_value_as_on_disposal(N14,2), profit_loss_on_disposal(N14,2), disposal_reason(V500), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)

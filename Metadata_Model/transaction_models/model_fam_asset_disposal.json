@@ -1,0 +1,742 @@
+{
+  "transaction": {
+    "obj_name": "fam_asset_disposal",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Asset Disposal",
+          "form_descr": "Record the disposal of an asset by sale or scrap",
+          "form_no": "1",
+          "main_table": "FAM_ASSET_DISPOSAL",
+          "columns": [
+            {
+              "column": {
+                "name": "disposal_no",
+                "db_name": "DISPOSAL_NO",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Disposal No",
+                "descr": "Auto-generated disposal number",
+                "key": true,
+                "protect": "1",
+                "default_value": "auto_generate()",
+                "mandatory": true,
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "disposal_date",
+                "db_name": "DISPOSAL_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Disposal Date",
+                "descr": "Date the disposal is recorded",
+                "default_value": "today()",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Code",
+                "descr": "Asset being disposed",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "must_exist_in": "FAM_ASSET_REGISTER",
+                "validations": [
+                  {
+                    "type": "business_logic",
+                    "name": "Asset must not already be Disposed",
+                    "message": "Asset {form.asset_code} has already been disposed and cannot be disposed again.",
+                    "business_logic": {
+                      "method": "check_asset_not_disposed",
+                      "description": "Validate the asset is not already Disposed before allowing a new disposal",
+                      "spec": "Look up the asset's current STATUS on the Asset Register for ASSET_CODE; return an error (e.g. {\"error\":\"...\"}) if it is already Disposed. NOTE: FAM_ASSET_REGISTER is currently designed with only ASSET_CODE, ASSET_NAME and CAPITALIZATION_DATE columns; a STATUS column must be added to it (by the Asset Register object) before this check can be implemented.",
+                      "language": "plpgsql"
+                    }
+                  }
+                ],
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "fill_asset_disposal_details",
+                    "description": "Fill asset name, capitalization date and computed NBV from the asset's depreciation records",
+                    "spec": "On change of ASSET_CODE, select ASSET_NAME and CAPITALIZATION_DATE from FAM_ASSET_REGISTER for the given ASSET_CODE. Also compute NET_BOOK_VALUE_AS_ON_DISPOSAL as the asset's total capitalized cost less accumulated Companies Act depreciation posted up to the disposal date (from the Companies Act depreciation generation/posting records). Return {\"updates\": {...}} setting asset_name, capitalization_date and net_book_value_as_on_disposal, and also recompute profit_loss_on_disposal = sale_value - net_book_value_as_on_disposal. NOTE: no accumulated-depreciation/WDV ledger table exists yet in this project's design; until the Depreciation (Companies Act) generation object is built and exposes a queryable WDV/accumulated-depreciation source, net_book_value_as_on_disposal should default to the asset's TOTAL_CAPITALIZED_COST (once that column is added to FAM_ASSET_REGISTER) or 0, and this function must be revisited once that source exists.",
+                    "language": "plpgsql"
+                  }
+                },
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Name",
+                "descr": "Filled from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "capitalization_date",
+                "db_name": "CAPITALIZATION_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Capitalization Date",
+                "descr": "Filled from the Asset Register; disposal date cannot be earlier than this",
+                "protect": "1",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Disposal workflow status",
+                "default_value": "DRAFT",
+                "protect": "1",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "DRAFT",
+                      "display": "Draft"
+                    },
+                    {
+                      "data": "PENDING_APPROVAL",
+                      "display": "Pending Approval"
+                    },
+                    {
+                      "data": "APPROVED",
+                      "display": "Approved"
+                    },
+                    {
+                      "data": "CANCELLED",
+                      "display": "Cancelled"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "DRAFT",
+                      "color": "grey",
+                      "icon": "\u25f7"
+                    },
+                    {
+                      "when": "PENDING_APPROVAL",
+                      "color": "amber",
+                      "icon": "\u25f7"
+                    },
+                    {
+                      "when": "APPROVED",
+                      "color": "green",
+                      "icon": "\u2713"
+                    },
+                    {
+                      "when": "CANCELLED",
+                      "color": "red",
+                      "icon": "\u2715"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "disposal_type",
+                "db_name": "DISPOSAL_TYPE",
+                "group_name": "Disposal Details",
+                "col_type": "VARCHAR",
+                "heading": "Disposal Type",
+                "descr": "Whether the asset is sold or scrapped",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "SALE",
+                      "display": "Sale"
+                    },
+                    {
+                      "data": "SCRAP",
+                      "display": "Scrap"
+                    }
+                  ]
+                },
+                "item_change": {
+                  "mode": "rule",
+                  "fill": [
+                    {
+                      "form_col": "sale_value",
+                      "expr": "iif({form.disposal_type} == \"SCRAP\", 0, {form.sale_value})"
+                    },
+                    {
+                      "form_col": "profit_loss_on_disposal",
+                      "expr": "iif({form.disposal_type} == \"SCRAP\", 0 - {form.net_book_value_as_on_disposal}, {form.sale_value} - {form.net_book_value_as_on_disposal})"
+                    }
+                  ],
+                  "protect": [
+                    {
+                      "form_col": "sale_value",
+                      "when": "{form.disposal_type} == \"SCRAP\""
+                    }
+                  ]
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "sale_value",
+                "db_name": "SALE_VALUE",
+                "group_name": "Disposal Details",
+                "col_type": "NUMBER",
+                "heading": "Sale Value",
+                "descr": "Sale proceeds; mandatory when Disposal Type is Sale, zero/locked for Scrap",
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Sale value required for Sale",
+                    "message": "Sale Value is mandatory when Disposal Type is Sale.",
+                    "expression": "not ({form.disposal_type} == \"SALE\") or {form.sale_value} > 0"
+                  }
+                ],
+                "item_change": {
+                  "mode": "rule",
+                  "fill": [
+                    {
+                      "form_col": "profit_loss_on_disposal",
+                      "expr": "{form.sale_value} - {form.net_book_value_as_on_disposal}"
+                    }
+                  ]
+                },
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "buyer_or_scrap_vendor_code",
+                "db_name": "BUYER_OR_SCRAP_VENDOR_CODE",
+                "group_name": "Disposal Details",
+                "col_type": "VARCHAR",
+                "heading": "Buyer / Scrap Vendor Code",
+                "descr": "Buyer (for Sale) or scrap vendor (for Scrap) reference. NOTE: no Vendor/Supplier Master table exists yet in this project's design, so this is a free-text code for now; wire a lookup to the Vendor Master once that object is built.",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "net_book_value_as_on_disposal",
+                "db_name": "NET_BOOK_VALUE_AS_ON_DISPOSAL",
+                "group_name": "Disposal Details",
+                "col_type": "NUMBER",
+                "heading": "Net Book Value as on Disposal",
+                "descr": "Computed net book value of the asset as on the disposal date, filled when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "profit_loss_on_disposal",
+                "db_name": "PROFIT_LOSS_ON_DISPOSAL",
+                "group_name": "Disposal Details",
+                "col_type": "NUMBER",
+                "heading": "Profit / Loss on Disposal",
+                "descr": "Computed as Sale Value minus Net Book Value as on Disposal",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "disposal_reason",
+                "db_name": "DISPOSAL_REASON",
+                "group_name": "Disposal Details",
+                "col_type": "VARCHAR",
+                "heading": "Disposal Reason",
+                "descr": "Reason/justification for the disposal",
+                "mandatory": true,
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed Terminal",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "180",
+                "y": "180",
+                "col_id": "18",
+                "table_name": "FAM_ASSET_DISPOSAL",
+                "table_display_name": "Asset Disposal records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_ASSET_DISPOSAL",
+                  "main_table": true,
+                  "table_descr": "Asset Disposal records"
+                }
+              ]
+            }
+          },
+          "validations": [
+            {
+              "type": "expression",
+              "name": "Disposal date not before capitalization date",
+              "error_code": "DISPOSAL_DATE_MIN",
+              "message": "Disposal Date cannot be earlier than the asset's Capitalization Date ({form.capitalization_date}).",
+              "expression": "not_empty({form.capitalization_date}) == false or {form.disposal_date} >= {form.capitalization_date}"
+            }
+          ]
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name": "edit",
+        "handler": "system",
+        "system_op": "edit",
+        "scope": "row",
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Draft only",
+            "message": "Only DRAFT disposals can be edited (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\""
+          }
+        ]
+      },
+      {
+        "name": "Submit for Approval",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "submit_asset_disposal_for_approval",
+          "description": "Move a Draft disposal to Pending Approval",
+          "spec": "Set STATUS to PENDING_APPROVAL on this disposal record and return a confirmation message.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Draft",
+            "message": "Only DRAFT disposals can be submitted for approval (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\""
+          }
+        ]
+      },
+      {
+        "name": "Approve",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "approve_asset_disposal",
+          "description": "Approve the disposal, mark the asset Disposed and exclude it from future depreciation",
+          "spec": "Set STATUS to APPROVED on this disposal record. Then UPDATE the Asset Register row for ASSET_CODE, setting its STATUS to DISPOSED so the asset is excluded from future Companies Act and Income Tax depreciation generation runs and removed from its Income Tax block of assets from the next generation run. Return a confirmation message. Depends on FAM_ASSET_REGISTER carrying a STATUS column (currently only ASSET_CODE, ASSET_NAME and CAPITALIZATION_DATE exist there).",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Pending Approval",
+            "message": "Only PENDING APPROVAL disposals can be approved (current status {form.status}).",
+            "expression": "{form.status} == \"PENDING_APPROVAL\""
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Approve disposal {form.disposal_no} for asset {form.asset_code}? This will mark the asset as Disposed."
+        }
+      },
+      {
+        "name": "Cancel",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "cancel_asset_disposal",
+          "description": "Cancel a Draft or Pending Approval disposal",
+          "spec": "Set STATUS to CANCELLED on this disposal record and return a confirmation message. Approved disposals cannot be cancelled since the Asset Register has already been marked Disposed.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Cannot cancel Approved/Cancelled",
+            "message": "Only DRAFT or PENDING APPROVAL disposals can be cancelled (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\" or {form.status} == \"PENDING_APPROVAL\""
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Cancel disposal {form.disposal_no}?"
+        }
+      }
+    ],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

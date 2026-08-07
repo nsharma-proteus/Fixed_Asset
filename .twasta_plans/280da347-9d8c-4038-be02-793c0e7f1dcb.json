@@ -1,0 +1,20 @@
+{
+  "id": "280da347-9d8c-4038-be02-793c0e7f1dcb",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "In this screen the columns for values for additions of assets",
+  "kind": "modify",
+  "status": "completed",
+  "description": "In this screen the columns for values for additions of assets",
+  "created_at": 1785923573.3976715,
+  "updated_at": 1785923787.093933,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "In this screen the columns for values for additions of assets\n[follow-up] how is the accumalated depriciation getting calaculated on this screen",
+  "resume_ref": {
+    "session_id": "ef878d2f-c022-488e-bbfe-a184a637de5e",
+    "claude_session_id": "c27241ab-11cc-4c60-8f43-cd51967630ad"
+  },
+  "depends_on": [],
+  "result_summary": "This is a read-only Q&A, so no files were changed. Here's how **Total Accumulated Depreciation** is calculated on the Asset Register screen:\n\n**Where it lives:** `TOTAL_ACCUMULATED_DEPRECIATION` is a system-computed, protected (read-only) field on the form, driven by a single shared business-logic function `recompute_total_accumulated_depreciation`. It's wired via `item_change` on **six** columns: `purchase_cost`, `other_capitalized_cost`, `opening_accumulated_depreciation`, `companies_act_useful_life_years`, `companies_act_method`, and `capitalization_date` \u2014 so it recalculates live whenever any of those change (`src/transaction_models/fam_asset_register/field_item_change__1__recompute_total_accumulated_depreciation.sql`).\n\n**The formula (Companies Act SLM/WDV):**\n1. `total_capitalized_cost = purchase_cost + other_capitalized_cost`\n2. `residual_value = total_capitalized_cost \u00d7 companies_act_residual_value_pct / 100`\n3. `depreciable_base = GREATEST(total_capitalized_cost \u2212 residual_value, 0)`\n4. **As-of date** = the asset's approved disposal date (from `FAM_ASSET_DISPOSAL`) if one exists, else today\n5. `years_elapsed = (as_of_date \u2212 capitalization_date) / 365.25`, floored at 0\n6. If capitalization date, useful life, or depreciable base is missing/zero \u2192 system depreciation = 0. Otherwise:\n   - **SLM**: `system_dep = depreciable_base \u00d7 LEAST(years_elapsed, useful_life) / useful_life`\n   - **WDV** (default for anything not \"SLM\"): computes an annual rate `r` from the residual ratio and useful life (`r = 1 \u2212 residual_ratio^(1/useful_life)`), then `system_dep = total_capitalized_cost \u2212 total_capitalized_cost \u00d7 (1\u2212r)^LEAST(years_elapsed, useful_life)`\n7. **Final value**: `total_accumulated_depreciation = GREATEST(opening_accumulated_depreciation, LEAST(opening_accumulated_depreciation + system_dep, depreciable_base))` \u2014 i.e. opening balance + system-computed depreciation since capitalization, capped so it never exceeds the depreciable base and never falls below the opening balance you entered.\n\nNote: `opening_accumulated_depreciation` itself is a manually-entered field (pre-system migration balance), not computed."
+}

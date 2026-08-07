@@ -1,0 +1,441 @@
+{
+  "transaction": {
+    "obj_name": "fam_dep_rate_ca_master",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Dep Rate - Companies Act",
+          "form_descr": "Maintain Schedule II useful life, method and residual value norms per asset category (Companies Act, 2013)",
+          "form_no": "1",
+          "main_table": "FAM_DEP_RATE_CA_MASTER",
+          "columns": [
+            {
+              "column": {
+                "name": "category_code",
+                "db_name": "CATEGORY_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Category Code",
+                "descr": "Asset category this depreciation norm applies to. Only one rate record is maintained per category at a time (the category code is the record key).",
+                "key": true,
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "One rate per category",
+                    "error_code": "CATEGORY_RATE_UNIQUE",
+                    "message": "A depreciation rate for category {form.category_code} already exists. Only one active rate per category is allowed at a time \u2014 edit the existing record instead.",
+                    "builtin": {
+                      "kind": "must_be_unique"
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "useful_life_years",
+                "db_name": "USEFUL_LIFE_YEARS",
+                "group_name": "Basic",
+                "col_type": "NUMBER",
+                "heading": "Useful Life (Years)",
+                "descr": "Useful life of the asset category in years as per Schedule II",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Useful life positive",
+                    "error_code": "USEFUL_LIFE_POSITIVE",
+                    "message": "Useful life must be greater than 0 years.",
+                    "expression": "{form.useful_life_years} > 0"
+                  }
+                ],
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "5,2",
+                "width": 60,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "method",
+                "db_name": "METHOD",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Method",
+                "descr": "Depreciation method - Straight Line Method or Written Down Value",
+                "mandatory": true,
+                "default_value": "SLM",
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "SLM",
+                      "display": "SLM - Straight Line Method"
+                    },
+                    {
+                      "data": "WDV",
+                      "display": "WDV - Written Down Value"
+                    }
+                  ]
+                },
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "3",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "residual_value_pct",
+                "db_name": "RESIDUAL_VALUE_PCT",
+                "group_name": "Basic",
+                "col_type": "NUMBER",
+                "heading": "Residual Value %",
+                "descr": "Residual value as a percentage of original cost (0-100)",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Residual value 0-100",
+                    "error_code": "RESIDUAL_PCT_RANGE",
+                    "message": "Residual value % must be between 0 and 100.",
+                    "builtin": {
+                      "kind": "value_in_range",
+                      "min": {
+                        "source": "const",
+                        "value": "0"
+                      },
+                      "max": {
+                        "source": "const",
+                        "value": "100"
+                      }
+                    }
+                  }
+                ],
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "5,2",
+                "width": 60,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "effective_from_date",
+                "db_name": "EFFECTIVE_FROM_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Effective From",
+                "descr": "Date from which this rate norm is effective",
+                "mandatory": true,
+                "default_value": "today()",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "ID",
+                "descr": "System generated sequence number",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 0,
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Timestamp when the record was created",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added From",
+                "descr": "Terminal/IP from which the record was created",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "descr": "Timestamp when the record was last changed",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed From",
+                "descr": "Terminal/IP from which the record was last changed",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_DEP_RATE_CA_MASTER",
+                "table_display_name": "Companies Act depreciation rate master table",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_DEP_RATE_CA_MASTER",
+                  "main_table": true,
+                  "table_descr": "Companies Act depreciation rate master table"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "Delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "business_logic",
+                  "name": "Rate not in use",
+                  "error_code": "DEP_RATE_IN_USE",
+                  "message": "This Companies Act depreciation rate cannot be deleted because it is referenced by the Asset Category Master or has been used in a posted depreciation run.",
+                  "business_logic": {
+                    "method": "check_dep_rate_ca_unused",
+                    "description": "Block delete if the rate is referenced elsewhere",
+                    "spec": "Given CATEGORY_CODE in the payload, check whether it is referenced by FAM_ASSET_CATEGORY_MASTER.CATEGORY_CODE or by any posted Companies Act monthly depreciation generation record for that category (only tables that exist in the project at deploy time need to be checked). If any matching reference exists, return an error indicating the rate is in use and cannot be deleted. Otherwise return no error so the delete proceeds.",
+                    "language": "plpgsql"
+                  }
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "follow_up_actions": [],
+    "attach_docs": []
+  }
+}

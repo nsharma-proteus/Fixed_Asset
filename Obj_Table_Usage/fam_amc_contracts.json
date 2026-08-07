@@ -1,0 +1,38 @@
+{
+  "object_name": "fam_amc_contracts",
+  "tables": {
+    "FAM_AMC_CONTRACTS": [
+      "PREVIOUS_CONTRACT_VENDOR_CODE",
+      "START_DATE",
+      "AMC_CONTRACT_NO",
+      "AMC_VENDOR_CODE",
+      "END_DATE",
+      "PREVIOUS_CONTRACT_STATUS",
+      "CHG_USER",
+      "CHG_DATE",
+      "PREVIOUS_CONTRACT_NO",
+      "ADD_USER",
+      "ADD_DATE",
+      "STATUS",
+      "CONTRACT_COST",
+      "CHG_TERM",
+      "ADD_TERM"
+    ],
+    "FAM_AMC_CONTRACT_LINE": [
+      "COVERAGE_REMARKS",
+      "AMC_CONTRACT_NO",
+      "ASSET_CODE",
+      "CHG_USER",
+      "LINE_NO",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "CHG_TERM",
+      "ADD_TERM"
+    ],
+    "FAM_ASSET_REGISTER": [
+      "ASSET_CODE",
+      "ASSET_NAME"
+    ]
+  }
+}

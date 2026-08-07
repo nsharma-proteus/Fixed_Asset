@@ -1,0 +1,1034 @@
+{
+  "transaction": {
+    "obj_name": "fam_amc_contracts",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "AMC Contract",
+          "form_descr": "Track Annual Maintenance Contracts and renewals",
+          "form_no": "1",
+          "main_table": "FAM_AMC_CONTRACTS",
+          "columns": [
+            {
+              "column": {
+                "name": "amc_contract_no",
+                "db_name": "AMC_CONTRACT_NO",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "AMC Contract No",
+                "descr": "Auto-generated AMC contract number",
+                "key": true,
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "mandatory": true,
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "amc_vendor_code",
+                "db_name": "AMC_VENDOR_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "AMC Vendor / Provider",
+                "descr": "Vendor providing the AMC coverage. Assumption: modeled as free text since no Vendor/Supplier Master table exists yet in this project -- wire a lookup once that master is designed.",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "start_date",
+                "db_name": "START_DATE",
+                "col_type": "DATE",
+                "group_name": "Basic",
+                "heading": "Start Date",
+                "descr": "Date the AMC coverage begins",
+                "mandatory": true,
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "end_date",
+                "db_name": "END_DATE",
+                "col_type": "DATE",
+                "group_name": "Basic",
+                "heading": "End Date",
+                "descr": "Date the AMC coverage ends",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "End date after start date",
+                    "message": "AMC end date must be later than the start date.",
+                    "expression": "{form.end_date} > {form.start_date}"
+                  }
+                ],
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "contract_cost",
+                "db_name": "CONTRACT_COST",
+                "col_type": "NUMBER",
+                "group_name": "Basic",
+                "heading": "Contract Cost",
+                "descr": "Total cost of the AMC contract",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Contract cost positive",
+                    "message": "Contract cost must be greater than zero.",
+                    "builtin": {
+                      "kind": "value_in_range",
+                      "min": {
+                        "source": "const",
+                        "value": "0.01"
+                      }
+                    }
+                  }
+                ],
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Status",
+                "descr": "Contract lifecycle status. Assumption: DRAFT and PENDING_APPROVAL were added ahead of Active, to support the FRS-required Submit-for-approval/Approve actions -- the FRS's own STATUS list (Active/Expired/Renewed/Cancelled) has no pre-approval state.",
+                "default_value": "DRAFT",
+                "protect": "1",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "DRAFT",
+                      "display": "Draft"
+                    },
+                    {
+                      "data": "PENDING_APPROVAL",
+                      "display": "Pending Approval"
+                    },
+                    {
+                      "data": "ACTIVE",
+                      "display": "Active"
+                    },
+                    {
+                      "data": "EXPIRED",
+                      "display": "Expired"
+                    },
+                    {
+                      "data": "RENEWED",
+                      "display": "Renewed"
+                    },
+                    {
+                      "data": "CANCELLED",
+                      "display": "Cancelled"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "DRAFT",
+                      "color": "grey"
+                    },
+                    {
+                      "when": "PENDING_APPROVAL",
+                      "color": "amber"
+                    },
+                    {
+                      "when": "ACTIVE",
+                      "color": "green"
+                    },
+                    {
+                      "when": "EXPIRED",
+                      "color": "orange"
+                    },
+                    {
+                      "when": "RENEWED",
+                      "color": "blue"
+                    },
+                    {
+                      "when": "CANCELLED",
+                      "color": "red"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "previous_contract_no",
+                "db_name": "PREVIOUS_CONTRACT_NO",
+                "col_type": "VARCHAR",
+                "group_name": "Renewal",
+                "heading": "Previous Contract No",
+                "descr": "Prior AMC contract this record renews (set automatically by the Renew action)",
+                "protect": "1",
+                "lookup": "FAM_AMC_CONTRACTS(AMC_VENDOR_CODE, AMC_CONTRACT_NO)",
+                "must_exist_in": "FAM_AMC_CONTRACTS",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_AMC_CONTRACTS",
+                  "match_table_col": "AMC_CONTRACT_NO",
+                  "fill": [
+                    {
+                      "form_col": "previous_contract_vendor_code",
+                      "table_col": "AMC_VENDOR_CODE"
+                    },
+                    {
+                      "form_col": "previous_contract_status",
+                      "table_col": "STATUS"
+                    }
+                  ]
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "previous_contract_vendor_code",
+                "db_name": "PREVIOUS_CONTRACT_VENDOR_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Renewal",
+                "heading": "Previous Contract Vendor",
+                "descr": "Vendor of the previous contract (display only, filled when Previous Contract No is set)",
+                "protect": "1",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "previous_contract_status",
+                "db_name": "PREVIOUS_CONTRACT_STATUS",
+                "col_type": "VARCHAR",
+                "group_name": "Renewal",
+                "heading": "Previous Contract Status",
+                "descr": "Status of the previous contract at the time it was linked (display only)",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Added On",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added By",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added From",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Changed On",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed By",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed From",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_name": "FAM_AMC_CONTRACTS",
+                "table_display_name": "AMC contract headers",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_AMC_CONTRACTS",
+                  "main_table": true,
+                  "table_descr": "AMC contract headers"
+                }
+              ]
+            }
+          },
+          "validations": [],
+          "actions": [
+            {
+              "name": "Edit",
+              "handler": "system",
+              "system_op": "edit",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Only Draft can be edited",
+                  "message": "Only Draft contracts can be edited (current status {form.status}).",
+                  "expression": "in_list({form.status}, \"DRAFT\")"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "sql_model": {
+          "form_title": "AMC Covered Assets",
+          "form_descr": "Assets covered under this AMC contract",
+          "form_no": "2",
+          "parent_form_no": "1",
+          "main_table": "FAM_AMC_CONTRACT_LINE",
+          "parent_key_col": "AMC_CONTRACT_NO",
+          "columns": [
+            {
+              "column": {
+                "name": "amc_contract_no",
+                "db_name": "AMC_CONTRACT_NO",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "AMC Contract No",
+                "key": true,
+                "hidden": 1,
+                "mandatory": true,
+                "x": "40",
+                "y": "40",
+                "col_id": "1",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "20",
+                "width": 200,
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "line_no",
+                "db_name": "LINE_NO",
+                "col_type": "NUMBER",
+                "group_name": "Others",
+                "heading": "Line No",
+                "key": true,
+                "default_value": "auto_generate_line_no()",
+                "protect": "1",
+                "mandatory": true,
+                "x": "50",
+                "y": "50",
+                "col_id": "2",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "5",
+                "width": 50,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Asset Code",
+                "descr": "Asset covered under this AMC contract",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "must_exist_in": "FAM_ASSET_REGISTER",
+                "validations": [
+                  {
+                    "type": "business_logic",
+                    "name": "Asset must be Capitalized",
+                    "message": "Asset must exist and be in Capitalized status to be covered under an AMC contract",
+                    "business_logic": {
+                      "method": "validate_asset_capitalized_for_amc",
+                      "description": "Ensure the asset is Capitalized before allowing it to be added to an AMC contract line",
+                      "spec": "Verify ASSET_CODE exists in FAM_ASSET_REGISTER and is in Capitalized status, returning an error if not (dependency: FAM_ASSET_REGISTER currently only carries ASSET_CODE, ASSET_NAME, CAPITALIZATION_DATE -- it does not yet have a STATUS column, so until that column is added only existence can be checked here; revisit once STATUS exists).",
+                      "language": "plpgsql"
+                    }
+                  },
+                  {
+                    "type": "builtin",
+                    "name": "Asset unique within contract",
+                    "message": "This asset is already covered under this AMC contract.",
+                    "builtin": {
+                      "kind": "must_be_unique",
+                      "conditions": [
+                        {
+                          "column": "AMC_CONTRACT_NO",
+                          "op": "=",
+                          "source": "form",
+                          "value": "amc_contract_no"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "3",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "table_name": "FAM_ASSET_REGISTER",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Asset Name",
+                "descr": "Asset name from the register (display only)",
+                "protect": "1",
+                "x": "20",
+                "y": "20",
+                "col_id": "4",
+                "table_display_name": "Asset register (asset name display)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "coverage_remarks",
+                "db_name": "COVERAGE_REMARKS",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Coverage Remarks",
+                "descr": "Notes on the scope/terms of coverage for this asset",
+                "x": "30",
+                "y": "30",
+                "col_id": "5",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Added On",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added By",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Added From",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Others",
+                "heading": "Changed On",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed By",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Others",
+                "heading": "Changed From",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_AMC_CONTRACT_LINE",
+                "table_display_name": "AMC contract covered-asset lines",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_AMC_CONTRACT_LINE",
+                  "main_table": true,
+                  "table_descr": "AMC contract covered-asset lines"
+                },
+                {
+                  "table": "FAM_ASSET_REGISTER",
+                  "main_table": false,
+                  "table_descr": "Asset register (asset name display)",
+                  "column": "ASSET_CODE",
+                  "join_table": "FAM_AMC_CONTRACT_LINE",
+                  "join_column": "ASSET_CODE"
+                }
+              ]
+            }
+          },
+          "validations": [],
+          "actions": []
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name": "Submit for Approval",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "submit_amc_contract_for_approval",
+          "description": "Submit a Draft AMC contract for approval",
+          "spec": "Validate the header is in DRAFT status and has at least one covered-asset line, then set FAM_AMC_CONTRACTS.STATUS = PENDING_APPROVAL for this AMC_CONTRACT_NO and return a confirmation message.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Draft",
+            "message": "Only Draft contracts can be submitted for approval (current status {form.status}).",
+            "expression": "in_list({form.status}, \"DRAFT\")"
+          },
+          {
+            "type": "builtin",
+            "name": "At least one covered asset",
+            "message": "Add at least one covered asset before submitting for approval.",
+            "builtin": {
+              "kind": "child_form_has_entry",
+              "child_form": "2",
+              "min_rows": 1
+            }
+          }
+        ]
+      },
+      {
+        "name": "Approve",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "approve_amc_contract",
+          "description": "Approve a Pending Approval AMC contract",
+          "spec": "Set FAM_AMC_CONTRACTS.STATUS = ACTIVE for this AMC_CONTRACT_NO. For every FAM_AMC_CONTRACT_LINE row under this contract, flag the covered asset's AMC_APPLICABLE = Y (dependency: FAM_ASSET_REGISTER currently only carries ASSET_CODE, ASSET_NAME, CAPITALIZATION_DATE -- it does not yet have an AMC_APPLICABLE column, so this flagging cannot be persisted until that column is added; implement the STATUS update now and add the flagging once the column exists). Return a confirmation message.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Pending Approval",
+            "message": "Only contracts Pending Approval can be approved (current status {form.status}).",
+            "expression": "in_list({form.status}, \"PENDING_APPROVAL\")"
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Approve AMC contract {form.amc_contract_no}? Covered assets will be flagged as AMC applicable."
+        }
+      },
+      {
+        "name": "Renew",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "renew_amc_contract",
+          "description": "Renew an Active or Expired AMC contract into a new contract",
+          "spec": "Create a new FAM_AMC_CONTRACTS row with AMC_CONTRACT_NO auto-generated, PREVIOUS_CONTRACT_NO = this contract's AMC_CONTRACT_NO, AMC_VENDOR_CODE copied from this contract, STATUS = DRAFT, and START_DATE/END_DATE/CONTRACT_COST left for the user to fill in on the new record. Copy every FAM_AMC_CONTRACT_LINE row (ASSET_CODE, COVERAGE_REMARKS) from this contract onto the new AMC_CONTRACT_NO. Set this contract's STATUS = RENEWED. Return a confirmation message including the new AMC_CONTRACT_NO.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Active or Expired",
+            "message": "Only Active or Expired contracts can be renewed (current status {form.status}).",
+            "expression": "in_list({form.status}, \"ACTIVE,EXPIRED\")"
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Renew AMC contract {form.amc_contract_no}? A new linked contract will be created and this one marked Renewed."
+        }
+      },
+      {
+        "name": "Cancel",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "cancel_amc_contract",
+          "description": "Cancel an AMC contract",
+          "spec": "Set FAM_AMC_CONTRACTS.STATUS = CANCELLED for this AMC_CONTRACT_NO and return a confirmation message.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Cannot cancel a Renewed or already Cancelled contract",
+            "message": "This contract cannot be cancelled (current status {form.status}).",
+            "expression": "not in_list({form.status}, \"CANCELLED,RENEWED\")"
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Cancel AMC contract {form.amc_contract_no}?"
+        }
+      }
+    ],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

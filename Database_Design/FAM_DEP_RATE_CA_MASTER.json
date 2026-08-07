@@ -1,0 +1,118 @@
+{
+  "table_name": "FAM_DEP_RATE_CA_MASTER",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "CATEGORY_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Asset category this depreciation norm applies to. Only one rate record is maintained per category at a time (the category code is the record key).",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "USEFUL_LIFE_YEARS",
+      "data_type": "NUMBER",
+      "size": "5,2",
+      "key": false,
+      "description": "Useful life of the asset category in years as per Schedule II",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "METHOD",
+      "data_type": "VARCHAR",
+      "size": "3",
+      "key": false,
+      "description": "Depreciation method - Straight Line Method or Written Down Value",
+      "sequence": 3,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "SLM",
+          "label": "SLM - Straight Line Method"
+        },
+        {
+          "value": "WDV",
+          "label": "WDV - Written Down Value"
+        }
+      ]
+    },
+    {
+      "column_name": "RESIDUAL_VALUE_PCT",
+      "data_type": "NUMBER",
+      "size": "5,2",
+      "key": false,
+      "description": "Residual value as a percentage of original cost (0-100)",
+      "sequence": 4,
+      "mandatory": true
+    },
+    {
+      "column_name": "EFFECTIVE_FROM_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date from which this rate norm is effective",
+      "sequence": 5,
+      "mandatory": true
+    },
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": false,
+      "description": "System generated sequence number",
+      "sequence": 6
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Timestamp when the record was created",
+      "sequence": 7
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who created the record",
+      "sequence": 8
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was created",
+      "sequence": 9
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Timestamp when the record was last changed",
+      "sequence": 10
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who last changed the record",
+      "sequence": 11
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP from which the record was last changed",
+      "sequence": 12
+    }
+  ]
+}

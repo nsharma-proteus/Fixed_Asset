@@ -1,0 +1,18 @@
+{
+  "object_name": "fam_dep_rate_it_master",
+  "tables": {
+    "FAM_DEP_RATE_IT_MASTER": [
+      "BLOCK_DESCRIPTION",
+      "EFFECTIVE_FROM_DATE",
+      "CHG_USER",
+      "RATE_PCT",
+      "BLOCK_CODE",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "ID",
+      "CHG_TERM",
+      "ADD_TERM"
+    ]
+  }
+}

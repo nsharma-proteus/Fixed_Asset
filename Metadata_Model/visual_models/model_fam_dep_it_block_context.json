@@ -1,0 +1,266 @@
+{
+  "DATA_SOURCE_MODE": "sql",
+  "SQLMODEL": {
+    "SQLModel": {
+      "COLUMNS": [
+        {
+          "COLUMN": [
+            {
+              "COLID": 2, "NAME": "ASSESSMENT_YEAR", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ASSESSMENT_YEAR",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Assessment Year", "name": "Assessment Year",
+              "descr": "Assessment year (FY start year convention, e.g. 2024 = FY Apr2024-Mar2025) of this Income Tax block row.",
+              "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 4,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 3, "NAME": "BLOCK_CODE", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "BLOCK_CODE",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Code", "name": "Block Code", "descr": "The Income Tax block-of-assets code the selected asset belongs to (FAM_ASSET_REGISTER.INCOME_TAX_BLOCK_CODE).",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 4, "NAME": "BLOCK_DESCRIPTION", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "BLOCK_DESCRIPTION",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Income Tax - Block Level (not asset-specific)", "name": "Income Tax - Block Level (not asset-specific)",
+              "descr": "Income Tax depreciation under Indian law is computed for a whole BLOCK of assets sharing a rate, not per individual asset. Every column in this section (until the estimated-allocation column) is a BLOCK total, NOT this asset's own figure.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 200,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 260, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 5, "NAME": "RATE_PCT", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "RATE_PCT",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Rate %", "name": "Block Rate %", "descr": "Prescribed Income Tax depreciation rate (%) for this block.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 8,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 100, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "decimal", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 6, "NAME": "BLOCK_OPENING_WDV", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "OPENING_WDV",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Opening WDV", "name": "Block Opening WDV", "descr": "BLOCK-level opening WDV for the year (not this asset's own opening WDV).",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 7, "NAME": "BLOCK_ADDITIONS_180_OR_MORE", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ADDITIONS_180_DAYS_OR_MORE",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Additions (>=180 days)", "name": "Block Additions (>=180 days)", "descr": "BLOCK-level additions used >= 180 days in the year (full rate eligible).",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 8, "NAME": "BLOCK_ADDITIONS_LESS_THAN_180", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ADDITIONS_LESS_THAN_180_DAYS",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Additions (<180 days)", "name": "Block Additions (<180 days)", "descr": "BLOCK-level additions used less than 180 days in the year (half rate eligible).",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 9, "NAME": "BLOCK_DISPOSALS_DURING_YEAR", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "DISPOSALS_DURING_YEAR",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Disposals", "name": "Block Disposals", "descr": "BLOCK-level disposal proceeds during the year.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 10, "NAME": "BLOCK_NET_BLOCK", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "NET_BLOCK",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Net Block", "name": "Block Net Block", "descr": "BLOCK-level net block value (base on which the rate is applied) before depreciation.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 11, "NAME": "BLOCK_DEPRECIATION_AMOUNT", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "DEPRECIATION_AMOUNT",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Total IT Depreciation (not asset-specific)", "name": "Block Total IT Depreciation (not asset-specific)",
+              "descr": "The BLOCK's total statutory Income Tax depreciation for the year - shared across every asset in the block, NOT this asset's own figure by law.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 200, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 1, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 12, "NAME": "BLOCK_CLOSING_WDV", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "CLOSING_WDV",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Closing WDV", "name": "Block Closing WDV", "descr": "BLOCK-level closing WDV at the end of the year.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 13, "NAME": "BLOCK_STATUS", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "STATUS",
+              "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation",
+              "content": "Block Status", "name": "Block Status", "descr": "DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED - only APPROVED rows are posted/final.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 20,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "status_tag", "map": [
+                { "when": "APPROVED", "color": "green", "label": "Approved" },
+                { "when": "PENDING_APPROVAL", "color": "orange", "label": "Pending Approval" },
+                { "when": "DRAFT", "color": "gray", "label": "Draft" },
+                { "when": "CANCELLED", "color": "red", "label": "Cancelled" }
+              ] },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 14, "NAME": "THIS_ASSET_CAPITALIZED_COST", "DBTABLE": "FAM_ASSET_REGISTER", "DBNAME": "TOTAL_CAPITALIZED_COST",
+              "tableName": "FAM_ASSET_REGISTER", "tableDisplayName": "Asset Register",
+              "content": "This Asset's Capitalized Cost", "name": "This Asset's Capitalized Cost",
+              "descr": "The selected asset's own TOTAL_CAPITALIZED_COST - the basis used for the pro-rata allocation below.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 180, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 15, "NAME": "IT_DEP_ALLOCATED_TO_ASSET_EST", "DBTABLE": "", "DBNAME": "",
+              "tableName": "", "tableDisplayName": "",
+              "content": "IT Depreciation Allocated to This Asset (Estimated)", "name": "IT Depreciation Allocated to This Asset (Estimated)",
+              "descr": "ESTIMATE / ALLOCATION ONLY - NOT a statutory figure. Computed as: Block Total IT Depreciation x (this asset's TOTAL_CAPITALIZED_COST / SUM of TOTAL_CAPITALIZED_COST of every asset sharing this INCOME_TAX_BLOCK_CODE with CAPITALIZATION_DATE on or before this assessment year's FY end). A simple pro-rata cost-share so finance has a like-for-like number to compare against the real Companies Act figure; Income Tax law does not recognize a per-asset depreciation amount within a block.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 260, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "#FFF6DA", "BOLD": 1, "ITALIC": 1, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            }
+          ]
+        }
+      ]
+    },
+    "CRITERIA": {
+      "query": {
+        "condition": "and",
+        "rules": [
+          {
+            "id": "Criteria_1",
+            "field": "FAM_ASSET_REGISTER.ASSET_CODE",
+            "DBNAME": "ASSET_CODE",
+            "tableName": "FAM_ASSET_REGISTER",
+            "COLTYPE": "string",
+            "currentFieldType": "string",
+            "operator": "=",
+            "queryOption": "P",
+            "prevOption": "P",
+            "customValue": "FixedValue",
+            "promptLabel": "Asset",
+            "promptVar": "asset_code",
+            "value": "1",
+            "chipValue": [],
+            "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+            "lookup_title": "Select an asset"
+          }
+        ]
+      }
+    },
+    "VISUAL_NAME": "Tabular",
+    "SCHEMA_NAME": "FAM_DEP_IT_BLOCK_CONTEXT",
+    "SCHEMA_DESCR": "Income Tax depreciation - BLOCK-level context (not per-asset by law) for the Income Tax block the ONE selected asset belongs to (FAM_ASSET_REGISTER.INCOME_TAX_BLOCK_CODE -> FAM_DEP_INCOME_TAX_BLOCK.BLOCK_CODE), plus an estimated pro-rata cost-share allocation to make the block figure comparable to the asset's real Companies Act depreciation. NOTE: FAM_DEP_INCOME_TAX_BLOCK is the persist target of General Process 'fam_gen_dep_income_tax', authored but not yet run in the live database - this visual will show 'needs input'/error until a user runs Generate + Approve & Post at least once for that process (expected, not a bug).",
+    "SCHEMA_TYPE": "S",
+    "OUTPUT_TYPE": "JSON",
+    "DATABASE_TYPE": "1",
+    "DATABASE_DETAIL": { "DATABASE_NAME": "PostgreSQL", "TYPE": 1 }
+  },
+  "LAYOUT_DATA": {
+    "visualLayout": {
+      "ID": "insight_tabular",
+      "VisualName": "Tabular",
+      "VisualType": "Standard",
+      "VisualIcon": "Tabular.svg",
+      "DisplayOrder": "19",
+      "className": "InsightTabular",
+      "linkOptions": "",
+      "OutputType": "JSON",
+      "options": [
+        { "optionId": "columnEditing", "optionName": "columnEditing", "optionHeading": "Column Editing", "dataType": "boolean", "defaultValue": "false", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "MultiRowSelect", "optionName": "MultiRowSelect", "optionHeading": "Multi Row Select", "dataType": "boolean", "defaultValue": "false", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "autoRefreshSeconds", "optionName": "autoRefreshSeconds", "optionHeading": "Auto Refresh Seconds", "dataType": "number", "defaultValue": "0", "listOfValues": "", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "toolbar", "optionName": "toolbar", "optionHeading": "Toolbar", "dataType": "boolean", "defaultValue": "true", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" }
+      ],
+      "ColumnGroups": [
+        {
+          "GroupID": 1,
+          "GroupName": "Columns",
+          "StandardName": "columns",
+          "AllowedColumnTypes": "ANY",
+          "MinColumns": 0,
+          "MaxColumns": 0,
+          "COLUMNS": [
+            { "COLID": 2, "NAME": "ASSESSMENT_YEAR", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ASSESSMENT_YEAR", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Assessment Year", "name": "Assessment Year", "descr": "Assessment year (FY start year convention, e.g. 2024 = FY Apr2024-Mar2025) of this Income Tax block row.", "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 4, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 3, "NAME": "BLOCK_CODE", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "BLOCK_CODE", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Code", "name": "Block Code", "descr": "The Income Tax block-of-assets code the selected asset belongs to (FAM_ASSET_REGISTER.INCOME_TAX_BLOCK_CODE).", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 4, "NAME": "BLOCK_DESCRIPTION", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "BLOCK_DESCRIPTION", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Income Tax - Block Level (not asset-specific)", "name": "Income Tax - Block Level (not asset-specific)", "descr": "Income Tax depreciation under Indian law is computed for a whole BLOCK of assets sharing a rate, not per individual asset. Every column in this section (until the estimated-allocation column) is a BLOCK total, NOT this asset's own figure.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 200, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 260, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 5, "NAME": "RATE_PCT", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "RATE_PCT", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Rate %", "name": "Block Rate %", "descr": "Prescribed Income Tax depreciation rate (%) for this block.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 8, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 100, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "decimal", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 6, "NAME": "BLOCK_OPENING_WDV", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "OPENING_WDV", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Opening WDV", "name": "Block Opening WDV", "descr": "BLOCK-level opening WDV for the year (not this asset's own opening WDV).", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 7, "NAME": "BLOCK_ADDITIONS_180_OR_MORE", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ADDITIONS_180_DAYS_OR_MORE", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Additions (>=180 days)", "name": "Block Additions (>=180 days)", "descr": "BLOCK-level additions used >= 180 days in the year (full rate eligible).", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 8, "NAME": "BLOCK_ADDITIONS_LESS_THAN_180", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "ADDITIONS_LESS_THAN_180_DAYS", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Additions (<180 days)", "name": "Block Additions (<180 days)", "descr": "BLOCK-level additions used less than 180 days in the year (half rate eligible).", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 9, "NAME": "BLOCK_DISPOSALS_DURING_YEAR", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "DISPOSALS_DURING_YEAR", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Disposals", "name": "Block Disposals", "descr": "BLOCK-level disposal proceeds during the year.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 10, "NAME": "BLOCK_NET_BLOCK", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "NET_BLOCK", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Net Block", "name": "Block Net Block", "descr": "BLOCK-level net block value (base on which the rate is applied) before depreciation.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 11, "NAME": "BLOCK_DEPRECIATION_AMOUNT", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "DEPRECIATION_AMOUNT", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Total IT Depreciation (not asset-specific)", "name": "Block Total IT Depreciation (not asset-specific)", "descr": "The BLOCK's total statutory Income Tax depreciation for the year - shared across every asset in the block, NOT this asset's own figure by law.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 200, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 1, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 12, "NAME": "BLOCK_CLOSING_WDV", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "CLOSING_WDV", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Closing WDV", "name": "Block Closing WDV", "descr": "BLOCK-level closing WDV at the end of the year.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 13, "NAME": "BLOCK_STATUS", "DBTABLE": "FAM_DEP_INCOME_TAX_BLOCK", "DBNAME": "STATUS", "tableName": "FAM_DEP_INCOME_TAX_BLOCK", "tableDisplayName": "Income Tax Block Depreciation", "content": "Block Status", "name": "Block Status", "descr": "DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED - only APPROVED rows are posted/final.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 20, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "status_tag", "map": [ { "when": "APPROVED", "color": "green", "label": "Approved" }, { "when": "PENDING_APPROVAL", "color": "orange", "label": "Pending Approval" }, { "when": "DRAFT", "color": "gray", "label": "Draft" }, { "when": "CANCELLED", "color": "red", "label": "Cancelled" } ] }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 14, "NAME": "THIS_ASSET_CAPITALIZED_COST", "DBTABLE": "FAM_ASSET_REGISTER", "DBNAME": "TOTAL_CAPITALIZED_COST", "tableName": "FAM_ASSET_REGISTER", "tableDisplayName": "Asset Register", "content": "This Asset's Capitalized Cost", "name": "This Asset's Capitalized Cost", "descr": "The selected asset's own TOTAL_CAPITALIZED_COST - the basis used for the pro-rata allocation below.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 180, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 15, "NAME": "IT_DEP_ALLOCATED_TO_ASSET_EST", "DBTABLE": "", "DBNAME": "", "tableName": "", "tableDisplayName": "", "content": "IT Depreciation Allocated to This Asset (Estimated)", "name": "IT Depreciation Allocated to This Asset (Estimated)", "descr": "ESTIMATE / ALLOCATION ONLY - NOT a statutory figure. Computed as: Block Total IT Depreciation x (this asset's TOTAL_CAPITALIZED_COST / SUM of TOTAL_CAPITALIZED_COST of every asset sharing this INCOME_TAX_BLOCK_CODE with CAPITALIZATION_DATE on or before this assessment year's FY end). A simple pro-rata cost-share so finance has a like-for-like number to compare against the real Companies Act figure; Income Tax law does not recognize a per-asset depreciation amount within a block.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 260, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "#FFF6DA", "BOLD": 1, "ITALIC": 1, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true }
+          ]
+        }
+      ]
+    },
+    "layoutdata": {}
+  },
+  "SOURCE_SQL": "WITH sel_asset AS (SELECT asset_code, total_capitalized_cost, income_tax_block_code FROM fam_asset_register WHERE asset_code = ?.asset_code), block_rows AS (SELECT b.* FROM fam_dep_income_tax_block b JOIN sel_asset a ON b.block_code = a.income_tax_block_code) SELECT br.assessment_year AS ASSESSMENT_YEAR, br.block_code AS BLOCK_CODE, br.block_description AS BLOCK_DESCRIPTION, br.rate_pct AS RATE_PCT, br.opening_wdv AS BLOCK_OPENING_WDV, br.additions_180_days_or_more AS BLOCK_ADDITIONS_180_OR_MORE, br.additions_less_than_180_days AS BLOCK_ADDITIONS_LESS_THAN_180, br.disposals_during_year AS BLOCK_DISPOSALS_DURING_YEAR, br.net_block AS BLOCK_NET_BLOCK, br.depreciation_amount AS BLOCK_DEPRECIATION_AMOUNT, br.closing_wdv AS BLOCK_CLOSING_WDV, br.status AS BLOCK_STATUS, sel.total_capitalized_cost AS THIS_ASSET_CAPITALIZED_COST, ROUND(br.depreciation_amount * (sel.total_capitalized_cost / NULLIF((SELECT SUM(ar2.total_capitalized_cost) FROM fam_asset_register ar2 WHERE ar2.income_tax_block_code = br.block_code AND ar2.capitalization_date <= make_date((br.assessment_year::integer + 1), 3, 31)), 0)), 2) AS IT_DEP_ALLOCATED_TO_ASSET_EST FROM block_rows br CROSS JOIN sel_asset sel ORDER BY br.assessment_year"
+}

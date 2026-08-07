@@ -1,0 +1,20 @@
+{
+  "object_name": "fam_branch_master",
+  "tables": {
+    "FAM_BRANCH_MASTER": [
+      "ADDRESS",
+      "CHG_USER",
+      "CITY",
+      "BRANCH_NAME",
+      "BRANCH_CODE",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "STATUS",
+      "CHG_TERM",
+      "ID",
+      "ADD_TERM",
+      "STATE"
+    ]
+  }
+}

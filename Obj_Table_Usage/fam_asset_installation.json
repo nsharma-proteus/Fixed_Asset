@@ -1,0 +1,30 @@
+{
+  "object_name": "fam_asset_installation",
+  "tables": {
+    "FAM_ASSET_INSTALLATION": [
+      "INSTALLATION_LOCATION_CONFIRMED",
+      "INSTALLED_BY",
+      "INSTALLATION_DATE",
+      "ASSET_CODE",
+      "INSTALLATION_CERTIFICATE_ATTACHMENT",
+      "CHG_USER",
+      "REMARKS",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "STATUS",
+      "CHG_TERM",
+      "ID",
+      "ADD_TERM"
+    ],
+    "FAM_ASSET_REGISTER": [
+      "ASSET_CODE",
+      "CAPITALIZATION_DATE",
+      "ASSET_NAME"
+    ],
+    "FAM_EMPLOYEE_MASTER": [
+      "EMPLOYEE_NAME",
+      "EMPLOYEE_CODE"
+    ]
+  }
+}

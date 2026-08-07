@@ -1,0 +1,248 @@
+{
+  "DATA_SOURCE_MODE": "sql",
+  "SQLMODEL": {
+    "SQLModel": {
+      "COLUMNS": [
+        {
+          "COLUMN": [
+            {
+              "COLID": 2, "NAME": "FINANCIAL_YEAR", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "FINANCIAL_YEAR",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Financial Year", "name": "Financial Year",
+              "descr": "Financial year (start year, e.g. 2024 = FY Apr2024-Mar2025) this period-wise Companies Act depreciation row belongs to.",
+              "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 4,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 100, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 3, "NAME": "PERIOD_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "PERIOD_MONTH",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Period Month", "name": "Period Month",
+              "descr": "Calendar month number 1-12 of the period (FY runs Apr(4)->Mar(3) next year).",
+              "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 2,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 90, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 4, "NAME": "ASSET_CODE", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ASSET_CODE",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Asset Code", "name": "Asset Code", "descr": "The selected asset's code.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 5, "NAME": "ASSET_NAME", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ASSET_NAME",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Asset Name", "name": "Asset Name", "descr": "The selected asset's name.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 200,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 200, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 6, "NAME": "CATEGORY_CODE", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "CATEGORY_CODE",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Category", "name": "Category", "descr": "Asset category code used to determine the Companies Act useful life/method.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 7, "NAME": "OPENING_WDV", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "OPENING_WDV",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Opening WDV", "name": "Opening WDV", "descr": "Written-down value at the start of the period.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 8, "NAME": "ADDITIONS_DURING_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ADDITIONS_DURING_MONTH",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Additions", "name": "Additions", "descr": "Additions to this asset's cost during the month.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 9, "NAME": "DISPOSALS_DURING_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "DISPOSALS_DURING_MONTH",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Disposals", "name": "Disposals", "descr": "Disposals of this asset's cost during the month.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 10, "NAME": "DEPRECIATION_METHOD", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "DEPRECIATION_METHOD",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Method", "name": "Method", "descr": "Companies Act depreciation method applied: SLM or WDV.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 10,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 90, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 11, "NAME": "MONTHLY_DEPRECIATION_AMOUNT", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "MONTHLY_DEPRECIATION_AMOUNT",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Monthly Depreciation", "name": "Monthly Depreciation", "descr": "Real, per-asset Companies Act depreciation charged for this month.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 1, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 12, "NAME": "CLOSING_WDV", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "CLOSING_WDV",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Closing WDV", "name": "Closing WDV", "descr": "Written-down value at the end of the period.",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 13, "NAME": "ACCUMULATED_DEPRECIATION", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ACCUMULATED_DEPRECIATION",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Accumulated Depreciation", "name": "Accumulated Depreciation",
+              "descr": "Total accumulated Companies Act depreciation as of this period (TOTAL_CAPITALIZED_COST - closing WDV).",
+              "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            },
+            {
+              "COLID": 14, "NAME": "STATUS", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "STATUS",
+              "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register",
+              "content": "Status", "name": "Status", "descr": "DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED - only APPROVED rows are posted/final.",
+              "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 20,
+              "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX",
+              "ALIGNMENT": 1, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12,
+              "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false,
+              "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "",
+              "display": { "type": "status_tag", "map": [
+                { "when": "APPROVED", "color": "green", "label": "Approved" },
+                { "when": "PENDING_APPROVAL", "color": "orange", "label": "Pending Approval" },
+                { "when": "DRAFT", "color": "gray", "label": "Draft" },
+                { "when": "CANCELLED", "color": "red", "label": "Cancelled" }
+              ] },
+              "groupName": "Columns", "StandardName": "columns", "checked": true
+            }
+          ]
+        }
+      ]
+    },
+    "CRITERIA": {
+      "query": {
+        "condition": "and",
+        "rules": [
+          {
+            "id": "Criteria_1",
+            "field": "FAM_DEP_COMPANIES_ACT_REGISTER.ASSET_CODE",
+            "DBNAME": "ASSET_CODE",
+            "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER",
+            "COLTYPE": "string",
+            "currentFieldType": "string",
+            "operator": "=",
+            "queryOption": "P",
+            "prevOption": "P",
+            "customValue": "FixedValue",
+            "promptLabel": "Asset",
+            "promptVar": "asset_code",
+            "value": "1",
+            "chipValue": [],
+            "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+            "lookup_title": "Select an asset"
+          }
+        ]
+      }
+    },
+    "VISUAL_NAME": "Tabular",
+    "SCHEMA_NAME": "FAM_DEP_CA_PERIOD_DETAIL",
+    "SCHEMA_DESCR": "Companies Act depreciation reconciliation - period-wise, per-asset, REAL figures from FAM_DEP_COMPANIES_ACT_REGISTER for the ONE selected asset. NOTE: FAM_DEP_COMPANIES_ACT_REGISTER is the persist target of General Process 'fam_gen_dep_companies_act', which has been authored but not yet run in the live database - this visual will show 'needs input'/error until a user runs Generate + Approve & Post at least once for that process (expected, not a bug).",
+    "SCHEMA_TYPE": "S",
+    "OUTPUT_TYPE": "JSON",
+    "DATABASE_TYPE": "1",
+    "DATABASE_DETAIL": { "DATABASE_NAME": "PostgreSQL", "TYPE": 1 }
+  },
+  "LAYOUT_DATA": {
+    "visualLayout": {
+      "ID": "insight_tabular",
+      "VisualName": "Tabular",
+      "VisualType": "Standard",
+      "VisualIcon": "Tabular.svg",
+      "DisplayOrder": "19",
+      "className": "InsightTabular",
+      "linkOptions": "",
+      "OutputType": "JSON",
+      "options": [
+        { "optionId": "columnEditing", "optionName": "columnEditing", "optionHeading": "Column Editing", "dataType": "boolean", "defaultValue": "false", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "MultiRowSelect", "optionName": "MultiRowSelect", "optionHeading": "Multi Row Select", "dataType": "boolean", "defaultValue": "false", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "autoRefreshSeconds", "optionName": "autoRefreshSeconds", "optionHeading": "Auto Refresh Seconds", "dataType": "number", "defaultValue": "0", "listOfValues": "", "allowChange": "true", "optionType": "inner" },
+        { "optionId": "toolbar", "optionName": "toolbar", "optionHeading": "Toolbar", "dataType": "boolean", "defaultValue": "true", "listOfValues": "true,false", "allowChange": "true", "optionType": "inner" }
+      ],
+      "ColumnGroups": [
+        {
+          "GroupID": 1,
+          "GroupName": "Columns",
+          "StandardName": "columns",
+          "AllowedColumnTypes": "ANY",
+          "MinColumns": 0,
+          "MaxColumns": 0,
+          "COLUMNS": [
+            { "COLID": 2, "NAME": "FINANCIAL_YEAR", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "FINANCIAL_YEAR", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Financial Year", "name": "Financial Year", "descr": "Financial year (start year, e.g. 2024 = FY Apr2024-Mar2025) this period-wise Companies Act depreciation row belongs to.", "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 4, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 100, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 3, "NAME": "PERIOD_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "PERIOD_MONTH", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Period Month", "name": "Period Month", "descr": "Calendar month number 1-12 of the period (FY runs Apr(4)->Mar(3) next year).", "type": "number", "JAVATYPE": "java.lang.Integer", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 2, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 90, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 4, "NAME": "ASSET_CODE", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ASSET_CODE", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Asset Code", "name": "Asset Code", "descr": "The selected asset's code.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": true, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 5, "NAME": "ASSET_NAME", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ASSET_NAME", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Asset Name", "name": "Asset Name", "descr": "The selected asset's name.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 200, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 200, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 6, "NAME": "CATEGORY_CODE", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "CATEGORY_CODE", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Category", "name": "Category", "descr": "Asset category code used to determine the Companies Act useful life/method.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 40, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 110, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 7, "NAME": "OPENING_WDV", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "OPENING_WDV", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Opening WDV", "name": "Opening WDV", "descr": "Written-down value at the start of the period.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 8, "NAME": "ADDITIONS_DURING_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ADDITIONS_DURING_MONTH", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Additions", "name": "Additions", "descr": "Additions to this asset's cost during the month.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 9, "NAME": "DISPOSALS_DURING_MONTH", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "DISPOSALS_DURING_MONTH", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Disposals", "name": "Disposals", "descr": "Disposals of this asset's cost during the month.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 10, "NAME": "DEPRECIATION_METHOD", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "DEPRECIATION_METHOD", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Method", "name": "Method", "descr": "Companies Act depreciation method applied: SLM or WDV.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 10, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 90, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 11, "NAME": "MONTHLY_DEPRECIATION_AMOUNT", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "MONTHLY_DEPRECIATION_AMOUNT", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Monthly Depreciation", "name": "Monthly Depreciation", "descr": "Real, per-asset Companies Act depreciation charged for this month.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 150, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 1, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 12, "NAME": "CLOSING_WDV", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "CLOSING_WDV", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Closing WDV", "name": "Closing WDV", "descr": "Written-down value at the end of the period.", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 140, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 13, "NAME": "ACCUMULATED_DEPRECIATION", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "ACCUMULATED_DEPRECIATION", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Accumulated Depreciation", "name": "Accumulated Depreciation", "descr": "Total accumulated Companies Act depreciation as of this period (TOTAL_CAPITALIZED_COST - closing WDV).", "type": "number", "JAVATYPE": "java.math.BigDecimal", "COLTYPE": "NUMBER", "NATIVETYPE": "NUMBER", "DBSIZE": 18, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 2, "alignment": "", "WIDTH": 170, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "number", "numberStyle": "currency", "currency": "INR", "decimals": 2 }, "groupName": "Columns", "StandardName": "columns", "checked": true },
+            { "COLID": 14, "NAME": "STATUS", "DBTABLE": "FAM_DEP_COMPANIES_ACT_REGISTER", "DBNAME": "STATUS", "tableName": "FAM_DEP_COMPANIES_ACT_REGISTER", "tableDisplayName": "Companies Act Depreciation Register", "content": "Status", "name": "Status", "descr": "DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED - only APPROVED rows are posted/final.", "type": "string", "JAVATYPE": "java.lang.String", "COLTYPE": "CHAR", "NATIVETYPE": "VARCHAR", "DBSIZE": 20, "EXPRESSIONTYPE": "C", "DEFAULTFUNCTION": "", "FUNCTION": "", "FEILD_TYPE": "TEXTBOX", "ALIGNMENT": 1, "alignment": "", "WIDTH": 130, "FONT": "TIMES NEW ROMAN", "FONTSIZE": 12, "FGCOLOR": "#000000", "BGCOLOR": "", "BOLD": 0, "ITALIC": 0, "UNDERLINE": 0, "HIDDEN": "", "KEY": false, "CAPS": false, "ADV_FORMAT": "", "expression": "", "value": "", "display": { "type": "status_tag", "map": [ { "when": "APPROVED", "color": "green", "label": "Approved" }, { "when": "PENDING_APPROVAL", "color": "orange", "label": "Pending Approval" }, { "when": "DRAFT", "color": "gray", "label": "Draft" }, { "when": "CANCELLED", "color": "red", "label": "Cancelled" } ] }, "groupName": "Columns", "StandardName": "columns", "checked": true }
+          ]
+        }
+      ]
+    },
+    "layoutdata": {}
+  },
+  "SOURCE_SQL": "SELECT financial_year AS FINANCIAL_YEAR, period_month AS PERIOD_MONTH, asset_code AS ASSET_CODE, asset_name AS ASSET_NAME, category_code AS CATEGORY_CODE, opening_wdv AS OPENING_WDV, additions_during_month AS ADDITIONS_DURING_MONTH, disposals_during_month AS DISPOSALS_DURING_MONTH, depreciation_method AS DEPRECIATION_METHOD, monthly_depreciation_amount AS MONTHLY_DEPRECIATION_AMOUNT, closing_wdv AS CLOSING_WDV, accumulated_depreciation AS ACCUMULATED_DEPRECIATION, status AS STATUS FROM fam_dep_companies_act_register WHERE asset_code = ?.asset_code ORDER BY financial_year, period_month"
+}

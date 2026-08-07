@@ -1,0 +1,513 @@
+{
+  "project_name": "Fixed Asset Management",
+  "project_description": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
+  "generated_at": "2026-08-04T04:50:18.700757+00:00",
+  "owner_user_id": "",
+  "navigation_summary": [
+    {
+      "obj_name": "fam_asset_category_master",
+      "obj_type": "T",
+      "title": "Asset Category Master",
+      "description": "Maintain the classification of assets used to default useful life, depreciation method and applicable statutory rates on"
+    },
+    {
+      "obj_name": "fam_asset_register",
+      "obj_type": "T",
+      "title": "Asset Register",
+      "description": "Capture and maintain the complete statutory record of each fixed asset as required under the Companies Act, from acquisi"
+    },
+    {
+      "obj_name": "fam_branch_master",
+      "obj_type": "T",
+      "title": "Branch Master",
+      "description": "Maintain organisation branches"
+    },
+    {
+      "obj_name": "fam_location_master",
+      "obj_type": "T",
+      "title": "Location Master",
+      "description": "Maintain physical locations within a branch"
+    },
+    {
+      "obj_name": "fam_department_master",
+      "obj_type": "T",
+      "title": "Department Master",
+      "description": "Maintain departments/cost centres within a branch"
+    },
+    {
+      "obj_name": "fam_employee_master",
+      "obj_type": "T",
+      "title": "Employee Master",
+      "description": "Lightweight employee directory for asset custody"
+    },
+    {
+      "obj_name": "fam_dep_rate_ca_master",
+      "obj_type": "T",
+      "title": "Depreciation Rate Master - Companies Act",
+      "description": "Maintain Schedule II useful life, method and residual norms"
+    },
+    {
+      "obj_name": "fam_gen_dep_companies_act",
+      "obj_type": "G",
+      "title": "Generate Depreciation - Companies Act",
+      "description": "Compute and post pro-rata monthly Schedule II depreciation"
+    },
+    {
+      "obj_name": "fam_dep_rate_it_master",
+      "obj_type": "T",
+      "title": "Depreciation Rate Master - Income Tax",
+      "description": "Maintain block-of-assets rates under Income Tax Rules"
+    },
+    {
+      "obj_name": "fam_gen_dep_income_tax",
+      "obj_type": "G",
+      "title": "Generate Depreciation - Income Tax",
+      "description": "Compute and post annual block-wise WDV depreciation"
+    },
+    {
+      "obj_name": "fam_asset_installation",
+      "obj_type": "T",
+      "title": "Asset Installation",
+      "description": "Record and confirm asset installation/commissioning"
+    },
+    {
+      "obj_name": "fam_asset_transfer",
+      "obj_type": "T",
+      "title": "Asset Transfer",
+      "description": "Move assets between branch/location/department/employee"
+    },
+    {
+      "obj_name": "fam_asset_disposal",
+      "obj_type": "T",
+      "title": "Asset Sale / Scrap",
+      "description": "Record asset disposal by sale or scrap"
+    },
+    {
+      "obj_name": "fam_physical_verification",
+      "obj_type": "T",
+      "title": "Conduct Physical Verification",
+      "description": "Plan and execute periodic asset verification cycles"
+    },
+    {
+      "obj_name": "fam_warranty_details",
+      "obj_type": "T",
+      "title": "Warranty Details",
+      "description": "Record manufacturer/vendor warranty coverage"
+    },
+    {
+      "obj_name": "fam_amc_contracts",
+      "obj_type": "T",
+      "title": "AMC Contracts",
+      "description": "Track Annual Maintenance Contracts and renewals"
+    },
+    {
+      "obj_name": "fam_verification_report",
+      "obj_type": "R",
+      "title": "Verification Report",
+      "description": "Physical verification confirmation document"
+    },
+    {
+      "obj_name": "fam_warranty_amc_expiry",
+      "obj_type": "V",
+      "title": "Warranty / AMC Expiry",
+      "description": "Grid of warranty and AMC coverage approaching expiry"
+    },
+    {
+      "obj_name": "fam_management_dashboard",
+      "obj_type": "D",
+      "title": "Management Dashboard",
+      "description": "Consolidated asset, depreciation and verification KPIs for Asset/Finance Manager"
+    },
+    {
+      "obj_name": "fam_asset_depreciation_reconciliation",
+      "obj_type": "D",
+      "title": "Asset Depreciation Reconciliation (CA vs IT)",
+      "description": "Per-asset period-wise depreciation detail for reconciliation"
+    }
+  ],
+  "tables": [
+    {
+      "table_name": "FAM_AMC_CONTRACTS",
+      "description": "",
+      "key_columns": [
+        "AMC_CONTRACT_NO VARCHAR"
+      ],
+      "other_columns": [
+        "AMC_VENDOR_CODE VARCHAR",
+        "START_DATE DATE",
+        "END_DATE DATE",
+        "CONTRACT_COST NUMBER",
+        "STATUS VARCHAR",
+        "PREVIOUS_CONTRACT_NO VARCHAR",
+        "PREVIOUS_CONTRACT_VENDOR_CODE VARCHAR",
+        "PREVIOUS_CONTRACT_STATUS VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_AMC_CONTRACT_LINE",
+      "description": "",
+      "key_columns": [
+        "AMC_CONTRACT_NO VARCHAR",
+        "LINE_NO NUMBER"
+      ],
+      "other_columns": [
+        "ASSET_CODE VARCHAR",
+        "COVERAGE_REMARKS VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_CATEGORY_MASTER",
+      "description": "",
+      "key_columns": [
+        "CATEGORY_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "CATEGORY_NAME VARCHAR",
+        "STATUS VARCHAR",
+        "PARENT_CATEGORY_CODE VARCHAR",
+        "parent_category_name VARCHAR",
+        "COMPANIES_ACT_USEFUL_LIFE_YEARS NUMBER",
+        "COMPANIES_ACT_DEFAULT_METHOD VARCHAR",
+        "COMPANIES_ACT_RESIDUAL_VALUE_PCT NUMBER",
+        "INCOME_TAX_BLOCK_CODE VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_DISPOSAL",
+      "description": "",
+      "key_columns": [
+        "DISPOSAL_NO VARCHAR"
+      ],
+      "other_columns": [
+        "DISPOSAL_DATE DATE",
+        "ASSET_CODE VARCHAR",
+        "ASSET_NAME VARCHAR",
+        "CAPITALIZATION_DATE DATE",
+        "STATUS VARCHAR",
+        "DISPOSAL_TYPE VARCHAR",
+        "SALE_VALUE NUMBER",
+        "BUYER_OR_SCRAP_VENDOR_CODE VARCHAR",
+        "NET_BOOK_VALUE_AS_ON_DISPOSAL NUMBER",
+        "PROFIT_LOSS_ON_DISPOSAL NUMBER",
+        "DISPOSAL_REASON VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_INSTALLATION",
+      "description": "",
+      "key_columns": [
+        "ID NUMBER"
+      ],
+      "other_columns": [
+        "ASSET_CODE VARCHAR",
+        "INSTALLATION_DATE DATE",
+        "INSTALLED_BY VARCHAR",
+        "INSTALLATION_LOCATION_CONFIRMED VARCHAR",
+        "INSTALLATION_CERTIFICATE_ATTACHMENT VARCHAR",
+        "REMARKS VARCHAR",
+        "STATUS VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_REGISTER",
+      "description": "",
+      "key_columns": [
+        "ASSET_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "ASSET_NAME VARCHAR",
+        "CATEGORY_CODE VARCHAR",
+        "STATUS VARCHAR",
+        "SERIAL_NO VARCHAR",
+        "MAKE VARCHAR",
+        "MODEL VARCHAR",
+        "DESCRIPTION VARCHAR",
+        "ASSET_PHOTO VARCHAR",
+        "QR_BARCODE_TAG VARCHAR",
+        "BRANCH_CODE VARCHAR",
+        "LOCATION_CODE VARCHAR",
+        "DEPARTMENT_CODE VARCHAR",
+        "ASSIGNED_EMPLOYEE_CODE VARCHAR",
+        "VENDOR_NAME VARCHAR",
+        "PURCHASE_INVOICE_NO VARCHAR",
+        "PURCHASE_DATE DATE",
+        "PURCHASE_COST NUMBER",
+        "OTHER_CAPITALIZED_COST NUMBER",
+        "TOTAL_CAPITALIZED_COST NUMBER",
+        "CAPITALIZATION_DATE DATE",
+        "COMPANIES_ACT_USEFUL_LIFE_YEARS NUMBER",
+        "COMPANIES_ACT_METHOD VARCHAR",
+        "COMPANIES_ACT_RESIDUAL_VALUE_PCT NUMBER",
+        "COMPANIES_ACT_RESIDUAL_VALUE NUMBER",
+        "INCOME_TAX_BLOCK_CODE VARCHAR",
+        "WARRANTY_START_DATE DATE",
+        "WARRANTY_END_DATE DATE",
+        "AMC_APPLICABLE VARCHAR",
+        "REMARKS VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_TRANSFER",
+      "description": "",
+      "key_columns": [
+        "TRANSFER_NO VARCHAR"
+      ],
+      "other_columns": [
+        "TRANSFER_DATE DATE",
+        "ASSET_CODE VARCHAR",
+        "ASSET_NAME VARCHAR",
+        "STATUS VARCHAR",
+        "FROM_BRANCH_CODE VARCHAR",
+        "FROM_BRANCH_NAME VARCHAR",
+        "FROM_LOCATION_CODE VARCHAR",
+        "FROM_LOCATION_NAME VARCHAR",
+        "FROM_DEPARTMENT_CODE VARCHAR",
+        "FROM_DEPARTMENT_NAME VARCHAR",
+        "FROM_EMPLOYEE_CODE VARCHAR",
+        "FROM_EMPLOYEE_NAME VARCHAR",
+        "TO_BRANCH_CODE VARCHAR",
+        "TO_BRANCH_NAME VARCHAR",
+        "TO_LOCATION_CODE VARCHAR",
+        "TO_LOCATION_NAME VARCHAR",
+        "TO_DEPARTMENT_CODE VARCHAR",
+        "TO_DEPARTMENT_NAME VARCHAR",
+        "TO_EMPLOYEE_CODE VARCHAR",
+        "TO_EMPLOYEE_NAME VARCHAR",
+        "TRANSFER_REASON VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_BRANCH_MASTER",
+      "description": "",
+      "key_columns": [
+        "BRANCH_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "BRANCH_NAME VARCHAR",
+        "ADDRESS VARCHAR",
+        "CITY VARCHAR",
+        "STATE VARCHAR",
+        "STATUS VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_DEPARTMENT_MASTER",
+      "description": "",
+      "key_columns": [
+        "BRANCH_CODE VARCHAR",
+        "DEPARTMENT_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "DEPARTMENT_NAME VARCHAR",
+        "COST_CENTRE_CODE VARCHAR",
+        "STATUS VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_DEP_RATE_CA_MASTER",
+      "description": "",
+      "key_columns": [
+        "CATEGORY_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "USEFUL_LIFE_YEARS NUMBER",
+        "METHOD VARCHAR",
+        "RESIDUAL_VALUE_PCT NUMBER",
+        "EFFECTIVE_FROM_DATE DATE",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_DEP_RATE_IT_MASTER",
+      "description": "",
+      "key_columns": [
+        "BLOCK_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "BLOCK_DESCRIPTION VARCHAR",
+        "RATE_PCT NUMBER",
+        "EFFECTIVE_FROM_DATE DATE",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_EMPLOYEE_MASTER",
+      "description": "",
+      "key_columns": [
+        "EMPLOYEE_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "EMPLOYEE_NAME VARCHAR",
+        "BRANCH_CODE VARCHAR",
+        "DEPARTMENT_CODE VARCHAR",
+        "DESIGNATION VARCHAR",
+        "STATUS VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_LOCATION_MASTER",
+      "description": "",
+      "key_columns": [
+        "BRANCH_CODE VARCHAR",
+        "LOCATION_CODE VARCHAR"
+      ],
+      "other_columns": [
+        "LOCATION_NAME VARCHAR",
+        "ADDRESS_DESCR VARCHAR",
+        "STATUS VARCHAR",
+        "ID NUMBER",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_PHYSICAL_VERIFICATION",
+      "description": "",
+      "key_columns": [
+        "VERIFICATION_CYCLE_NO VARCHAR"
+      ],
+      "other_columns": [
+        "VERIFICATION_DATE DATE",
+        "BRANCH_CODE VARCHAR",
+        "branch_name VARCHAR",
+        "LOCATION_CODE VARCHAR",
+        "location_name VARCHAR",
+        "VERIFIER_EMPLOYEE_CODE VARCHAR",
+        "verifier_employee_name VARCHAR",
+        "STATUS VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
+      "description": "",
+      "key_columns": [
+        "VERIFICATION_CYCLE_NO VARCHAR",
+        "LINE_NO NUMBER"
+      ],
+      "other_columns": [
+        "ASSET_CODE VARCHAR",
+        "PHYSICAL_STATUS_FOUND VARCHAR",
+        "VERIFIED_DATE DATE",
+        "REMARKS VARCHAR",
+        "EXPECTED_LOCATION_CODE VARCHAR",
+        "expected_location_name VARCHAR",
+        "EXPECTED_EMPLOYEE_CODE VARCHAR",
+        "expected_employee_name VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_WARRANTY_DETAILS",
+      "description": "",
+      "key_columns": [
+        "ID NUMBER"
+      ],
+      "other_columns": [
+        "ASSET_CODE VARCHAR",
+        "WARRANTY_PROVIDER_VENDOR_CODE VARCHAR",
+        "WARRANTY_START_DATE DATE",
+        "WARRANTY_END_DATE DATE",
+        "WARRANTY_TERMS VARCHAR",
+        "WARRANTY_DOCUMENT_ATTACHMENT VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    }
+  ]
+}

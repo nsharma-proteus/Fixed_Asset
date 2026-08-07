@@ -1,0 +1,47 @@
+{
+  "table_name": "FAM_ASSET_CATEGORY_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_asset_category_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "INCOME_TAX_BLOCK_CODE",
+        "parent_category_name",
+        "ADD_USER",
+        "ADD_TERM",
+        "CHG_DATE",
+        "CATEGORY_CODE",
+        "ADD_DATE",
+        "PARENT_CATEGORY_CODE",
+        "STATUS",
+        "ID",
+        "CATEGORY_NAME",
+        "COMPANIES_ACT_DEFAULT_METHOD",
+        "COMPANIES_ACT_USEFUL_LIFE_YEARS",
+        "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
+        "CHG_USER",
+        "CHG_TERM"
+      ],
+      "join_info": {
+        "column": "INCOME_TAX_BLOCK_CODE",
+        "join_table": "FAM_DEP_RATE_IT_MASTER",
+        "join_column": "BLOCK_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "CATEGORY_CODE",
+        "CATEGORY_NAME"
+      ],
+      "join_info": {
+        "column": "CATEGORY_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "CATEGORY_CODE"
+      }
+    }
+  ]
+}

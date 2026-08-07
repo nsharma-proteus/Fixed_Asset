@@ -1,0 +1,40 @@
+{
+  "table_name": "FAM_ASSET_TRANSFER",
+  "objects": [
+    {
+      "object_name": "fam_asset_transfer",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "FROM_BRANCH_CODE",
+        "CHG_USER",
+        "TO_DEPARTMENT_NAME",
+        "ADD_DATE",
+        "FROM_DEPARTMENT_NAME",
+        "FROM_EMPLOYEE_CODE",
+        "TO_BRANCH_NAME",
+        "TRANSFER_DATE",
+        "TRANSFER_REASON",
+        "ADD_USER",
+        "STATUS",
+        "TO_BRANCH_CODE",
+        "ASSET_NAME",
+        "CHG_TERM",
+        "FROM_LOCATION_NAME",
+        "ASSET_CODE",
+        "FROM_EMPLOYEE_NAME",
+        "TRANSFER_NO",
+        "ADD_TERM",
+        "TO_LOCATION_CODE",
+        "TO_DEPARTMENT_CODE",
+        "TO_EMPLOYEE_NAME",
+        "FROM_BRANCH_NAME",
+        "CHG_DATE",
+        "FROM_DEPARTMENT_CODE",
+        "TO_EMPLOYEE_CODE",
+        "FROM_LOCATION_CODE",
+        "TO_LOCATION_NAME"
+      ]
+    }
+  ]
+}

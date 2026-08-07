@@ -1,0 +1,81 @@
+{
+  "table_name": "FAM_BRANCH_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_branch_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "CHG_TERM",
+        "ADDRESS",
+        "CITY",
+        "CHG_USER",
+        "BRANCH_NAME",
+        "BRANCH_CODE",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "ID",
+        "STATE",
+        "ADD_TERM"
+      ]
+    },
+    {
+      "object_name": "fam_location_master",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "BRANCH_CODE",
+        "BRANCH_NAME"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_LOCATION_MASTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_department_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "BRANCH_CODE",
+        "BRANCH_NAME"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_DEPARTMENT_MASTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_employee_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "BRANCH_CODE",
+        "BRANCH_NAME"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_EMPLOYEE_MASTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "BRANCH_CODE",
+        "BRANCH_NAME"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "BRANCH_CODE"
+      }
+    }
+  ]
+}

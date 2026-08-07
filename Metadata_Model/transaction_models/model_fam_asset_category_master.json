@@ -1,0 +1,671 @@
+{
+  "transaction": {
+    "obj_name": "fam_asset_category_master",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Asset Category Master",
+          "form_descr": "Maintain the classification of assets used to default useful life, depreciation method and applicable statutory rates on the Asset Register.",
+          "form_no": "1",
+          "main_table": "FAM_ASSET_CATEGORY_MASTER",
+          "columns": [
+            {
+              "column": {
+                "name": "category_code",
+                "db_name": "CATEGORY_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Category Code",
+                "descr": "Unique code identifying this asset category",
+                "key": true,
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Category code unique",
+                    "error_code": "CAT_CODE_DUP",
+                    "message": "Category code {form.category_code} already exists.",
+                    "builtin": {
+                      "kind": "must_be_unique"
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "category_name",
+                "db_name": "CATEGORY_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Category Name",
+                "descr": "Descriptive name of the asset category",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Active categories can be used on new Asset Register entries; Inactive categories are blocked for new use but existing assets are unaffected",
+                "default_value": "A",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "A",
+                      "display": "Active"
+                    },
+                    {
+                      "data": "I",
+                      "display": "Inactive"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "A",
+                      "color": "green",
+                      "icon": "\u25cf",
+                      "label": "Active"
+                    },
+                    {
+                      "when": "I",
+                      "color": "grey",
+                      "icon": "\u25cf",
+                      "label": "Inactive"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "1",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "parent_category_code",
+                "db_name": "PARENT_CATEGORY_CODE",
+                "group_name": "Classification",
+                "col_type": "VARCHAR",
+                "heading": "Parent Category",
+                "descr": "Optional parent category for hierarchical classification",
+                "mandatory": false,
+                "lookup": "FAM_ASSET_CATEGORY_MASTER(CATEGORY_NAME, CATEGORY_CODE)",
+                "must_exist_in": "FAM_ASSET_CATEGORY_MASTER",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_ASSET_CATEGORY_MASTER",
+                  "match_table_col": "CATEGORY_CODE",
+                  "on_no_match": "clear",
+                  "fill": [
+                    {
+                      "form_col": "parent_category_name",
+                      "table_col": "CATEGORY_NAME"
+                    }
+                  ]
+                },
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "parent_category_name",
+                "group_name": "Classification",
+                "col_type": "VARCHAR",
+                "heading": "Parent Category Name",
+                "descr": "Name of the selected parent category, filled from Parent Category",
+                "protect": "1",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "db_name": "parent_category_name",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "companies_act_useful_life_years",
+                "db_name": "COMPANIES_ACT_USEFUL_LIFE_YEARS",
+                "group_name": "Companies Act Depreciation",
+                "col_type": "NUMBER",
+                "heading": "Useful Life (Years)",
+                "descr": "Default useful life in years under the Companies Act, Schedule II",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Useful life positive",
+                    "error_code": "CA_LIFE_MIN",
+                    "message": "Companies Act useful life must be greater than 0.",
+                    "expression": "{form.companies_act_useful_life_years} > 0"
+                  }
+                ],
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "5,2",
+                "width": 60,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "companies_act_default_method",
+                "db_name": "COMPANIES_ACT_DEFAULT_METHOD",
+                "group_name": "Companies Act Depreciation",
+                "col_type": "VARCHAR",
+                "heading": "Default Method",
+                "descr": "Default depreciation method under the Companies Act",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "SLM",
+                      "display": "SLM - Straight Line Method"
+                    },
+                    {
+                      "data": "WDV",
+                      "display": "WDV - Written Down Value"
+                    }
+                  ]
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "3",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "companies_act_residual_value_pct",
+                "db_name": "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
+                "group_name": "Companies Act Depreciation",
+                "col_type": "NUMBER",
+                "heading": "Residual Value %",
+                "descr": "Default residual value percentage under the Companies Act",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Residual value % range",
+                    "error_code": "CA_RESID_RANGE",
+                    "message": "Companies Act residual value % must be between 0 and 100.",
+                    "builtin": {
+                      "kind": "value_in_range",
+                      "min": {
+                        "source": "const",
+                        "value": "0"
+                      },
+                      "max": {
+                        "source": "const",
+                        "value": "100"
+                      }
+                    }
+                  }
+                ],
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "5,2",
+                "width": 60,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "income_tax_block_code",
+                "db_name": "INCOME_TAX_BLOCK_CODE",
+                "group_name": "Income Tax",
+                "col_type": "VARCHAR",
+                "heading": "Income Tax Block Code",
+                "descr": "Default Income Tax block-of-assets code applied to assets in this category",
+                "mandatory": false,
+                "lookup": "FAM_DEP_RATE_IT_MASTER(BLOCK_DESCRIPTION, BLOCK_CODE)",
+                "must_exist_in": "FAM_DEP_RATE_IT_MASTER",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "income_tax_block_descr",
+                "db_name": "BLOCK_DESCRIPTION",
+                "table_name": "FAM_DEP_RATE_IT_MASTER",
+                "group_name": "Income Tax",
+                "col_type": "VARCHAR",
+                "heading": "Block Description",
+                "descr": "Description of the selected Income Tax block, shown from the Income Tax Block Master",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_display_name": "Income Tax depreciation block master (lookup for default block description)",
+                "db_size": "200",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "Id",
+                "descr": "Internal surrogate identifier",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 1,
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Date/time the record was created",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "descr": "Terminal/IP from which the record was created",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Last Changed On",
+                "descr": "Date/time the record was last changed",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Last Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Last Changed Terminal",
+                "descr": "Terminal/IP from which the record was last changed",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_ASSET_CATEGORY_MASTER",
+                  "main_table": true,
+                  "table_descr": "Asset category master (main table)"
+                },
+                {
+                  "table": "FAM_DEP_RATE_IT_MASTER",
+                  "main_table": false,
+                  "table_descr": "Income Tax depreciation block master (lookup for default block description)",
+                  "column": "BLOCK_CODE",
+                  "join_table": "FAM_ASSET_CATEGORY_MASTER",
+                  "join_column": "INCOME_TAX_BLOCK_CODE",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "Delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "business_logic",
+                  "name": "Block delete when category is in use",
+                  "error_code": "CAT_IN_USE",
+                  "message": "This category cannot be deleted because it is referenced by other records.",
+                  "business_logic": {
+                    "method": "check_category_unused",
+                    "description": "Prevent deleting a category still referenced elsewhere",
+                    "spec": "Given the CATEGORY_CODE of the row targeted for delete, block the delete (return an error) if the code is referenced as PARENT_CATEGORY_CODE by any other row in FAM_ASSET_CATEGORY_MASTER, or if it is referenced by CATEGORY_CODE on any capitalized/active row of the Asset Register (FAM_ASSET_REGISTER) once that table carries a CATEGORY_CODE column. Return no error (allow delete) when no references are found."
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Activate",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "activate_category",
+                "description": "Activate this asset category",
+                "spec": "Given the current row's CATEGORY_CODE, set STATUS to 'A' (Active) for this category and return {\"updates\": {\"status\": \"A\"}} so the change reflects immediately on the form."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must currently be Inactive",
+                  "error_code": "CAT_ALREADY_ACTIVE",
+                  "message": "This category is already Active.",
+                  "expression": "{form.status} == \"I\""
+                }
+              ]
+            },
+            {
+              "name": "Deactivate",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "deactivate_category",
+                "description": "Deactivate this asset category",
+                "spec": "Given the current row's CATEGORY_CODE, set STATUS to 'I' (Inactive) for this category and return {\"updates\": {\"status\": \"I\"}}. Deactivating a category blocks its selection on new Asset Register entries but must not alter any existing asset already carrying this category code."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must currently be Active",
+                  "error_code": "CAT_ALREADY_INACTIVE",
+                  "message": "This category is already Inactive.",
+                  "expression": "{form.status} == \"A\""
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

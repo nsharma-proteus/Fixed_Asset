@@ -1,0 +1,1 @@
+[1] Warranty Details: id(N), asset_code(V20), asset_name(V100), warranty_provider_vendor_code(V20), warranty_start_date(D), warranty_end_date(D), warranty_terms(V500), warranty_document_attachment(V500), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)

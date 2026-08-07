@@ -1,0 +1,190 @@
+{
+  "table_name": "FAM_ASSET_DISPOSAL",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "DISPOSAL_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Auto-generated disposal number",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "DISPOSAL_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the disposal is recorded",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset being disposed",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "ASSET_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Asset Register when ASSET_CODE is entered",
+      "sequence": 4
+    },
+    {
+      "column_name": "CAPITALIZATION_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Filled from the Asset Register; disposal date cannot be earlier than this",
+      "sequence": 5
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Disposal workflow status",
+      "sequence": 6,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "DRAFT",
+          "label": "Draft"
+        },
+        {
+          "value": "PENDING_APPROVAL",
+          "label": "Pending Approval"
+        },
+        {
+          "value": "APPROVED",
+          "label": "Approved"
+        },
+        {
+          "value": "CANCELLED",
+          "label": "Cancelled"
+        }
+      ]
+    },
+    {
+      "column_name": "DISPOSAL_TYPE",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "Whether the asset is sold or scrapped",
+      "sequence": 7,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "SALE",
+          "label": "Sale"
+        },
+        {
+          "value": "SCRAP",
+          "label": "Scrap"
+        }
+      ]
+    },
+    {
+      "column_name": "SALE_VALUE",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Sale proceeds; mandatory when Disposal Type is Sale, zero/locked for Scrap",
+      "sequence": 8
+    },
+    {
+      "column_name": "BUYER_OR_SCRAP_VENDOR_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Buyer (for Sale) or scrap vendor (for Scrap) reference. NOTE: no Vendor/Supplier Master table exists yet in this project's design, so this is a free-text code for now; wire a lookup to the Vendor Master once that object is built.",
+      "sequence": 9
+    },
+    {
+      "column_name": "NET_BOOK_VALUE_AS_ON_DISPOSAL",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Computed net book value of the asset as on the disposal date, filled when ASSET_CODE is entered",
+      "sequence": 10
+    },
+    {
+      "column_name": "PROFIT_LOSS_ON_DISPOSAL",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Computed as Sale Value minus Net Book Value as on Disposal",
+      "sequence": 11
+    },
+    {
+      "column_name": "DISPOSAL_REASON",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Reason/justification for the disposal",
+      "sequence": 12,
+      "mandatory": true
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 13
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 14
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 15
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 16
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 17
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 18
+    }
+  ]
+}

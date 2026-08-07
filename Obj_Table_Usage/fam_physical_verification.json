@@ -1,0 +1,44 @@
+{
+  "object_name": "fam_physical_verification",
+  "tables": {
+    "FAM_PHYSICAL_VERIFICATION": [
+      "VERIFIER_EMPLOYEE_CODE",
+      "CHG_USER",
+      "LOCATION_CODE",
+      "BRANCH_CODE",
+      "VERIFICATION_CYCLE_NO",
+      "location_name",
+      "CHG_DATE",
+      "ADD_USER",
+      "branch_name",
+      "STATUS",
+      "ADD_DATE",
+      "CHG_TERM",
+      "ADD_TERM",
+      "verifier_employee_name",
+      "VERIFICATION_DATE"
+    ],
+    "FAM_PHYSICAL_VERIFICATION_LINE": [
+      "ASSET_CODE",
+      "CHG_USER",
+      "PHYSICAL_STATUS_FOUND",
+      "VERIFICATION_CYCLE_NO",
+      "REMARKS",
+      "LINE_NO",
+      "VERIFIED_DATE",
+      "EXPECTED_LOCATION_CODE",
+      "expected_employee_name",
+      "ADD_DATE",
+      "ADD_USER",
+      "EXPECTED_EMPLOYEE_CODE",
+      "CHG_DATE",
+      "CHG_TERM",
+      "ADD_TERM",
+      "expected_location_name"
+    ],
+    "FAM_ASSET_REGISTER": [
+      "ASSET_CODE",
+      "ASSET_NAME"
+    ]
+  }
+}

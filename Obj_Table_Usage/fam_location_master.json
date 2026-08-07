@@ -1,0 +1,23 @@
+{
+  "object_name": "fam_location_master",
+  "tables": {
+    "FAM_LOCATION_MASTER": [
+      "LOCATION_NAME",
+      "ADDRESS_DESCR",
+      "CHG_USER",
+      "LOCATION_CODE",
+      "BRANCH_CODE",
+      "CHG_DATE",
+      "ADD_USER",
+      "ADD_DATE",
+      "STATUS",
+      "CHG_TERM",
+      "ID",
+      "ADD_TERM"
+    ],
+    "FAM_BRANCH_MASTER": [
+      "BRANCH_NAME",
+      "BRANCH_CODE"
+    ]
+  }
+}

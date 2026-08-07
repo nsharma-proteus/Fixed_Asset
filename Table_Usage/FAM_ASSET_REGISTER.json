@@ -1,0 +1,111 @@
+{
+  "table_name": "FAM_ASSET_REGISTER",
+  "objects": [
+    {
+      "object_name": "fam_asset_installation",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "ASSET_CODE",
+        "CAPITALIZATION_DATE",
+        "ASSET_NAME"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_ASSET_INSTALLATION",
+        "join_column": "ASSET_CODE"
+      }
+    },
+    {
+      "object_name": "fam_physical_verification",
+      "form_no": "2",
+      "usage_type": "R",
+      "referred_columns": [
+        "ASSET_CODE",
+        "ASSET_NAME"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_PHYSICAL_VERIFICATION_LINE",
+        "join_column": "ASSET_CODE"
+      }
+    },
+    {
+      "object_name": "fam_warranty_details",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "ASSET_CODE",
+        "ASSET_NAME"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_WARRANTY_DETAILS",
+        "join_column": "ASSET_CODE"
+      }
+    },
+    {
+      "object_name": "fam_amc_contracts",
+      "form_no": "2",
+      "usage_type": "R",
+      "referred_columns": [
+        "ASSET_CODE",
+        "ASSET_NAME"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_AMC_CONTRACT_LINE",
+        "join_column": "ASSET_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "ASSET_CODE",
+        "BRANCH_CODE",
+        "WARRANTY_END_DATE",
+        "QR_BARCODE_TAG",
+        "AMC_APPLICABLE",
+        "MODEL",
+        "OTHER_CAPITALIZED_COST",
+        "STATUS",
+        "ID",
+        "COMPANIES_ACT_USEFUL_LIFE_YEARS",
+        "CHG_USER",
+        "INCOME_TAX_BLOCK_CODE",
+        "CATEGORY_CODE",
+        "LOCATION_CODE",
+        "CAPITALIZATION_DATE",
+        "TOTAL_CAPITALIZED_COST",
+        "PURCHASE_INVOICE_NO",
+        "DEPARTMENT_CODE",
+        "PURCHASE_COST",
+        "ADD_DATE",
+        "SERIAL_NO",
+        "COMPANIES_ACT_RESIDUAL_VALUE",
+        "ADD_TERM",
+        "CHG_DATE",
+        "MAKE",
+        "ASSET_PHOTO",
+        "VENDOR_NAME",
+        "COMPANIES_ACT_METHOD",
+        "WARRANTY_START_DATE",
+        "ASSIGNED_EMPLOYEE_CODE",
+        "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
+        "DESCRIPTION",
+        "ADD_USER",
+        "REMARKS",
+        "PURCHASE_DATE",
+        "ASSET_NAME",
+        "CHG_TERM"
+      ],
+      "join_info": {
+        "column": "INCOME_TAX_BLOCK_CODE",
+        "join_table": "FAM_DEP_RATE_IT_MASTER",
+        "join_column": "BLOCK_CODE"
+      }
+    }
+  ]
+}

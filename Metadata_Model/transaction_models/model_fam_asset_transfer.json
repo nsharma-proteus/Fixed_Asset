@@ -1,0 +1,1064 @@
+{
+  "transaction": {
+    "obj_name": "fam_asset_transfer",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Asset Transfer",
+          "form_descr": "Move an asset between branch/location/department/employee",
+          "form_no": "1",
+          "main_table": "FAM_ASSET_TRANSFER",
+          "columns": [
+            {
+              "column": {
+                "name": "transfer_no",
+                "db_name": "TRANSFER_NO",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Transfer No",
+                "descr": "Auto-generated transfer number",
+                "key": true,
+                "protect": "1",
+                "default_value": "auto_generate()",
+                "mandatory": true,
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "transfer_date",
+                "db_name": "TRANSFER_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Transfer Date",
+                "descr": "Date the transfer is recorded",
+                "default_value": "today()",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Code",
+                "descr": "Asset being transferred",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "must_exist_in": "FAM_ASSET_REGISTER",
+                "validations": [
+                  {
+                    "type": "business_logic",
+                    "name": "Asset must be Capitalized/Active",
+                    "message": "Asset {form.asset_code} must be in Capitalized/Active status to be transferred.",
+                    "business_logic": {
+                      "method": "check_asset_transferable",
+                      "description": "Validate the asset is Capitalized/Active before allowing a transfer",
+                      "spec": "Look up the asset's current STATUS on the Asset Register for ASSET_CODE; return an error (e.g. {\"error\":\"...\"}) if it is not Capitalized or Active (Draft, Pending Approval, Under Transfer, Disposed and Under Investigation are not transferable). NOTE: FAM_ASSET_REGISTER is currently designed with only ASSET_CODE, ASSET_NAME and CAPITALIZATION_DATE columns; a STATUS column must be added to it (by the Asset Register object) before this check can be implemented.",
+                      "language": "plpgsql"
+                    }
+                  }
+                ],
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "fill_asset_current_location",
+                    "description": "Fill FROM location/custody fields from the asset's current location",
+                    "spec": "On change of ASSET_CODE, look up the asset's current BRANCH_CODE, LOCATION_CODE, DEPARTMENT_CODE and ASSIGNED_EMPLOYEE_CODE (and current STATUS) together with ASSET_NAME. Return {\"updates\": {...}} setting asset_name, from_branch_code, from_location_code, from_department_code and from_employee_code to those current values (also resolve and fill from_branch_name/from_location_name/from_department_name/from_employee_name from the respective master tables). If the asset's current status is not Capitalized/Active, return an error instead. NOTE: FAM_ASSET_REGISTER is currently designed with only ASSET_CODE, ASSET_NAME and CAPITALIZATION_DATE; BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE/STATUS must be added to it (by the Asset Register object) before this function can be fully implemented.",
+                    "language": "plpgsql"
+                  }
+                },
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Name",
+                "descr": "Filled from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Transfer workflow status",
+                "default_value": "DRAFT",
+                "protect": "1",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "DRAFT",
+                      "display": "Draft"
+                    },
+                    {
+                      "data": "PENDING_APPROVAL",
+                      "display": "Pending Approval"
+                    },
+                    {
+                      "data": "APPROVED",
+                      "display": "Approved"
+                    },
+                    {
+                      "data": "CANCELLED",
+                      "display": "Cancelled"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "DRAFT",
+                      "color": "grey",
+                      "icon": "\u25f7"
+                    },
+                    {
+                      "when": "PENDING_APPROVAL",
+                      "color": "amber",
+                      "icon": "\u25f7"
+                    },
+                    {
+                      "when": "APPROVED",
+                      "color": "green",
+                      "icon": "\u2713"
+                    },
+                    {
+                      "when": "CANCELLED",
+                      "color": "red",
+                      "icon": "\u2715"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_branch_code",
+                "db_name": "FROM_BRANCH_CODE",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Branch",
+                "descr": "Asset's current branch; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_branch_name",
+                "db_name": "FROM_BRANCH_NAME",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Branch Name",
+                "descr": "Filled from the Branch Master",
+                "protect": "1",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_location_code",
+                "db_name": "FROM_LOCATION_CODE",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Location",
+                "descr": "Asset's current location; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_location_name",
+                "db_name": "FROM_LOCATION_NAME",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Location Name",
+                "descr": "Filled from the Location Master",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_department_code",
+                "db_name": "FROM_DEPARTMENT_CODE",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Department",
+                "descr": "Asset's current department; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_department_name",
+                "db_name": "FROM_DEPARTMENT_NAME",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Department Name",
+                "descr": "Filled from the Department Master",
+                "protect": "1",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_employee_code",
+                "db_name": "FROM_EMPLOYEE_CODE",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Employee",
+                "descr": "Asset's current custodian employee; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "from_employee_name",
+                "db_name": "FROM_EMPLOYEE_NAME",
+                "group_name": "From (Current)",
+                "col_type": "VARCHAR",
+                "heading": "From Employee Name",
+                "descr": "Filled from the Employee Master",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_branch_code",
+                "db_name": "TO_BRANCH_CODE",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Branch",
+                "descr": "Branch the asset is being moved to",
+                "mandatory": true,
+                "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+                "lookup_filter": "STATUS = 'A'",
+                "must_exist_in": "FAM_BRANCH_MASTER",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_BRANCH_MASTER",
+                  "match_table_col": "BRANCH_CODE",
+                  "fill": [
+                    {
+                      "form_col": "to_branch_name",
+                      "table_col": "BRANCH_NAME"
+                    },
+                    {
+                      "form_col": "to_location_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "to_location_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "to_department_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "to_department_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "to_employee_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "to_employee_name",
+                      "expr": "\"\""
+                    }
+                  ]
+                },
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_branch_name",
+                "db_name": "TO_BRANCH_NAME",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Branch Name",
+                "descr": "Filled from the Branch Master",
+                "protect": "1",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_location_code",
+                "db_name": "TO_LOCATION_CODE",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Location",
+                "descr": "Location the asset is being moved to (within the selected To Branch)",
+                "mandatory": true,
+                "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.to_branch_code} AND STATUS = 'A'",
+                "must_exist_in": "FAM_LOCATION_MASTER",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_LOCATION_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.to_branch_code} AND LOCATION_CODE = {form.to_location_code}",
+                  "fill": [
+                    {
+                      "form_col": "to_location_name",
+                      "table_col": "LOCATION_NAME"
+                    }
+                  ]
+                },
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_location_name",
+                "db_name": "TO_LOCATION_NAME",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Location Name",
+                "descr": "Filled from the Location Master",
+                "protect": "1",
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_department_code",
+                "db_name": "TO_DEPARTMENT_CODE",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Department",
+                "descr": "Department the asset is being moved to (within the selected To Branch)",
+                "lookup": "FAM_DEPARTMENT_MASTER(DEPARTMENT_NAME, DEPARTMENT_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.to_branch_code} AND STATUS = 'A'",
+                "must_exist_in": "FAM_DEPARTMENT_MASTER",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEPARTMENT_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.to_branch_code} AND DEPARTMENT_CODE = {form.to_department_code}",
+                  "fill": [
+                    {
+                      "form_col": "to_department_name",
+                      "table_col": "DEPARTMENT_NAME"
+                    }
+                  ]
+                },
+                "x": "180",
+                "y": "180",
+                "col_id": "18",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_department_name",
+                "db_name": "TO_DEPARTMENT_NAME",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Department Name",
+                "descr": "Filled from the Department Master",
+                "protect": "1",
+                "x": "190",
+                "y": "190",
+                "col_id": "19",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_employee_code",
+                "db_name": "TO_EMPLOYEE_CODE",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Employee",
+                "descr": "Employee the asset custody is being moved to",
+                "lookup": "FAM_EMPLOYEE_MASTER(EMPLOYEE_NAME, EMPLOYEE_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.to_branch_code} AND STATUS = 'A'",
+                "must_exist_in": "FAM_EMPLOYEE_MASTER",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_EMPLOYEE_MASTER",
+                  "match_table_col": "EMPLOYEE_CODE",
+                  "fill": [
+                    {
+                      "form_col": "to_employee_name",
+                      "table_col": "EMPLOYEE_NAME"
+                    }
+                  ]
+                },
+                "x": "200",
+                "y": "200",
+                "col_id": "20",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "to_employee_name",
+                "db_name": "TO_EMPLOYEE_NAME",
+                "group_name": "To (New)",
+                "col_type": "VARCHAR",
+                "heading": "To Employee Name",
+                "descr": "Filled from the Employee Master",
+                "protect": "1",
+                "x": "210",
+                "y": "210",
+                "col_id": "21",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "transfer_reason",
+                "db_name": "TRANSFER_REASON",
+                "group_name": "Details",
+                "col_type": "VARCHAR",
+                "heading": "Transfer Reason",
+                "descr": "Reason/justification for the transfer",
+                "mandatory": true,
+                "x": "220",
+                "y": "220",
+                "col_id": "22",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "230",
+                "y": "230",
+                "col_id": "23",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "240",
+                "y": "240",
+                "col_id": "24",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "250",
+                "y": "250",
+                "col_id": "25",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "260",
+                "y": "260",
+                "col_id": "26",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "270",
+                "y": "270",
+                "col_id": "27",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed Terminal",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "280",
+                "y": "280",
+                "col_id": "28",
+                "table_name": "FAM_ASSET_TRANSFER",
+                "table_display_name": "Asset Transfer records",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "descr": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_ASSET_TRANSFER",
+                  "main_table": true,
+                  "table_descr": "Asset Transfer records"
+                }
+              ]
+            }
+          },
+          "validations": [
+            {
+              "type": "expression",
+              "name": "TO must differ from FROM",
+              "error_code": "TRANSFER_NO_CHANGE",
+              "message": "The To branch/location/department/employee combination must differ from the From combination.",
+              "expression": "not ({form.to_branch_code} == {form.from_branch_code} and {form.to_location_code} == {form.from_location_code} and {form.to_department_code} == {form.from_department_code} and {form.to_employee_code} == {form.from_employee_code})"
+            },
+            {
+              "type": "business_logic",
+              "name": "From location matches asset's current location",
+              "message": "The From branch/location/department/employee must match the asset's current recorded location.",
+              "business_logic": {
+                "method": "verify_from_matches_current_location",
+                "description": "Ensure from_* values still match the asset's current location before save",
+                "spec": "On add (and on edit while status is still DRAFT), re-fetch the asset's current BRANCH_CODE, LOCATION_CODE, DEPARTMENT_CODE and ASSIGNED_EMPLOYEE_CODE from the Asset Register for ASSET_CODE and compare them to from_branch_code/from_location_code/from_department_code/from_employee_code on this record; return an error ({\"error\":\"...\"}) if any differ. Skip the check when _action = 'edit' and the stored status is no longer DRAFT (already-submitted/approved records are immutable history). Depends on FAM_ASSET_REGISTER carrying BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE columns (see the fill_asset_current_location item_change function).",
+                "language": "plpgsql"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "actions": [
+      {
+        "name": "edit",
+        "handler": "system",
+        "system_op": "edit",
+        "scope": "row",
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Draft only",
+            "message": "Only DRAFT transfers can be edited (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\""
+          }
+        ]
+      },
+      {
+        "name": "Submit for Approval",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "submit_asset_transfer_for_approval",
+          "description": "Move a Draft transfer to Pending Approval",
+          "spec": "Set STATUS to PENDING_APPROVAL on this transfer record and return a confirmation message.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Draft",
+            "message": "Only DRAFT transfers can be submitted for approval (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\""
+          }
+        ]
+      },
+      {
+        "name": "Approve",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "approve_asset_transfer",
+          "description": "Approve the transfer and update the Asset Register's current location/custody",
+          "spec": "Set STATUS to APPROVED on this transfer record. Then UPDATE the Asset Register row for ASSET_CODE, setting its current BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE to this record's to_branch_code/to_location_code/to_department_code/to_employee_code. This FAM_ASSET_TRANSFER row itself remains as the permanent audit trail of the movement (no separate history table needed). Return a confirmation message. Depends on FAM_ASSET_REGISTER carrying BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE columns.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Must be Pending Approval",
+            "message": "Only PENDING APPROVAL transfers can be approved (current status {form.status}).",
+            "expression": "{form.status} == \"PENDING_APPROVAL\""
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Approve transfer {form.transfer_no} for asset {form.asset_code}? This will update the Asset Register's current location."
+        }
+      },
+      {
+        "name": "Cancel",
+        "handler": "message",
+        "scope": "row",
+        "business_logic": {
+          "method": "cancel_asset_transfer",
+          "description": "Cancel a Draft or Pending Approval transfer",
+          "spec": "Set STATUS to CANCELLED on this transfer record and return a confirmation message. Approved transfers cannot be cancelled since the Asset Register has already been updated by the approval.",
+          "language": "plpgsql"
+        },
+        "validations": [
+          {
+            "type": "expression",
+            "name": "Cannot cancel Approved/Cancelled",
+            "message": "Only DRAFT or PENDING APPROVAL transfers can be cancelled (current status {form.status}).",
+            "expression": "{form.status} == \"DRAFT\" or {form.status} == \"PENDING_APPROVAL\""
+          }
+        ],
+        "confirmation": {
+          "mode": "reconfirm",
+          "message": "Cancel transfer {form.transfer_no}?"
+        }
+      }
+    ],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

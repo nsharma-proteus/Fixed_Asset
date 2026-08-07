@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "objects": {
+    "V:fam_dep_ca_period_detail": {
+      "obj_type": "V",
+      "obj_name": "fam_dep_ca_period_detail",
+      "verified_at": 1785776281.7440515,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "1f9f83c40baa7f68"
+    },
+    "V:fam_dep_it_block_context": {
+      "obj_type": "V",
+      "obj_name": "fam_dep_it_block_context",
+      "verified_at": 1785776281.7444847,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "1a77bd7854ece3b0"
+    },
+    "D:fam_asset_depreciation_reconciliation": {
+      "obj_type": "D",
+      "obj_name": "fam_asset_depreciation_reconciliation",
+      "verified_at": 1785776281.7449157,
+      "verify_ok": false,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "34ee16cdd33d9b64"
+    }
+  }
+}

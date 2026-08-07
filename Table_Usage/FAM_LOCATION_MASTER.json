@@ -1,0 +1,43 @@
+{
+  "table_name": "FAM_LOCATION_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_location_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "LOCATION_NAME",
+        "ADDRESS_DESCR",
+        "CHG_TERM",
+        "CHG_USER",
+        "LOCATION_CODE",
+        "BRANCH_CODE",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "ID",
+        "ADD_TERM"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_BRANCH_MASTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "LOCATION_NAME",
+        "LOCATION_CODE"
+      ],
+      "join_info": {
+        "column": "LOCATION_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "LOCATION_CODE"
+      }
+    }
+  ]
+}

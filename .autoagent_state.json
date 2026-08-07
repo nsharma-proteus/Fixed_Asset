@@ -1,0 +1,221 @@
+{
+  "version": 2,
+  "id": "9f03708f-74e9-4e40-bca4-484c5f563abc",
+  "project": "Fixed_Asset",
+  "description": "Need an application to manage fixed assets for organisation, It should be able to calculate depreciation as per Indian laws \nShould have the following requirement \nAsset Location : Identify where your assets are located by your branches , location within your branch and departments and option to assign to employees if required \n\nAsset Register : Asset register requirements as per Companies Act India including serial numbers, Make and model of the asset \nDepreciation calculation \u2013 Company\u2019s Act (Monthly) and yearly \nDepreciation calculation \u2013 Income Tax (Annual) Process\nAsset Installation: Feature to record and confirm the date of installation and other details \nAsset Transfer : Provision to record and transfer assets from one location to another\nAsset Sales / Scrap : Provision to remove the asset from the Asset Register \nAsset confirmation : A process to undertake the physical confirmation of the assets \nWarranty and AMC tracking : Provision to track the validity of the warranty and an active AMC\n\n=== CONFIRMED SCOPE AND COMPLEXITY (user-approved \u2014 this OVERRIDES any conflicting inference from the brief) ===\n* Which functional areas should be included in the application?\n  - Include: Asset Register; Locations & Assignment; Depreciation \u2013 Co. Act; Depreciation \u2013 Inc. Tax; Asset Lifecycle; Physical Verification; Warranty & AMC\n  - EXCLUDE (explicitly declined by the user \u2014 do NOT specify these): Capital Budgeting\n* How fully-featured should the initial build be?\n  - Include: Standard\n* Should any asset actions require a manager's approval before they are recorded?\n  - Include: All key actions\n* Which reports and outputs are essential for day-to-day use and audits?\n  - Include: Depreciation Register; Verification Report; Warranty / AMC Expiry; Asset Register Report; Management Dashboard\nWrite the specification to cover EXACTLY this confirmed scope at the confirmed complexity level: include every confirmed item, honour every added point, and do not add functional areas, activities or enterprise features beyond it.",
+  "active_plan_id": "f4c8f40e-8745-4544-98d0-e42f36b24af2",
+  "plans": [
+    {
+      "id": "33f32b8b-9097-4cf1-94cf-f1b9411a022c",
+      "title": "The 180-day / 50% rule is mentioned in the application.json spec ('180-day usage",
+      "kind": "change",
+      "status": "completed",
+      "description": "have you ensured in income tax depreciation calculation the follwoing requirement  : If a new asset is put to use for less than 180 days in a financial year, only 50% of the normal depreciation rate is allowed",
+      "todos": [
+        {
+          "id": "change_1",
+          "step": "change",
+          "label": "Update FRS \u2014 Income Tax depreciation 50% rule",
+          "status": "completed",
+          "error": null,
+          "obj_name": null,
+          "obj_type": null,
+          "phase_id": null,
+          "started_at": 1785552955.2618928,
+          "completed_at": 1785552986.8416297
+        },
+        {
+          "id": "change_2",
+          "step": "change",
+          "label": "Update application.json \u2014 fam_gen_dep_income_tax functional_specs with explicit 50% formula",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_gen_dep_income_tax",
+          "obj_type": "G",
+          "phase_id": null,
+          "started_at": 1785552986.8500485,
+          "completed_at": 1785553019.2826922
+        },
+        {
+          "id": "change_3",
+          "step": "change",
+          "label": "Create G model \u2014 fam_gen_dep_income_tax",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_gen_dep_income_tax",
+          "obj_type": "G",
+          "phase_id": null,
+          "started_at": 1785553019.2905009,
+          "completed_at": 1785553324.55668
+        }
+      ],
+      "phases": [],
+      "profile_id": null,
+      "created_at": 1785552955.2460997,
+      "updated_at": 1785553626.3476121,
+      "depends_on": [],
+      "dependency_spec": null,
+      "run_scope": null
+    },
+    {
+      "id": "f4c8f40e-8745-4544-98d0-e42f36b24af2",
+      "title": "Build the Asset Register screen (fam_asset_register) and its Category Master (fa",
+      "kind": "change",
+      "status": "paused",
+      "description": "[The user currently has the \"Generate Depreciation - Companies Act\" screen open (object fam_gen_dep_companies_act, type G). Resolve \"this\", \"this form/page/screen\", or \"here\" to this object unless they name a different one.]\n\nI need the category code to be added but dont need a vendor code , just a free text of the vendor name in the asset register",
+      "todos": [
+        {
+          "id": "change_1",
+          "step": "change",
+          "label": "Update FRS: Asset Register vendor field becomes free-text VENDOR_NAME",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": null,
+          "phase_id": null,
+          "started_at": 1785759811.2470188,
+          "completed_at": 1785759832.1757505
+        },
+        {
+          "id": "change_2",
+          "step": "change",
+          "label": "Register Asset Category Master in navigation",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_category_master",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785759832.1850243,
+          "completed_at": 1785759868.33311
+        },
+        {
+          "id": "change_3",
+          "step": "change",
+          "label": "Register Asset Register in navigation",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785759868.3417802,
+          "completed_at": 1785759897.5614154
+        },
+        {
+          "id": "change_4",
+          "step": "change",
+          "label": "Create fam_asset_category_master model",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_category_master",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785759897.5699584,
+          "completed_at": 1785760077.1456845
+        },
+        {
+          "id": "change_5",
+          "step": "change",
+          "label": "Business logic: check_category_unused",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_category_master",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760077.1576796,
+          "completed_at": 1785760110.6163917
+        },
+        {
+          "id": "change_6",
+          "step": "change",
+          "label": "Business logic: activate_category",
+          "status": "error",
+          "error": "I couldn't apply this change automatically \u2014 the edit didn't take. Try rephrasing what you want, or adjust it in the designer.",
+          "obj_name": "fam_asset_category_master",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760110.7057793,
+          "completed_at": 1785760143.0134048
+        },
+        {
+          "id": "change_7",
+          "step": "change",
+          "label": "Business logic: deactivate_category",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_category_master",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760143.0222328,
+          "completed_at": 1785760165.0886617
+        },
+        {
+          "id": "change_8",
+          "step": "change",
+          "label": "Create fam_asset_register model",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760165.1242976,
+          "completed_at": 1785760558.259117
+        },
+        {
+          "id": "change_9",
+          "step": "change",
+          "label": "Business logic: submit_asset_register_for_approval",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760558.2677357,
+          "completed_at": 1785760584.103035
+        },
+        {
+          "id": "change_10",
+          "step": "change",
+          "label": "Business logic: approve_asset_register",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760584.1414824,
+          "completed_at": 1785760598.466504
+        },
+        {
+          "id": "change_11",
+          "step": "change",
+          "label": "Business logic: reject_asset_register",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760598.9260328,
+          "completed_at": 1785760622.676575
+        },
+        {
+          "id": "change_12",
+          "step": "change",
+          "label": "Business logic: generate_asset_register_tag",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_register",
+          "obj_type": "T",
+          "phase_id": null,
+          "started_at": 1785760622.7129726,
+          "completed_at": 1785760653.2891364
+        }
+      ],
+      "phases": [],
+      "profile_id": null,
+      "created_at": 1785759811.2269156,
+      "updated_at": 1785765414.823358,
+      "depends_on": [],
+      "dependency_spec": null,
+      "run_scope": null
+    }
+  ]
+}

@@ -1,0 +1,281 @@
+{
+  "table_name": "FAM_ASSET_TRANSFER",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "TRANSFER_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Auto-generated transfer number",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "TRANSFER_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the transfer is recorded",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset being transferred",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "ASSET_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Asset Register when ASSET_CODE is entered",
+      "sequence": 4
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Transfer workflow status",
+      "sequence": 5,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "DRAFT",
+          "label": "Draft"
+        },
+        {
+          "value": "PENDING_APPROVAL",
+          "label": "Pending Approval"
+        },
+        {
+          "value": "APPROVED",
+          "label": "Approved"
+        },
+        {
+          "value": "CANCELLED",
+          "label": "Cancelled"
+        }
+      ]
+    },
+    {
+      "column_name": "FROM_BRANCH_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset's current branch; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+      "sequence": 6
+    },
+    {
+      "column_name": "FROM_BRANCH_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Branch Master",
+      "sequence": 7
+    },
+    {
+      "column_name": "FROM_LOCATION_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset's current location; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+      "sequence": 8
+    },
+    {
+      "column_name": "FROM_LOCATION_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Location Master",
+      "sequence": 9
+    },
+    {
+      "column_name": "FROM_DEPARTMENT_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset's current department; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+      "sequence": 10
+    },
+    {
+      "column_name": "FROM_DEPARTMENT_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Department Master",
+      "sequence": 11
+    },
+    {
+      "column_name": "FROM_EMPLOYEE_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset's current custodian employee; auto-filled and locked from the Asset Register when ASSET_CODE is entered",
+      "sequence": 12
+    },
+    {
+      "column_name": "FROM_EMPLOYEE_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Employee Master",
+      "sequence": 13
+    },
+    {
+      "column_name": "TO_BRANCH_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Branch the asset is being moved to",
+      "sequence": 14,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_BRANCH_MASTER",
+        "display_column": "BRANCH_NAME",
+        "value_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "column_name": "TO_BRANCH_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Branch Master",
+      "sequence": 15
+    },
+    {
+      "column_name": "TO_LOCATION_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Location the asset is being moved to (within the selected To Branch)",
+      "sequence": 16,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_LOCATION_MASTER",
+        "display_column": "LOCATION_NAME",
+        "value_column": "LOCATION_CODE"
+      }
+    },
+    {
+      "column_name": "TO_LOCATION_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Location Master",
+      "sequence": 17
+    },
+    {
+      "column_name": "TO_DEPARTMENT_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Department the asset is being moved to (within the selected To Branch)",
+      "sequence": 18,
+      "lookup": {
+        "table": "FAM_DEPARTMENT_MASTER",
+        "display_column": "DEPARTMENT_NAME",
+        "value_column": "DEPARTMENT_CODE"
+      }
+    },
+    {
+      "column_name": "TO_DEPARTMENT_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Department Master",
+      "sequence": 19
+    },
+    {
+      "column_name": "TO_EMPLOYEE_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Employee the asset custody is being moved to",
+      "sequence": 20,
+      "lookup": {
+        "table": "FAM_EMPLOYEE_MASTER",
+        "display_column": "EMPLOYEE_NAME",
+        "value_column": "EMPLOYEE_CODE"
+      }
+    },
+    {
+      "column_name": "TO_EMPLOYEE_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Filled from the Employee Master",
+      "sequence": 21
+    },
+    {
+      "column_name": "TRANSFER_REASON",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Reason/justification for the transfer",
+      "sequence": 22,
+      "mandatory": true
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 23
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 24
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 25
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 26
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 27
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 28
+    }
+  ]
+}

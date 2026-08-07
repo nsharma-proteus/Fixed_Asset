@@ -1,0 +1,24 @@
+{
+  "table_name": "FAM_DEP_RATE_CA_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_dep_rate_ca_master",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "CHG_TERM",
+        "EFFECTIVE_FROM_DATE",
+        "CHG_USER",
+        "CHG_DATE",
+        "ADD_USER",
+        "CATEGORY_CODE",
+        "ADD_DATE",
+        "USEFUL_LIFE_YEARS",
+        "ID",
+        "ADD_TERM",
+        "RESIDUAL_VALUE_PCT",
+        "METHOD"
+      ]
+    }
+  ]
+}

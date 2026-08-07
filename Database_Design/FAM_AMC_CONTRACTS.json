@@ -1,0 +1,164 @@
+{
+  "table_name": "FAM_AMC_CONTRACTS",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "AMC_CONTRACT_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Auto-generated AMC contract number",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "AMC_VENDOR_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Vendor providing the AMC coverage. Assumption: modeled as free text since no Vendor/Supplier Master table exists yet in this project -- wire a lookup once that master is designed.",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "START_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the AMC coverage begins",
+      "sequence": 3,
+      "mandatory": true
+    },
+    {
+      "column_name": "END_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the AMC coverage ends",
+      "sequence": 4,
+      "mandatory": true
+    },
+    {
+      "column_name": "CONTRACT_COST",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Total cost of the AMC contract",
+      "sequence": 5,
+      "mandatory": true
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Contract lifecycle status. Assumption: DRAFT and PENDING_APPROVAL were added ahead of Active, to support the FRS-required Submit-for-approval/Approve actions -- the FRS's own STATUS list (Active/Expired/Renewed/Cancelled) has no pre-approval state.",
+      "sequence": 6,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "DRAFT",
+          "label": "Draft"
+        },
+        {
+          "value": "PENDING_APPROVAL",
+          "label": "Pending Approval"
+        },
+        {
+          "value": "ACTIVE",
+          "label": "Active"
+        },
+        {
+          "value": "EXPIRED",
+          "label": "Expired"
+        },
+        {
+          "value": "RENEWED",
+          "label": "Renewed"
+        },
+        {
+          "value": "CANCELLED",
+          "label": "Cancelled"
+        }
+      ]
+    },
+    {
+      "column_name": "PREVIOUS_CONTRACT_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Prior AMC contract this record renews (set automatically by the Renew action)",
+      "sequence": 7,
+      "lookup": {
+        "table": "FAM_AMC_CONTRACTS",
+        "display_column": "AMC_VENDOR_CODE",
+        "value_column": "AMC_CONTRACT_NO"
+      }
+    },
+    {
+      "column_name": "PREVIOUS_CONTRACT_VENDOR_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Vendor of the previous contract (display only, filled when Previous Contract No is set)",
+      "sequence": 8
+    },
+    {
+      "column_name": "PREVIOUS_CONTRACT_STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Status of the previous contract at the time it was linked (display only)",
+      "sequence": 9
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 10
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 11
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 12
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 13
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 14
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 15
+    }
+  ]
+}

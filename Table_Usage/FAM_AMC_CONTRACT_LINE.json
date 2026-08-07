@@ -1,0 +1,27 @@
+{
+  "table_name": "FAM_AMC_CONTRACT_LINE",
+  "objects": [
+    {
+      "object_name": "fam_amc_contracts",
+      "form_no": "2",
+      "usage_type": "M",
+      "referred_columns": [
+        "COVERAGE_REMARKS",
+        "AMC_CONTRACT_NO",
+        "ASSET_CODE",
+        "CHG_USER",
+        "LINE_NO",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "CHG_TERM",
+        "ADD_TERM"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "ASSET_CODE"
+      }
+    }
+  ]
+}

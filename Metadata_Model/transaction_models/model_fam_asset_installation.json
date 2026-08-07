@@ -1,0 +1,705 @@
+{
+  "transaction": {
+    "obj_name": "fam_asset_installation",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Asset Installation",
+          "form_descr": "Record and confirm the date and details of physical installation/commissioning of a capitalized asset at its assigned location, marking the point from which the asset is put to use",
+          "form_no": "1",
+          "main_table": "FAM_ASSET_INSTALLATION",
+          "columns": [
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Code",
+                "descr": "Capitalized asset being installed/commissioned",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Asset must be Capitalized",
+                    "error_code": "ASSET_MUST_BE_CAPITALIZED",
+                    "message": "Asset {form.asset_code} does not exist or is not in Capitalized status.",
+                    "builtin": {
+                      "kind": "must_exist_in_master",
+                      "table": "FAM_ASSET_REGISTER",
+                      "match_column": "ASSET_CODE",
+                      "conditions": [
+                        {
+                          "column": "STATUS",
+                          "op": "=",
+                          "source": "const",
+                          "value": "CAPITALIZED"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "builtin",
+                    "name": "One active installation per asset",
+                    "error_code": "ASSET_INSTALL_UNIQUE_ACTIVE",
+                    "message": "An active installation record already exists for asset {form.asset_code}.",
+                    "builtin": {
+                      "kind": "must_be_unique",
+                      "match_column": "ASSET_CODE",
+                      "conditions": [
+                        {
+                          "column": "STATUS",
+                          "op": "!=",
+                          "source": "const",
+                          "value": "CANCELLED"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "table_name": "FAM_ASSET_REGISTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Name",
+                "descr": "Asset name from the Asset Register (display only)",
+                "protect": "1",
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_display_name": "Asset Register (lookup for asset name / capitalization date)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "capitalization_date",
+                "db_name": "CAPITALIZATION_DATE",
+                "table_name": "FAM_ASSET_REGISTER",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Capitalization Date",
+                "descr": "Capitalization date from the Asset Register (display only); installation date cannot be earlier than this",
+                "protect": "1",
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_display_name": "Asset Register (lookup for asset name / capitalization date)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "installation_date",
+                "db_name": "INSTALLATION_DATE",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Installation Date",
+                "descr": "Date the asset was physically installed/commissioned",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Installation date not before capitalization date",
+                    "error_code": "INSTALL_DATE_GE_CAP_DATE",
+                    "message": "Installation date ({form.installation_date}) cannot be earlier than the asset's capitalization date ({form.capitalization_date}).",
+                    "expression": "{form.installation_date} >= {form.capitalization_date}"
+                  }
+                ],
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "installed_by",
+                "db_name": "INSTALLED_BY",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Installed By",
+                "descr": "Employee (or team lead) who carried out the installation",
+                "mandatory": true,
+                "lookup": "FAM_EMPLOYEE_MASTER(EMPLOYEE_NAME, EMPLOYEE_CODE)",
+                "must_exist_in": "FAM_EMPLOYEE_MASTER",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "installed_by_name",
+                "db_name": "EMPLOYEE_NAME",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Installed By (Name)",
+                "descr": "Name of the employee who carried out the installation (display only)",
+                "protect": "1",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_display_name": "Employee master (lookup for installed-by name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "installation_location_confirmed",
+                "db_name": "INSTALLATION_LOCATION_CONFIRMED",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Location Confirmed",
+                "descr": "Whether the asset's physical installation location has been confirmed as matching its assigned location",
+                "mandatory": true,
+                "default_value": "N",
+                "edit_mask": {
+                  "mask": "bool_check",
+                  "values": [
+                    {
+                      "data": "Y",
+                      "display": "Yes"
+                    },
+                    {
+                      "data": "N",
+                      "display": "No"
+                    }
+                  ]
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "1",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "installation_certificate_attachment",
+                "db_name": "INSTALLATION_CERTIFICATE_ATTACHMENT",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Documents",
+                "col_type": "VARCHAR",
+                "heading": "Installation Certificate",
+                "descr": "Uploaded installation/commissioning certificate document",
+                "edit_mask": {
+                  "mask": "document"
+                },
+                "x": "100",
+                "y": "100",
+                "col_id": "8",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "remarks",
+                "db_name": "REMARKS",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Remarks",
+                "descr": "Free-text notes about the installation",
+                "x": "80",
+                "y": "80",
+                "col_id": "9",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Lifecycle status of the installation record",
+                "default_value": "PENDING",
+                "mandatory": true,
+                "protect": "1",
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "PENDING",
+                      "display": "Pending"
+                    },
+                    {
+                      "data": "CONFIRMED",
+                      "display": "Confirmed"
+                    },
+                    {
+                      "data": "CANCELLED",
+                      "display": "Cancelled"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "PENDING",
+                      "color": "amber",
+                      "icon": "\u25cf",
+                      "label": "Pending"
+                    },
+                    {
+                      "when": "CONFIRMED",
+                      "color": "green",
+                      "icon": "\u2713",
+                      "label": "Confirmed"
+                    },
+                    {
+                      "when": "CANCELLED",
+                      "color": "red",
+                      "icon": "\u2715",
+                      "label": "Cancelled"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "90",
+                "y": "90",
+                "col_id": "10",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "Id",
+                "descr": "Internal sequence identifier (primary key)",
+                "key": true,
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 1,
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "",
+                "width": 50,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Record creation timestamp",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "descr": "Terminal/IP that created the record",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Changed On",
+                "descr": "Record last-change timestamp",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "table_name": "FAM_ASSET_INSTALLATION",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Changed Terminal",
+                "descr": "Terminal/IP that last changed the record",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
+                "table_display_name": "Asset installation record (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_ASSET_INSTALLATION",
+                  "main_table": true,
+                  "table_descr": "Asset installation record (main table)"
+                },
+                {
+                  "table": "FAM_ASSET_REGISTER",
+                  "main_table": false,
+                  "table_descr": "Asset Register (lookup for asset name / capitalization date)",
+                  "column": "ASSET_CODE",
+                  "join_table": "FAM_ASSET_INSTALLATION",
+                  "join_column": "ASSET_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_EMPLOYEE_MASTER",
+                  "main_table": false,
+                  "table_descr": "Employee master (lookup for installed-by name)",
+                  "column": "EMPLOYEE_CODE",
+                  "join_table": "FAM_ASSET_INSTALLATION",
+                  "join_column": "INSTALLED_BY",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "edit",
+              "handler": "system",
+              "system_op": "edit",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Only Pending records can be edited",
+                  "message": "This installation record is {form.status} and can no longer be edited (only Pending records may be edited).",
+                  "expression": "{form.status} == \"PENDING\""
+                }
+              ]
+            },
+            {
+              "name": "Submit for Approval",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "submit_installation_for_approval",
+                "description": "Submit the installation record for approval",
+                "spec": "Validate that the record's STATUS is PENDING (already enforced by the pre-action validation). This action hands the record to the approval workflow bound to this transaction for routing to an approver; it performs no direct status change of its own here \u2014 STATUS remains PENDING until the Approve action is actioned by the approver. Return a confirmation message such as 'Installation record for asset <ASSET_CODE> submitted for approval.'",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending to submit",
+                  "message": "Only Pending installation records can be submitted for approval (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING\""
+                }
+              ]
+            },
+            {
+              "name": "Approve",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "approve_installation",
+                "description": "Approve the installation record and set the asset's put-to-use date",
+                "spec": "Validate that the record's STATUS is PENDING (already enforced by the pre-action validation). Then: (1) UPDATE FAM_ASSET_INSTALLATION SET STATUS = 'CONFIRMED', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE ID = the payload's id. (2) UPDATE FAM_ASSET_REGISTER SET PUT_TO_USE_DATE = the payload's INSTALLATION_DATE WHERE ASSET_CODE = the payload's ASSET_CODE \u2014 this PUT_TO_USE_DATE is subsequently used as the depreciation start date for the asset whenever it is later than the asset's CAPITALIZATION_DATE. Return a confirmation message including the asset code and the installation date that was set as the put-to-use date.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending to approve",
+                  "message": "Only Pending installation records can be approved (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING\""
+                }
+              ]
+            },
+            {
+              "name": "Cancel",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "cancel_installation",
+                "description": "Cancel the installation record",
+                "spec": "Validate that the record's STATUS is PENDING (already enforced by the pre-action validation \u2014 a Confirmed record represents an asset already put to use and cannot be cancelled). UPDATE FAM_ASSET_INSTALLATION SET STATUS = 'CANCELLED', CHG_DATE = current timestamp, CHG_USER = current user, CHG_TERM = current terminal WHERE ID = the payload's id. Return a confirmation message that the installation record was cancelled.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending to cancel",
+                  "message": "Only Pending installation records can be cancelled (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING\""
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "follow_up_actions": [],
+    "attach_docs": [
+      "Installation Certificate"
+    ]
+  }
+}

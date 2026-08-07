@@ -1,0 +1,1 @@
+[1] Employee Master: employee_code(V20), employee_name(V100), branch_code(V20), branch_name(V100), department_code(V20), department_name(V100), designation(V60), status(V1), id(N), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)

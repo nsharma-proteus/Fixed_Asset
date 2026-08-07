@@ -1,0 +1,20 @@
+{
+  "id": "6916ae00-6936-4b06-b2e2-2b7500f3c6aa",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "I have updated opening wdv for all BLK D assets as on 31/03/2025 , I would like ",
+  "kind": "modify",
+  "status": "completed",
+  "description": "I have updated opening wdv for all BLK D assets as on 31/03/2025 , I would like ",
+  "created_at": 1786005131.942534,
+  "updated_at": 1786017600.6254356,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "I have updated opening wdv for all BLK D assets as on 31/03/2025 , I would like the system to calculate the deprication for all these assets for accounting year 25- 26 \ntell me how\n[follow-up] but as per the income tax act I also need to keep Income Tax depreciation for each year as a record\n[follow-up] but as per the income tax act I also need to keep records for Income Tax depreciation  for each asset for the financial year\n[follow-up] I dont see a \"Generate Income Tax Block Depreciation (WDV)\" in the menu\n[follow-up] I dont see a \"Generate Income Tax Block Depreciation (WDV)\" in the menu\n[follow-up] I am getting an error when generating  depreciation - Income tax \nRequest failed with status code 422",
+  "resume_ref": {
+    "session_id": "2a536a1c-dc44-4998-930a-9a0afdaf3b4f",
+    "claude_session_id": "9578b212-d2e5-4bbb-a858-9bb88235af68"
+  },
+  "depends_on": [],
+  "result_summary": "\"columnEditing\": true,\n  \"execution_mode\": \"edit\",\"}Found and fixed the likely cause of the 422.\n\n**Root cause:** the model had `\"MultiRowSelect\": true` sitting alongside `\"execution_mode\": \"edit\"` and `\"columnEditing\": true`. Per the platform's General Process spec, `MultiRowSelect` is the legacy flag for `execution_mode: \"select\"` (checkbox-driven row selection) \u2014 it should never be set together with `\"edit\"` mode. Comparing against its working sibling `fam_gen_dep_companies_act` (same \"edit\" mode, same workflow) confirmed that one has neither flag at all \u2014 only `columnEditing: true`. The stray `MultiRowSelect: true` on this object made the frontend send a request shape the backend didn't expect, which is consistent with a 422 (Unprocessable Entity) right at Generate.\n\n**Change made:** removed the erroneous `\"MultiRowSelect\": true` line from `Metadata_Model/general_process_models/model_fam_gen_dep_income_tax.json`, keeping `\"columnEditing\": true\"` (which correctly matches `execution_mode: \"edit\"`). Verified the file is still valid JSON. No other files touched \u2014 this restores the documented Generate \u2192 review/edit \u2192 Approve & Post workflow already in the FRS, so no FRS update was needed.\n\nPlease retry \"Generate\" on this screen \u2014 it should go through now. If it still 422s, let me know and I'll dig into the actual request payload next.\n\nFiles touched: Metadata_Model/general_process_models/model_fam_gen_dep_income_tax.json"
+}

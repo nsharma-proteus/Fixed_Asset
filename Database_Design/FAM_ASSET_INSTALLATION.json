@@ -1,0 +1,158 @@
+{
+  "table_name": "FAM_ASSET_INSTALLATION",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": true,
+      "description": "Internal sequence identifier (primary key)",
+      "sequence": 1
+    },
+    {
+      "column_name": "ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Capitalized asset being installed/commissioned",
+      "sequence": 2,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "INSTALLATION_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the asset was physically installed/commissioned",
+      "sequence": 3,
+      "mandatory": true
+    },
+    {
+      "column_name": "INSTALLED_BY",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Employee (or team lead) who carried out the installation",
+      "sequence": 4,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_EMPLOYEE_MASTER",
+        "display_column": "EMPLOYEE_NAME",
+        "value_column": "EMPLOYEE_CODE"
+      }
+    },
+    {
+      "column_name": "INSTALLATION_LOCATION_CONFIRMED",
+      "data_type": "VARCHAR",
+      "size": "1",
+      "key": false,
+      "description": "Whether the asset's physical installation location has been confirmed as matching its assigned location",
+      "sequence": 5,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "Y",
+          "label": "Yes"
+        },
+        {
+          "value": "N",
+          "label": "No"
+        }
+      ]
+    },
+    {
+      "column_name": "INSTALLATION_CERTIFICATE_ATTACHMENT",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Uploaded installation/commissioning certificate document",
+      "sequence": 6
+    },
+    {
+      "column_name": "REMARKS",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Free-text notes about the installation",
+      "sequence": 7
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Lifecycle status of the installation record",
+      "sequence": 8,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "PENDING",
+          "label": "Pending"
+        },
+        {
+          "value": "CONFIRMED",
+          "label": "Confirmed"
+        },
+        {
+          "value": "CANCELLED",
+          "label": "Cancelled"
+        }
+      ]
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Record creation timestamp",
+      "sequence": 9
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who created the record",
+      "sequence": 10
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP that created the record",
+      "sequence": 11
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Record last-change timestamp",
+      "sequence": 12
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who last changed the record",
+      "sequence": 13
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP that last changed the record",
+      "sequence": 14
+    }
+  ]
+}

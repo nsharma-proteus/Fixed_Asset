@@ -1,0 +1,24 @@
+{
+  "object_name": "fam_warranty_details",
+  "tables": {
+    "FAM_WARRANTY_DETAILS": [
+      "WARRANTY_TERMS",
+      "ASSET_CODE",
+      "WARRANTY_END_DATE",
+      "CHG_USER",
+      "CHG_DATE",
+      "ADD_USER",
+      "WARRANTY_START_DATE",
+      "ADD_DATE",
+      "ID",
+      "CHG_TERM",
+      "WARRANTY_DOCUMENT_ATTACHMENT",
+      "ADD_TERM",
+      "WARRANTY_PROVIDER_VENDOR_CODE"
+    ],
+    "FAM_ASSET_REGISTER": [
+      "ASSET_CODE",
+      "ASSET_NAME"
+    ]
+  }
+}

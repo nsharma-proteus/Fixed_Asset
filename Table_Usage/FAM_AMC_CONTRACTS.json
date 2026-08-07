@@ -1,0 +1,27 @@
+{
+  "table_name": "FAM_AMC_CONTRACTS",
+  "objects": [
+    {
+      "object_name": "fam_amc_contracts",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "PREVIOUS_CONTRACT_VENDOR_CODE",
+        "AMC_CONTRACT_NO",
+        "END_DATE",
+        "AMC_VENDOR_CODE",
+        "PREVIOUS_CONTRACT_STATUS",
+        "CHG_USER",
+        "CHG_DATE",
+        "PREVIOUS_CONTRACT_NO",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "CONTRACT_COST",
+        "CHG_TERM",
+        "ADD_TERM",
+        "START_DATE"
+      ]
+    }
+  ]
+}

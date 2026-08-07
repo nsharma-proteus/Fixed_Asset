@@ -1,0 +1,140 @@
+{
+  "table_name": "FAM_EMPLOYEE_MASTER",
+  "table_description": "",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "EMPLOYEE_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": true,
+      "description": "Unique code identifying the employee",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "EMPLOYEE_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Full name of the employee",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "BRANCH_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Branch the employee is attached to",
+      "sequence": 3,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_BRANCH_MASTER",
+        "display_column": "BRANCH_NAME",
+        "value_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "column_name": "DEPARTMENT_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Department the employee belongs to (within the selected branch)",
+      "sequence": 4,
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_DEPARTMENT_MASTER",
+        "display_column": "DEPARTMENT_NAME",
+        "value_column": "DEPARTMENT_CODE"
+      }
+    },
+    {
+      "column_name": "DESIGNATION",
+      "data_type": "VARCHAR",
+      "size": "60",
+      "key": false,
+      "description": "Job designation/title of the employee",
+      "sequence": 5
+    },
+    {
+      "column_name": "STATUS",
+      "data_type": "VARCHAR",
+      "size": "1",
+      "key": false,
+      "description": "Active, Inactive or Transferred status of the employee",
+      "sequence": 6,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "A",
+          "label": "Active"
+        },
+        {
+          "value": "I",
+          "label": "Inactive"
+        },
+        {
+          "value": "T",
+          "label": "Transferred"
+        }
+      ]
+    },
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": false,
+      "description": "Internal sequence identifier",
+      "sequence": 7
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Record creation timestamp",
+      "sequence": 8
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who created the record",
+      "sequence": 9
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP that created the record",
+      "sequence": 10
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "Record last-change timestamp",
+      "sequence": 11
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "User who last changed the record",
+      "sequence": 12
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "Terminal/IP that last changed the record",
+      "sequence": 13
+    }
+  ]
+}

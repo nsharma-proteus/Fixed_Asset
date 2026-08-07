@@ -1,0 +1,58 @@
+{
+  "table_name": "FAM_EMPLOYEE_MASTER",
+  "objects": [
+    {
+      "object_name": "fam_employee_master",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "CHG_TERM",
+        "CHG_USER",
+        "BRANCH_CODE",
+        "EMPLOYEE_NAME",
+        "CHG_DATE",
+        "ADD_USER",
+        "ADD_DATE",
+        "STATUS",
+        "EMPLOYEE_CODE",
+        "ID",
+        "ADD_TERM",
+        "DESIGNATION",
+        "DEPARTMENT_CODE"
+      ],
+      "join_info": {
+        "column": "DEPARTMENT_CODE",
+        "join_table": "FAM_DEPARTMENT_MASTER",
+        "join_column": "DEPARTMENT_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_installation",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "EMPLOYEE_NAME",
+        "EMPLOYEE_CODE"
+      ],
+      "join_info": {
+        "column": "EMPLOYEE_CODE",
+        "join_table": "FAM_ASSET_INSTALLATION",
+        "join_column": "INSTALLED_BY"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "EMPLOYEE_NAME",
+        "EMPLOYEE_CODE"
+      ],
+      "join_info": {
+        "column": "EMPLOYEE_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "ASSIGNED_EMPLOYEE_CODE"
+      }
+    }
+  ]
+}

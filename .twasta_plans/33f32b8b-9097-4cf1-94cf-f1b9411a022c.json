@@ -1,0 +1,58 @@
+{
+  "id": "33f32b8b-9097-4cf1-94cf-f1b9411a022c",
+  "project": "Fixed_Asset",
+  "backend": "autoagent",
+  "title": "The 180-day / 50% rule is mentioned in the application.json spec ('180-day usage",
+  "kind": "change",
+  "status": "completed",
+  "description": "have you ensured in income tax depreciation calculation the follwoing requirement  : If a new asset is put to use for less than 180 days in a financial year, only 50% of the normal depreciation rate is allowed",
+  "created_at": 1785552955.248508,
+  "updated_at": 1785765419.7714138,
+  "todos": [
+    {
+      "id": "change_1",
+      "step": "change",
+      "label": "Update FRS \u2014 Income Tax depreciation 50% rule",
+      "status": "completed",
+      "error": null,
+      "obj_name": null,
+      "obj_type": null,
+      "phase_id": null,
+      "started_at": 1785552955.2618928,
+      "completed_at": 1785552986.8416297
+    },
+    {
+      "id": "change_2",
+      "step": "change",
+      "label": "Update application.json \u2014 fam_gen_dep_income_tax functional_specs with explicit 50% formula",
+      "status": "completed",
+      "error": null,
+      "obj_name": "fam_gen_dep_income_tax",
+      "obj_type": "G",
+      "phase_id": null,
+      "started_at": 1785552986.8500485,
+      "completed_at": 1785553019.2826922
+    },
+    {
+      "id": "change_3",
+      "step": "change",
+      "label": "Create G model \u2014 fam_gen_dep_income_tax",
+      "status": "completed",
+      "error": null,
+      "obj_name": "fam_gen_dep_income_tax",
+      "obj_type": "G",
+      "phase_id": null,
+      "started_at": 1785553019.2905009,
+      "completed_at": 1785553324.55668
+    }
+  ],
+  "phases": [],
+  "originating_prompt": "have you ensured in income tax depreciation calculation the follwoing requirement  : If a new asset is put to use for less than 180 days in a financial year, only 50% of the normal depreciation rate is allowed",
+  "resume_ref": {
+    "session_id": "9f03708f-74e9-4e40-bca4-484c5f563abc",
+    "plan_id": "33f32b8b-9097-4cf1-94cf-f1b9411a022c",
+    "scope": null
+  },
+  "depends_on": [],
+  "result_summary": ""
+}

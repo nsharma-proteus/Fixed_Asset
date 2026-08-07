@@ -1,0 +1,344 @@
+{
+  "application": {
+    "id": "Fixed_Asset",
+    "title": "Fixed Asset Management",
+    "description": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
+    "icon": "inventory_2",
+    "theme_color": "#2E5B87",
+    "group": "generated",
+    "generated": true,
+    "auth": {
+      "providers": [
+        "project-users"
+      ],
+      "requireLogin": true,
+      "defaultRoles": [
+        "member"
+      ]
+    },
+    "folder_name": "Fixed_Asset"
+  },
+  "navigation": [
+    {
+      "id": "fam.1",
+      "title": "Asset Register",
+      "parent_id": "",
+      "icon_image": "inventory",
+      "description": "Asset classification and statutory asset register masters",
+      "obj_name": "fam_asset_register_group",
+      "obj_type": "-",
+      "menu_path": "fam.1",
+      "functional_specs": "Groups asset category classification master and the statutory Asset Register"
+    },
+    {
+      "id": "fam.1.1",
+      "title": "Asset Category Master",
+      "parent_id": "fam.1",
+      "icon_image": "category",
+      "description": "Maintain the classification of assets used to default useful life, depreciation method and applicable statutory rates on the Asset Register.",
+      "obj_name": "fam_asset_category_master",
+      "obj_type": "T",
+      "menu_path": "fam.1.1",
+      "functional_specs": "Data points: CATEGORY_CODE (PK, unique), CATEGORY_NAME, PARENT_CATEGORY_CODE (optional self-lookup), COMPANIES_ACT_USEFUL_LIFE_YEARS, COMPANIES_ACT_DEFAULT_METHOD (SLM/WDV), COMPANIES_ACT_RESIDUAL_VALUE_PCT, INCOME_TAX_BLOCK_CODE (default, must exist in FAM_DEP_RATE_IT_MASTER.BLOCK_CODE), STATUS (Active/Inactive). Rules: CATEGORY_CODE unique; COMPANIES_ACT_USEFUL_LIFE_YEARS > 0; COMPANIES_ACT_RESIDUAL_VALUE_PCT between 0 and 100. Actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate. Deactivating blocks use on new Asset Register entries but does not affect existing assets."
+    },
+    {
+      "id": "fam.1.2",
+      "title": "Asset Register",
+      "parent_id": "fam.1",
+      "icon_image": "list_alt",
+      "description": "Capture and maintain the complete statutory record of each fixed asset as required under the Companies Act, from acquisition through its active life.",
+      "obj_name": "fam_asset_register",
+      "obj_type": "T",
+      "menu_path": "fam.1.2",
+      "functional_specs": "Data points: ASSET_CODE (auto), ASSET_NAME, CATEGORY_CODE (lookup FAM_ASSET_CATEGORY_MASTER.CATEGORY_CODE), SERIAL_NO, MAKE, MODEL, DESCRIPTION, ASSET_PHOTO, QR_CODE/BARCODE_TAG, BRANCH_CODE (lookup FAM_BRANCH_MASTER.BRANCH_CODE), LOCATION_CODE (lookup FAM_LOCATION_MASTER.LOCATION_CODE), DEPARTMENT_CODE (lookup FAM_DEPARTMENT_MASTER.DEPARTMENT_CODE), ASSIGNED_EMPLOYEE_CODE (lookup FAM_EMPLOYEE_MASTER.EMPLOYEE_CODE), VENDOR_NAME (free text, no master lookup), PURCHASE_INVOICE_NO, PURCHASE_DATE, PURCHASE_COST, OTHER_CAPITALIZED_COST, TOTAL_CAPITALIZED_COST (computed = PURCHASE_COST + OTHER_CAPITALIZED_COST), CAPITALIZATION_DATE (>= PURCHASE_DATE), COMPANIES_ACT_USEFUL_LIFE_YEARS, COMPANIES_ACT_METHOD (SLM/WDV), COMPANIES_ACT_RESIDUAL_VALUE, INCOME_TAX_BLOCK_CODE, WARRANTY_START_DATE, WARRANTY_END_DATE, AMC_APPLICABLE (Y/N), STATUS (Draft/Pending Approval/Capitalized/Under Transfer/Disposed/Under Investigation), REMARKS. Rules: SERIAL_NO unique within CATEGORY_CODE; PURCHASE_COST > 0; TOTAL_CAPITALIZED_COST auto-computed; CAPITALIZATION_DATE >= PURCHASE_DATE; CATEGORY_CODE/BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE must exist in their masters; VENDOR_NAME is free text, not validated against a master; core financial fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE) locked once STATUS = Capitalized. Actions: Search, Add, Edit, Delete (Draft only), Submit-for-approval, Approve (sets STATUS=Capitalized), Reject, Generate QR Code/Barcode Tag."
+    },
+    {
+      "id": "fam.2",
+      "title": "Locations & Assignment",
+      "parent_id": "",
+      "icon_image": "place",
+      "description": "Branch, location, department and employee custody masters",
+      "obj_name": "fam_locations_group",
+      "obj_type": "-",
+      "menu_path": "fam.2",
+      "functional_specs": "Groups organisational structure masters used for asset placement and custody assignment"
+    },
+    {
+      "id": "fam.2.1",
+      "title": "Branch Master",
+      "parent_id": "fam.2",
+      "icon_image": "business",
+      "description": "Maintain organisation branches",
+      "obj_name": "fam_branch_master",
+      "obj_type": "T",
+      "menu_path": "fam.2.1",
+      "functional_specs": "Maintain BRANCH_CODE, BRANCH_NAME, ADDRESS, CITY, STATE, STATUS. Actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate. Rule: unique BRANCH_CODE."
+    },
+    {
+      "id": "fam.2.2",
+      "title": "Location Master",
+      "parent_id": "fam.2",
+      "icon_image": "room",
+      "description": "Maintain physical locations within a branch",
+      "obj_name": "fam_location_master",
+      "obj_type": "T",
+      "menu_path": "fam.2.2",
+      "functional_specs": "Maintain LOCATION_CODE, LOCATION_NAME, BRANCH_CODE, ADDRESS/DESCRIPTION, STATUS. Actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate. Rules: unique LOCATION_CODE within BRANCH_CODE; BRANCH_CODE must exist in Branch Master."
+    },
+    {
+      "id": "fam.2.3",
+      "title": "Department Master",
+      "parent_id": "fam.2",
+      "icon_image": "apartment",
+      "description": "Maintain departments/cost centres within a branch",
+      "obj_name": "fam_department_master",
+      "obj_type": "T",
+      "menu_path": "fam.2.3",
+      "functional_specs": "Maintain DEPARTMENT_CODE, DEPARTMENT_NAME, BRANCH_CODE, COST_CENTRE_CODE, STATUS. Actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate. Rule: unique DEPARTMENT_CODE within BRANCH_CODE."
+    },
+    {
+      "id": "fam.2.4",
+      "title": "Employee Master",
+      "parent_id": "fam.2",
+      "icon_image": "badge",
+      "description": "Lightweight employee directory for asset custody",
+      "obj_name": "fam_employee_master",
+      "obj_type": "T",
+      "menu_path": "fam.2.4",
+      "functional_specs": "Maintain EMPLOYEE_CODE, EMPLOYEE_NAME, BRANCH_CODE, DEPARTMENT_CODE, DESIGNATION, STATUS (Active/Inactive/Transferred), used solely to assign custody of assets. Actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate. Rules: unique EMPLOYEE_CODE; BRANCH_CODE and DEPARTMENT_CODE must exist. Deactivating an employee flags assigned assets for reassignment via Asset Transfer."
+    },
+    {
+      "id": "fam.3",
+      "title": "Depreciation - Companies Act",
+      "parent_id": "",
+      "icon_image": "calculate",
+      "description": "Schedule II depreciation rate maintenance and generation",
+      "obj_name": "fam_dep_ca_group",
+      "obj_type": "-",
+      "menu_path": "fam.3",
+      "functional_specs": "Groups Companies Act (Schedule II) depreciation rate master and monthly generation activity"
+    },
+    {
+      "id": "fam.3.1",
+      "title": "Depreciation Rate Master - Companies Act",
+      "parent_id": "fam.3",
+      "icon_image": "percent",
+      "description": "Maintain Schedule II useful life, method and residual norms",
+      "obj_name": "fam_dep_rate_ca_master",
+      "obj_type": "T",
+      "menu_path": "fam.3.1",
+      "functional_specs": "Maintain CATEGORY_CODE, USEFUL_LIFE_YEARS, METHOD (SLM/WDV), RESIDUAL_VALUE_PCT, EFFECTIVE_FROM_DATE. Actions: Search, Add, Edit, Delete (only if unused). Rules: one active rate per CATEGORY_CODE at a time; residual 0-100%; useful life > 0."
+    },
+    {
+      "id": "fam.3.2",
+      "title": "Generate Depreciation - Companies Act",
+      "parent_id": "fam.3",
+      "icon_image": "play_circle",
+      "description": "Compute and post pro-rata monthly Schedule II depreciation",
+      "obj_name": "fam_gen_dep_companies_act",
+      "obj_type": "G",
+      "menu_path": "fam.3.2",
+      "functional_specs": "Criteria: FINANCIAL_YEAR, PERIOD_MONTH, BRANCH_CODE (optional). Generates lines per capitalized asset: OPENING_WDV, ADDITIONS_DURING_MONTH, DISPOSALS_DURING_MONTH, DEPRECIATION_METHOD, MONTHLY_DEPRECIATION_AMOUNT, CLOSING_WDV, ACCUMULATED_DEPRECIATION, ADJUSTMENT_REMARKS. Actions: Generate (preview), Edit (adjustment only), Submit-for-approval, Approve & Post, Cancel, Close Financial Year (locks 12 posted periods, rolls forward closing WDV). Rules: pro-rata from CAPITALIZATION_DATE/Installation Date; stops in disposal month; CLOSING_WDV cannot go below residual; period cannot be regenerated once posted. On Approve & Post updates Asset Register accumulated depreciation/WDV and feeds Depreciation Register."
+    },
+    {
+      "id": "fam.4",
+      "title": "Depreciation - Income Tax",
+      "parent_id": "",
+      "icon_image": "account_balance",
+      "description": "Block-of-assets depreciation rate maintenance and generation",
+      "obj_name": "fam_dep_it_group",
+      "obj_type": "-",
+      "menu_path": "fam.4",
+      "functional_specs": "Groups Income Tax block-of-assets depreciation rate master and annual generation activity"
+    },
+    {
+      "id": "fam.4.1",
+      "title": "Depreciation Rate Master - Income Tax",
+      "parent_id": "fam.4",
+      "icon_image": "percent",
+      "description": "Maintain block-of-assets rates under Income Tax Rules",
+      "obj_name": "fam_dep_rate_it_master",
+      "obj_type": "T",
+      "menu_path": "fam.4.1",
+      "functional_specs": "Maintain BLOCK_CODE, BLOCK_DESCRIPTION, RATE_PCT, EFFECTIVE_FROM_DATE. Actions: Search, Add, Edit, Delete (only if unused). Rules: one active rate per BLOCK_CODE at a time; RATE_PCT 0-100."
+    },
+    {
+      "id": "fam.4.2",
+      "title": "Generate Depreciation - Income Tax",
+      "parent_id": "fam.4",
+      "icon_image": "functions",
+      "description": "Compute and post annual block-wise WDV depreciation",
+      "obj_name": "fam_gen_dep_income_tax",
+      "obj_type": "G",
+      "menu_path": "fam.4.2",
+      "functional_specs": "Criteria: ASSESSMENT_YEAR, BLOCK_CODE (optional), BRANCH_CODE (optional). Source tables: FAM_ASSET_REGISTER (ASSET_CODE, INCOME_TAX_BLOCK_CODE, CAPITALIZATION_DATE, TOTAL_CAPITALIZED_COST, STATUS), FAM_ASSET_INSTALLATION (ASSET_CODE, INSTALLATION_DATE used as PUT_TO_USE_DATE when confirmed), FAM_ASSET_DISPOSAL (ASSET_CODE, DISPOSAL_DATE, SALE_VALUE used as disposal proceeds), FAM_DEP_RATE_IT_MASTER (BLOCK_CODE, RATE_PCT, EFFECTIVE_FROM_DATE). One output row per BLOCK_CODE (per BRANCH_CODE when branch filter applied). Output columns: OPENING_WDV (closing WDV from previous assessment year, or 0 for first year), ADDITIONS_180_DAYS_OR_MORE (TOTAL_CAPITALIZED_COST of assets first put to use in this FY on or before 3 October \u2014 use confirmed INSTALLATION_DATE if available, else CAPITALIZATION_DATE), ADDITIONS_LESS_THAN_180_DAYS (TOTAL_CAPITALIZED_COST of assets first put to use in this FY after 3 October), DISPOSALS_DURING_YEAR (sum of sale/insurance proceeds from FAM_ASSET_DISPOSAL where DISPOSAL_DATE falls in this FY and STATUS = Approved), RATE_PCT (from FAM_DEP_RATE_IT_MASTER, latest EFFECTIVE_FROM_DATE \u2264 first day of the FY), DEPRECIATION_AMOUNT, CLOSING_WDV. Computation: NET_BLOCK = OPENING_WDV + ADDITIONS_180_DAYS_OR_MORE + ADDITIONS_LESS_THAN_180_DAYS \u2212 DISPOSALS_DURING_YEAR. If NET_BLOCK \u2264 0: DEPRECIATION_AMOUNT = 0, CLOSING_WDV = 0, STCG = |NET_BLOCK| shown in REMARKS. If NET_BLOCK > 0: DEPRECIATION_AMOUNT = max(0, OPENING_WDV + ADDITIONS_180_DAYS_OR_MORE \u2212 DISPOSALS_DURING_YEAR) \u00d7 RATE_PCT + ADDITIONS_LESS_THAN_180_DAYS \u00d7 (RATE_PCT \u00d7 50%), capped at NET_BLOCK; CLOSING_WDV = NET_BLOCK \u2212 DEPRECIATION_AMOUNT. Actions: Generate (preview), Edit (adjustment remarks only), Submit-for-approval, Approve & Post, Cancel. On Approve & Post: store CLOSING_WDV as next year OPENING_WDV per block and feed Depreciation Register. Period cannot be re-generated once posted."
+    },
+    {
+      "id": "fam.5",
+      "title": "Asset Lifecycle",
+      "parent_id": "",
+      "icon_image": "sync_alt",
+      "description": "Installation, transfer and disposal of assets",
+      "obj_name": "fam_lifecycle_group",
+      "obj_type": "-",
+      "menu_path": "fam.5",
+      "functional_specs": "Groups asset installation confirmation, inter-branch/location/employee transfer and sale/scrap disposal activities"
+    },
+    {
+      "id": "fam.5.1",
+      "title": "Asset Installation",
+      "parent_id": "fam.5",
+      "icon_image": "build",
+      "description": "Record and confirm asset installation/commissioning",
+      "obj_name": "fam_asset_installation",
+      "obj_type": "T",
+      "menu_path": "fam.5.1",
+      "functional_specs": "Data points: ASSET_CODE, INSTALLATION_DATE, INSTALLED_BY, INSTALLATION_LOCATION_CONFIRMED (Y/N), INSTALLATION_CERTIFICATE_ATTACHMENT, REMARKS, STATUS (Pending/Confirmed). Actions: Search, Add, Edit (Pending only), Submit-for-approval, Approve, Cancel. Rules: ASSET_CODE must be Capitalized; INSTALLATION_DATE >= CAPITALIZATION_DATE; one active installation record per asset. On Approve, Asset Register PUT_TO_USE_DATE is set and used as depreciation start date where later than capitalization."
+    },
+    {
+      "id": "fam.5.2",
+      "title": "Asset Transfer",
+      "parent_id": "fam.5",
+      "icon_image": "swap_horiz",
+      "description": "Move assets between branch/location/department/employee",
+      "obj_name": "fam_asset_transfer",
+      "obj_type": "T",
+      "menu_path": "fam.5.2",
+      "functional_specs": "Data points: TRANSFER_NO (auto), TRANSFER_DATE, ASSET_CODE, FROM/TO BRANCH_CODE, LOCATION_CODE, DEPARTMENT_CODE, EMPLOYEE_CODE, TRANSFER_REASON, STATUS (Draft/Pending Approval/Approved/Cancelled). Actions: Search, Add, Edit (Draft only), Submit-for-approval, Approve, Cancel. Rules: TO combination must differ from FROM; ASSET_CODE must be Capitalized/Active; FROM values default from and must match current asset location. On Approve, Asset Register current location/custody fields updated and transfer history retained for audit."
+    },
+    {
+      "id": "fam.5.3",
+      "title": "Asset Sale / Scrap",
+      "parent_id": "fam.5",
+      "icon_image": "delete_sweep",
+      "description": "Record asset disposal by sale or scrap",
+      "obj_name": "fam_asset_disposal",
+      "obj_type": "T",
+      "menu_path": "fam.5.3",
+      "functional_specs": "Data points: DISPOSAL_NO (auto), DISPOSAL_DATE, ASSET_CODE, DISPOSAL_TYPE (Sale/Scrap), SALE_VALUE, BUYER_OR_SCRAP_VENDOR_CODE, NET_BOOK_VALUE_AS_ON_DISPOSAL (computed), PROFIT_LOSS_ON_DISPOSAL (computed), DISPOSAL_REASON, STATUS (Draft/Pending Approval/Approved/Cancelled). Actions: Search, Add, Edit (Draft only), Submit-for-approval, Approve, Cancel. Rules: asset must not already be Disposed; DISPOSAL_DATE >= CAPITALIZATION_DATE; PROFIT_LOSS_ON_DISPOSAL = SALE_VALUE - NBV; SALE_VALUE mandatory for Sale. On Approve, Asset Register STATUS = Disposed and asset excluded from future depreciation generation and Income Tax block."
+    },
+    {
+      "id": "fam.6",
+      "title": "Physical Verification",
+      "parent_id": "",
+      "icon_image": "fact_check",
+      "description": "Periodic physical confirmation of assets",
+      "obj_name": "fam_verification_group",
+      "obj_type": "-",
+      "menu_path": "fam.6",
+      "functional_specs": "Groups physical verification cycle planning and execution activities"
+    },
+    {
+      "id": "fam.6.1",
+      "title": "Conduct Physical Verification",
+      "parent_id": "fam.6",
+      "icon_image": "qr_code_scanner",
+      "description": "Plan and execute periodic asset verification cycles",
+      "obj_name": "fam_physical_verification",
+      "obj_type": "T",
+      "menu_path": "fam.6.1",
+      "functional_specs": "Header: VERIFICATION_CYCLE_NO (auto), VERIFICATION_DATE, BRANCH_CODE, LOCATION_CODE, VERIFIER_EMPLOYEE_CODE, STATUS (Planned/In Progress/Pending Approval/Closed). Lines: ASSET_CODE, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE, PHYSICAL_STATUS_FOUND (Found/Not Found/Damaged/Extra-Unregistered), VERIFIED_DATE, REMARKS. Actions: Search, Add cycle, Scan QR/Barcode to confirm asset, Mark Found/Not Found/Damaged, Submit-for-approval, Approve, Cancel. Rules: lines default from all Capitalized assets in selected branch/location; each asset once per cycle; cannot close while unverified lines remain. On Approve, Not Found assets set Asset Register STATUS = Under Investigation; Damaged assets raise a follow-up remark flag; feeds Verification Report."
+    },
+    {
+      "id": "fam.7",
+      "title": "Warranty & AMC",
+      "parent_id": "",
+      "icon_image": "verified",
+      "description": "Warranty coverage and Annual Maintenance Contracts",
+      "obj_name": "fam_warranty_amc_group",
+      "obj_type": "-",
+      "menu_path": "fam.7",
+      "functional_specs": "Groups warranty detail tracking and AMC contract management activities"
+    },
+    {
+      "id": "fam.7.1",
+      "title": "Warranty Details",
+      "parent_id": "fam.7",
+      "icon_image": "shield",
+      "description": "Record manufacturer/vendor warranty coverage",
+      "obj_name": "fam_warranty_details",
+      "obj_type": "T",
+      "menu_path": "fam.7.1",
+      "functional_specs": "Data points: ASSET_CODE, WARRANTY_PROVIDER_VENDOR_CODE, WARRANTY_START_DATE, WARRANTY_END_DATE, WARRANTY_TERMS, WARRANTY_DOCUMENT_ATTACHMENT. Actions: Search, Add, Edit. Rules: WARRANTY_END_DATE > WARRANTY_START_DATE; ASSET_CODE must exist and be Capitalized. Feeds Warranty / AMC Expiry visual."
+    },
+    {
+      "id": "fam.7.2",
+      "title": "AMC Contracts",
+      "parent_id": "fam.7",
+      "icon_image": "handshake",
+      "description": "Track Annual Maintenance Contracts and renewals",
+      "obj_name": "fam_amc_contracts",
+      "obj_type": "T",
+      "menu_path": "fam.7.2",
+      "functional_specs": "Header: AMC_CONTRACT_NO (auto), AMC_VENDOR_CODE, START_DATE, END_DATE, CONTRACT_COST, STATUS (Active/Expired/Renewed/Cancelled), PREVIOUS_CONTRACT_NO. Lines: ASSET_CODE, ASSET_NAME, COVERAGE_REMARKS. Actions: Search, Add, Edit, Renew, Submit-for-approval, Approve, Cancel. Rules: END_DATE > START_DATE; each line asset must be Capitalized; renewal creates new contract linked to previous and sets prior to Renewed. On Approve, covered assets flagged AMC_APPLICABLE = Y; feeds Warranty / AMC Expiry visual. Trigger: send-notification to asset owner/branch when warranty or AMC coverage is within 30 days of expiry."
+    },
+    {
+      "id": "fam.8",
+      "title": "Reports & Analytics",
+      "parent_id": "",
+      "icon_image": "insights",
+      "description": "Statutory reports, expiry visuals and management dashboard",
+      "obj_name": "fam_reports_group",
+      "obj_type": "-",
+      "menu_path": "fam.8",
+      "functional_specs": "Groups statutory print reports, BI visuals and the management dashboard"
+    },
+    {
+      "id": "fam.8.3",
+      "title": "Verification Report",
+      "parent_id": "fam.8",
+      "icon_image": "checklist",
+      "description": "Physical verification confirmation document",
+      "obj_name": "fam_verification_report",
+      "obj_type": "R",
+      "menu_path": "fam.8.3",
+      "functional_specs": "Criteria: VERIFICATION_CYCLE_NO, BRANCH_CODE, LOCATION_CODE, VERIFICATION_DATE range. Grouped by LOCATION_CODE with count of assets by PHYSICAL_STATUS_FOUND per location and grand total verified count. Columns: ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, PHYSICAL_STATUS_FOUND, REMARKS, VERIFIED_DATE. Footer signature blocks for Verifier and Approver."
+    },
+    {
+      "id": "fam.8.4",
+      "title": "Warranty / AMC Expiry",
+      "parent_id": "fam.8",
+      "icon_image": "event_busy",
+      "description": "Grid of warranty and AMC coverage approaching expiry",
+      "obj_name": "fam_warranty_amc_expiry",
+      "obj_type": "V",
+      "menu_path": "fam.8.4",
+      "functional_specs": "Grid visualization. Criteria: BRANCH_CODE, LOCATION_CODE, TYPE (Warranty/AMC), EXPIRY_DATE range, STATUS. Data points: ASSET_CODE, ASSET_NAME, TYPE, PROVIDER_VENDOR_CODE, START_DATE, END_DATE, DAYS_TO_EXPIRY, STATUS. Drill-down: clicking ASSET_CODE opens Asset Register detail for that asset."
+    },
+    {
+      "id": "fam.8.5",
+      "title": "Management Dashboard",
+      "parent_id": "fam.8",
+      "icon_image": "dashboard",
+      "description": "Consolidated asset, depreciation and verification KPIs for Asset/Finance Manager",
+      "obj_name": "fam_management_dashboard",
+      "obj_type": "D",
+      "menu_path": "fam.8.5",
+      "functional_specs": "Criteria: FINANCIAL_YEAR (default current FY), BRANCH_CODE (default logged-in user's branch, selectable All). Visuals: Total Gross Asset Value (Card+sparkline), Total Net Book Value (Card), Assets Pending Approval (Card), Warranty/AMC Expiring in 30 Days (Card, drills to Warranty / AMC Expiry), Asset Value by Category (Doughnut-Chart, drills to Asset Register Report), Asset Count by Location (Column-Chart, drills to Asset Register Report), Monthly Depreciation Trend - Companies Act (Line-Chart, drills to Depreciation Register), Depreciation Comparison Companies Act vs Income Tax (Stacked-Column-Chart, drills to Depreciation Register), Physical Verification Status (Pie-Chart, drills to Verification Report), Asset Disposal Value Sale vs Scrap (Waterfall, drills to Asset Register Report filtered to disposed), Monthly Depreciation Posting Compliance (Gauge vs 100% target)."
+    },
+    {
+      "id": "fam.8.6",
+      "title": "Asset Depreciation Reconciliation (CA vs IT)",
+      "parent_id": "fam.8",
+      "icon_image": "dashboard",
+      "description": "Per-asset period-wise depreciation detail for reconciliation",
+      "obj_name": "fam_asset_depreciation_reconciliation",
+      "obj_type": "D",
+      "menu_path": "fam.8.6",
+      "functional_specs": "Pick one asset (ASSET_CODE lookup) to see two panels side by side: (1) Companies Act \u2014 every posted/draft period from FAM_DEP_COMPANIES_ACT_REGISTER for that asset (opening WDV, additions, disposals, monthly depreciation, closing WDV, accumulated depreciation, status), real per-asset figures generated by the 'Generate Depreciation - Companies Act' process; (2) Income Tax \u2014 every year's row from FAM_DEP_INCOME_TAX_BLOCK for the Income Tax block the asset belongs to (block-level opening/additions/disposals/rate/depreciation/closing WDV/status, generated by 'Generate Income Tax Block Depreciation'), clearly labeled as block-level (not a statutory per-asset figure) plus one extra estimated column allocating the block's depreciation to this asset pro-rata by its share of the block's capitalized cost, for reconciliation against the Companies Act figure. Both panels populate only after the corresponding Generate + Approve & Post cycle has been run at least once for that period/year.",
+      "order": 4
+    },
+    {
+      "id": "fam.4.3",
+      "title": "Income Tax Depreciation - Asset Ledger (Form 3CD)",
+      "parent_id": "fam.4",
+      "icon_image": "settings_suggest",
+      "description": "Asset-level Income Tax depreciation ledger for Tax Audit Form 3CD Clause 18 disclosure",
+      "obj_name": "fam_gen_dep_it_asset_ledger",
+      "obj_type": "G",
+      "menu_path": "fam.4.3",
+      "functional_specs": "Generates a per-asset, per-Assessment-Year Income Tax depreciation ledger to satisfy Tax Audit Form 3CD Clause 18, which requires depreciation-claimed particulars at asset level. Under the Income Tax Act depreciation is computed and legally exists only at BLOCK level (see the sibling process \"Generate Depreciation - Income Tax\"); this process does NOT recompute the statutory figure. Instead it takes each block's already-computed annual depreciation amount and ALLOCATES it across the block's member assets on a documented proportional basis, purely for disclosure/record-keeping.\n\nCriteria: Assessment Year (number, required), Block Code (dropdown from Depreciation Rate Master - Income Tax, default ALL), Branch (dropdown from Branch Master, default ALL).\n\nSource logic: recomputes the same block-wise WDV depreciation as the sibling block process (opening WDV incl. the block's legacy Opening WDV/As-On-Date onboarding fields, additions split by the 180-day put-to-use rule at full/half rate, disposals during the year, rate from the Income Tax Rate Master, depreciation amount capped at net block). For each eligible asset (has a Capitalization Date and an Income Tax Block Code) it then determines: RATE_CATEGORY (DISPOSED / ADDITION_FULL_RATE / ADDITION_HALF_RATE / OPENING_BLOCK_MEMBER / NOT_ELIGIBLE) and an allocation weight \u2014 its own acquisition cost for a full-rate addition this year, half its cost for a half-rate addition, its own legacy Income Tax Opening WDV seed (from the Asset Register's Income Tax Opening WDV / Income Tax Opening WDV As On Date fields) if it was already a block member before this financial year, or 0 if disposed during the year. DEPRECIATION_ALLOCATED = the block's total depreciation amount x this asset's weight / sum of weights of all its block's member assets. GROSS_BLOCK is always the asset's own full acquisition cost. OPENING_WDV_ALLOCATED and CLOSING_WDV_ALLOCATED are shown per asset on the same allocation basis.\n\nOutput columns per row (one per Assessment Year + Asset): Assessment Year, Asset Code, Asset Name, Block Code, Block Description, Branch Code Filter, Rate Category, Gross Block, Opening WDV Allocated, Depreciation Allocated, Closing WDV Allocated, Already Posted, Remarks, Status.\n\nWorkflow: Generate (run the process and review/edit the grid), edit Remarks and Status (DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED), Execute persists the rows into FAM_DEP_IT_ASSET_LEDGER keyed by Assessment Year + Asset Code (upsert); setting Status=APPROVED and Executing is the Approve & Post step. A validation blocks re-generating an asset's year that is already Approved & Posted.",
+      "order": 3
+    }
+  ]
+}

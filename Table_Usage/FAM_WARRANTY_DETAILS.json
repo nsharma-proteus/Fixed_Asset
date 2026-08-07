@@ -1,0 +1,30 @@
+{
+  "table_name": "FAM_WARRANTY_DETAILS",
+  "objects": [
+    {
+      "object_name": "fam_warranty_details",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "CHG_TERM",
+        "WARRANTY_TERMS",
+        "ASSET_CODE",
+        "WARRANTY_END_DATE",
+        "CHG_USER",
+        "CHG_DATE",
+        "ADD_USER",
+        "WARRANTY_START_DATE",
+        "ADD_DATE",
+        "ID",
+        "WARRANTY_DOCUMENT_ATTACHMENT",
+        "ADD_TERM",
+        "WARRANTY_PROVIDER_VENDOR_CODE"
+      ],
+      "join_info": {
+        "column": "ASSET_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "ASSET_CODE"
+      }
+    }
+  ]
+}

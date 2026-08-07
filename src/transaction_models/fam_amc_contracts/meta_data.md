@@ -1,0 +1,2 @@
+[1] AMC Contract: amc_contract_no(V20), amc_vendor_code(V20), start_date(D), end_date(D), contract_cost(N14,2), status(V20), previous_contract_no(V20), previous_contract_vendor_code(V20), previous_contract_status(V20), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)
+[2] AMC Covered Assets: amc_contract_no(V20), line_no(N5), asset_code(V20), asset_name(V100), coverage_remarks(V500), add_date(DT), add_user(V10), add_term(V15), chg_date(DT), chg_user(V10), chg_term(V15)
