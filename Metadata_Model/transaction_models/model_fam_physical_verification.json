@@ -1,6 +1,13 @@
 {
   "transaction": {
     "obj_name": "fam_physical_verification",
+    "unit_test": {
+      "sample": {
+        "branch_code": "HO001",
+        "location_code": "SERVER-ROOM"
+      },
+      "note": "location_code is validated against FAM_LOCATION_MASTER conditioned on BRANCH_CODE = form.branch_code. Random synthetic branch/location pairs frequently mismatch because FAM_LOCATION_MASTER has several rows whose branch_code (e.g. 'PUN', 'CHN', 'BLR', 'DEL', 'MUM') does not correspond to any real FAM_BRANCH_MASTER.branch_code (e.g. 'PUN007', 'CHN004'). HO001/SERVER-ROOM is a real matching pair, so pin it here instead of relying on independent random lookups."
+    },
     "sql_models": [
       {
         "sql_model": {
@@ -557,6 +564,126 @@
               ]
             }
           },
+          "actions": [
+            {
+              "name": "Edit",
+              "handler": "system",
+              "system_op": "edit",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Editable only before approval",
+                  "message": "Only cycles in Planned or In Progress status can be edited.",
+                  "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
+                }
+              ]
+            },
+            {
+              "name": "Load Assets",
+              "handler": "select_grid",
+              "scope": "row",
+              "business_logic": {
+                "method": "load_capitalized_assets_for_verification",
+                "description": "Load capitalized assets for the selected branch/location into a pick grid",
+                "spec": "Query FAM_ASSET_REGISTER for assets that are Capitalized and currently located at the header's BRANCH_CODE/LOCATION_CODE (dependency: FAM_ASSET_REGISTER does not yet carry STATUS/BRANCH_CODE/LOCATION_CODE columns needed to filter this way -- revisit once those columns exist, e.g. via the Asset Register object; until then, offer all assets and let the user deselect), excluding ASSET_CODE values already present as lines on this VERIFICATION_CYCLE_NO. Return each candidate as a row with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE for the user to multi-select in the grid; selected rows are appended as new verification lines.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Cycle open for loading",
+                  "message": "Assets can only be loaded while the cycle is Planned or In Progress.",
+                  "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
+                }
+              ]
+            },
+            {
+              "name": "Submit for Approval",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "submit_verification_cycle_for_approval",
+                "description": "Move the cycle to Pending Approval",
+                "spec": "Set STATUS = 'PENDING_APPROVAL' and return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be open",
+                  "message": "Only a Planned or In Progress cycle can be submitted for approval.",
+                  "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
+                },
+                {
+                  "type": "builtin",
+                  "name": "At least one line",
+                  "message": "Add at least one asset line before submitting for approval.",
+                  "builtin": {
+                    "kind": "child_form_has_entry",
+                    "child_form": "2",
+                    "min_rows": 1
+                  }
+                },
+                {
+                  "type": "business_logic",
+                  "name": "All lines verified",
+                  "message": "Every line must be marked Found, Not Found, Damaged or Extra-Unregistered before submitting for approval.",
+                  "business_logic": {
+                    "method": "check_all_lines_verified",
+                    "description": "Ensure no verification line is left unmarked",
+                    "spec": "Count lines on this VERIFICATION_CYCLE_NO in FAM_PHYSICAL_VERIFICATION_LINE where PHYSICAL_STATUS_FOUND is null or blank; return an error string naming the count if any are found, otherwise return nothing.",
+                    "language": "plpgsql"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Approve",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "approve_verification_cycle",
+                "description": "Approve the verification cycle and apply findings to the Asset Register",
+                "spec": "Set STATUS = 'CLOSED'. For every line on this VERIFICATION_CYCLE_NO with PHYSICAL_STATUS_FOUND = 'NOT_FOUND', update FAM_ASSET_REGISTER.STATUS = 'UNDER_INVESTIGATION' for that ASSET_CODE (dependency: FAM_ASSET_REGISTER does not yet have a STATUS column -- this update must be revisited once that column exists). For every line with PHYSICAL_STATUS_FOUND = 'DAMAGED', raise a follow-up remark flag (e.g. append a standard 'Damage follow-up required' note to REMARKS or create a follow-up task) for maintenance/insurance review. Return a confirmation message. Approved cycle data feeds the Verification Report (R).",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be pending approval",
+                  "message": "Only a Pending Approval cycle can be approved.",
+                  "expression": "{form.status} == \"PENDING_APPROVAL\""
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Approve verification cycle {form.verification_cycle_no}? This will update the Asset Register for any Not Found assets and close the cycle."
+              }
+            },
+            {
+              "name": "Cancel",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "cancel_verification_cycle",
+                "description": "Cancel the verification cycle",
+                "spec": "Set STATUS = 'CANCELLED' and return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Not yet closed",
+                  "message": "A Closed or already Cancelled cycle cannot be cancelled again.",
+                  "expression": "not ({form.status} == \"CLOSED\") and not ({form.status} == \"CANCELLED\")"
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Cancel verification cycle {form.verification_cycle_no}?"
+              }
+            }
+          ],
           "validations": []
         }
       },
@@ -1253,123 +1380,7 @@
         }
       }
     ],
-    "actions": [
-      {
-        "name": "Edit",
-        "handler": "system",
-        "system_op": "edit",
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Editable only before approval",
-            "message": "Only cycles in Planned or In Progress status can be edited.",
-            "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
-          }
-        ]
-      },
-      {
-        "name": "Load Assets",
-        "handler": "select_grid",
-        "scope": "form",
-        "business_logic": {
-          "method": "load_capitalized_assets_for_verification",
-          "description": "Load capitalized assets for the selected branch/location into a pick grid",
-          "spec": "Query FAM_ASSET_REGISTER for assets that are Capitalized and currently located at the header's BRANCH_CODE/LOCATION_CODE (dependency: FAM_ASSET_REGISTER does not yet carry STATUS/BRANCH_CODE/LOCATION_CODE columns needed to filter this way -- revisit once those columns exist, e.g. via the Asset Register object; until then, offer all assets and let the user deselect), excluding ASSET_CODE values already present as lines on this VERIFICATION_CYCLE_NO. Return each candidate as a row with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE for the user to multi-select in the grid; selected rows are appended as new verification lines.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Cycle open for loading",
-            "message": "Assets can only be loaded while the cycle is Planned or In Progress.",
-            "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
-          }
-        ]
-      },
-      {
-        "name": "Submit for Approval",
-        "handler": "message",
-        "business_logic": {
-          "method": "submit_verification_cycle_for_approval",
-          "description": "Move the cycle to Pending Approval",
-          "spec": "Set STATUS = 'PENDING_APPROVAL' and return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be open",
-            "message": "Only a Planned or In Progress cycle can be submitted for approval.",
-            "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
-          },
-          {
-            "type": "builtin",
-            "name": "At least one line",
-            "message": "Add at least one asset line before submitting for approval.",
-            "builtin": {
-              "kind": "child_form_has_entry",
-              "child_form": "2",
-              "min_rows": 1
-            }
-          },
-          {
-            "type": "business_logic",
-            "name": "All lines verified",
-            "message": "Every line must be marked Found, Not Found, Damaged or Extra-Unregistered before submitting for approval.",
-            "business_logic": {
-              "method": "check_all_lines_verified",
-              "description": "Ensure no verification line is left unmarked",
-              "spec": "Count lines on this VERIFICATION_CYCLE_NO in FAM_PHYSICAL_VERIFICATION_LINE where PHYSICAL_STATUS_FOUND is null or blank; return an error string naming the count if any are found, otherwise return nothing.",
-              "language": "plpgsql"
-            }
-          }
-        ]
-      },
-      {
-        "name": "Approve",
-        "handler": "message",
-        "business_logic": {
-          "method": "approve_verification_cycle",
-          "description": "Approve the verification cycle and apply findings to the Asset Register",
-          "spec": "Set STATUS = 'CLOSED'. For every line on this VERIFICATION_CYCLE_NO with PHYSICAL_STATUS_FOUND = 'NOT_FOUND', update FAM_ASSET_REGISTER.STATUS = 'UNDER_INVESTIGATION' for that ASSET_CODE (dependency: FAM_ASSET_REGISTER does not yet have a STATUS column -- this update must be revisited once that column exists). For every line with PHYSICAL_STATUS_FOUND = 'DAMAGED', raise a follow-up remark flag (e.g. append a standard 'Damage follow-up required' note to REMARKS or create a follow-up task) for maintenance/insurance review. Return a confirmation message. Approved cycle data feeds the Verification Report (R).",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be pending approval",
-            "message": "Only a Pending Approval cycle can be approved.",
-            "expression": "{form.status} == \"PENDING_APPROVAL\""
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Approve verification cycle {form.verification_cycle_no}? This will update the Asset Register for any Not Found assets and close the cycle."
-        }
-      },
-      {
-        "name": "Cancel",
-        "handler": "message",
-        "business_logic": {
-          "method": "cancel_verification_cycle",
-          "description": "Cancel the verification cycle",
-          "spec": "Set STATUS = 'CANCELLED' and return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Not yet closed",
-            "message": "A Closed or already Cancelled cycle cannot be cancelled again.",
-            "expression": "not ({form.status} == \"CLOSED\") and not ({form.status} == \"CANCELLED\")"
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Cancel verification cycle {form.verification_cycle_no}?"
-        }
-      }
-    ],
+    "actions": [],
     "cross_updates": [],
     "pre_commit": [],
     "post_commit": [],

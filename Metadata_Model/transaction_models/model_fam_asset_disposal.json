@@ -1,6 +1,13 @@
 {
   "transaction": {
     "obj_name": "fam_asset_disposal",
+    "unit_test": {
+      "sample": {
+        "disposal_type": "SCRAP",
+        "disposal_reason": "End of useful life, unit no longer functional"
+      },
+      "note": "Random synthetic data defaulted disposal_type to SALE, which requires sale_value > 0 per the mandatory expression rule. Pin disposal_type to SCRAP (which doesn't require sale_value) so the deterministic add-record test passes without needing to fabricate a sale amount."
+    },
     "sql_models": [
       {
         "sql_model": {
@@ -693,7 +700,7 @@
         "business_logic": {
           "method": "approve_asset_disposal",
           "description": "Approve the disposal, mark the asset Disposed and exclude it from future depreciation",
-          "spec": "Set STATUS to APPROVED on this disposal record. Then UPDATE the Asset Register row for ASSET_CODE, setting its STATUS to DISPOSED so the asset is excluded from future Companies Act and Income Tax depreciation generation runs and removed from its Income Tax block of assets from the next generation run. Return a confirmation message. Depends on FAM_ASSET_REGISTER carrying a STATUS column (currently only ASSET_CODE, ASSET_NAME and CAPITALIZATION_DATE exist there).",
+          "spec": "Set STATUS to APPROVED on this disposal record, guarded (WHERE STATUS = 'PENDING_APPROVAL') so a concurrently-changed record is not silently approved. Then UPDATE the Asset Register row for ASSET_CODE, setting its STATUS to DISPOSED and its DISPOSAL_DATE to this disposal's DISPOSAL_DATE, so the asset is excluded from future Companies Act and Income Tax depreciation generation runs and removed from its Income Tax block of assets from the next generation run. Return a confirmation message.",
           "language": "plpgsql"
         },
         "validations": [

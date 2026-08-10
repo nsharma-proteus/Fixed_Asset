@@ -1,0 +1,20 @@
+{
+  "id": "0435e121-fbd1-4580-89fb-5a37ac5b93ad",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "On the Income tax depriciation screen the assement year shown should not have co",
+  "kind": "modify",
+  "status": "completed",
+  "description": "On the Income tax depriciation screen the assement year shown should not have co",
+  "created_at": 1786345437.507489,
+  "updated_at": 1786346224.1030962,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "On the Income tax depriciation screen the assement year shown should not have commas 2026 year should not be shown as 2,026\n[follow-up] In the IT depreciation screen in the voew mode The assement year should not have a comma , ( 000 seperator ) it should be just numbers like 2026",
+  "resume_ref": {
+    "session_id": "0fde7a58-2cec-4b5a-b2c7-5496b6b9a04d",
+    "claude_session_id": "ef8533e9-7929-4414-86fe-969cb2faaaed"
+  },
+  "depends_on": [],
+  "result_summary": "I dug further into why the comma is still showing, and found the real (and final) answer.\n\n**What's already fixed:** `target_columns.assessment_year.type` = `\"string\"`, and `source_sql`'s final SELECT casts it to `CAST(af.assessment_year AS TEXT)`. Both changes are still in place in `Metadata_Model/general_process_models/model_fam_gen_dep_it_asset_ledger.json`.\n\n**Why the comma persists anyway:** the results grid (the same grid used in the designer's Live Preview, the workbench Run tab, and the deployed app) decides whether a column is \"numeric\" purely by sampling its displayed values \u2014 if every value in a column is a string of only digits (e.g. `\"2026\"`), it treats the column as numeric and formats it with `toLocaleString()`, adding the comma. It never looks at the model's declared column type or the SQL's cast. So no combination of `target_columns.type` or SQL casting in this object's JSON can stop it \u2014 `\"2026\"` will always look \"numeric\" to that check, cast or not.\n\nThis detection logic lives in the platform's own grid-rendering code, not in any file this project owns, so it's outside what I can change from the project side. I've left the two already-applied fixes in place (they're correct and harmless), but I can't make the on-screen comma disappear purely through the G-process model.\n\nIf you'd like, I can flag this as a platform enhancement request (a per-column \"don't format as number\" option in the General Process grid) rather than continue attempting project-level workarounds \u2014 let me know if you want me to do that or try something else."
+}

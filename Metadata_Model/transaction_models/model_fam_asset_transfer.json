@@ -1,6 +1,19 @@
 {
   "transaction": {
     "obj_name": "fam_asset_transfer",
+    "unit_test": {
+      "sample": {
+        "ASSET_CODE": "8",
+        "FROM_BRANCH_CODE": "BLR003",
+        "FROM_LOCATION_CODE": "LAB-01",
+        "FROM_DEPARTMENT_CODE": "RND",
+        "FROM_EMPLOYEE_CODE": "EMP005",
+        "TO_BRANCH_CODE": "HO001",
+        "TO_LOCATION_CODE": "SERVER-ROOM",
+        "TRANSFER_REASON": "Relocating equipment for department reorganization"
+      },
+      "note": "The form_validation verify_from_matches_current_location re-fetches the asset's LIVE branch/location/department/employee from FAM_ASSET_REGISTER and rejects the add if from_* on the record don't match exactly. The random synthetic generator picks a valid asset_code but leaves from_* blank (it doesn't simulate the asset_code item_change), so the deterministic add-record test fails. Pin asset_code to a known Capitalized/Active asset (8, CNC Vertical Milling Machine, currently at branch BLR003/LAB-01/RND/EMP005 per FAM_ASSET_REGISTER) and mirror its current location into from_*, plus a valid to_branch/to_location pair (HO001/SERVER-ROOM), so the test satisfies the business rule without weakening it. NOTE: asset_code 10 was previously used here but its real current location moved to HO001/SERVER-ROOM after a permanently-approved transfer (txn_id 4), which made this fixture stale; asset 8 was never transferred and still sits at BLR003/LAB-01/RND/EMP005, so it is a more durable pin for this fixture. If asset 8 is ever transferred too, re-verify against FAM_ASSET_REGISTER."
+    },
     "sql_models": [
       {
         "sql_model": {
@@ -951,6 +964,21 @@
               ]
             }
           },
+          "list_view": {
+            "columns": [
+              "transfer_no",
+              "status",
+              "asset_name",
+              "from_branch_code",
+              "from_location_code",
+              "to_branch_code",
+              "to_location_code"
+            ],
+            "edit_lock": {
+              "expression": "{form.status} != \"DRAFT\"",
+              "reason": "This transfer is no longer Draft and cannot be edited; you can still view its details."
+            }
+          },
           "validations": [
             {
               "type": "expression",
@@ -970,92 +998,78 @@
                 "language": "plpgsql"
               }
             }
+          ],
+          "actions": [
+            {
+              "name": "Submit for Approval",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "submit_asset_transfer_for_approval",
+                "description": "Move a Draft transfer to Pending Approval",
+                "spec": "Set STATUS to PENDING_APPROVAL on this transfer record and return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Draft",
+                  "message": "Only DRAFT transfers can be submitted for approval (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\""
+                }
+              ]
+            },
+            {
+              "name": "Approve",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "approve_asset_transfer",
+                "description": "Approve the transfer and update the Asset Register's current location/custody",
+                "spec": "Set STATUS to APPROVED on this transfer record. Then UPDATE the Asset Register row for ASSET_CODE, setting its current BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE to this record's to_branch_code/to_location_code/to_department_code/to_employee_code. This FAM_ASSET_TRANSFER row itself remains as the permanent audit trail of the movement (no separate history table needed). Return a confirmation message. Depends on FAM_ASSET_REGISTER carrying BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE columns.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending Approval",
+                  "message": "Only PENDING APPROVAL transfers can be approved (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING_APPROVAL\""
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Approve transfer {form.transfer_no} for asset {form.asset_code}? This will update the Asset Register's current location."
+              }
+            },
+            {
+              "name": "Cancel",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "cancel_asset_transfer",
+                "description": "Cancel a Draft or Pending Approval transfer",
+                "spec": "Set STATUS to CANCELLED on this transfer record and return a confirmation message. Approved transfers cannot be cancelled since the Asset Register has already been updated by the approval.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Cannot cancel Approved/Cancelled",
+                  "message": "Only DRAFT or PENDING APPROVAL transfers can be cancelled (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\" or {form.status} == \"PENDING_APPROVAL\""
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Cancel transfer {form.transfer_no}?"
+              }
+            }
           ]
         }
       }
     ],
-    "actions": [
-      {
-        "name": "edit",
-        "handler": "system",
-        "system_op": "edit",
-        "scope": "row",
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Draft only",
-            "message": "Only DRAFT transfers can be edited (current status {form.status}).",
-            "expression": "{form.status} == \"DRAFT\""
-          }
-        ]
-      },
-      {
-        "name": "Submit for Approval",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "submit_asset_transfer_for_approval",
-          "description": "Move a Draft transfer to Pending Approval",
-          "spec": "Set STATUS to PENDING_APPROVAL on this transfer record and return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be Draft",
-            "message": "Only DRAFT transfers can be submitted for approval (current status {form.status}).",
-            "expression": "{form.status} == \"DRAFT\""
-          }
-        ]
-      },
-      {
-        "name": "Approve",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "approve_asset_transfer",
-          "description": "Approve the transfer and update the Asset Register's current location/custody",
-          "spec": "Set STATUS to APPROVED on this transfer record. Then UPDATE the Asset Register row for ASSET_CODE, setting its current BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE to this record's to_branch_code/to_location_code/to_department_code/to_employee_code. This FAM_ASSET_TRANSFER row itself remains as the permanent audit trail of the movement (no separate history table needed). Return a confirmation message. Depends on FAM_ASSET_REGISTER carrying BRANCH_CODE/LOCATION_CODE/DEPARTMENT_CODE/ASSIGNED_EMPLOYEE_CODE columns.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be Pending Approval",
-            "message": "Only PENDING APPROVAL transfers can be approved (current status {form.status}).",
-            "expression": "{form.status} == \"PENDING_APPROVAL\""
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Approve transfer {form.transfer_no} for asset {form.asset_code}? This will update the Asset Register's current location."
-        }
-      },
-      {
-        "name": "Cancel",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "cancel_asset_transfer",
-          "description": "Cancel a Draft or Pending Approval transfer",
-          "spec": "Set STATUS to CANCELLED on this transfer record and return a confirmation message. Approved transfers cannot be cancelled since the Asset Register has already been updated by the approval.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Cannot cancel Approved/Cancelled",
-            "message": "Only DRAFT or PENDING APPROVAL transfers can be cancelled (current status {form.status}).",
-            "expression": "{form.status} == \"DRAFT\" or {form.status} == \"PENDING_APPROVAL\""
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Cancel transfer {form.transfer_no}?"
-        }
-      }
-    ],
-    "cross_updates": [],
+    "actions": [],
     "pre_commit": [],
     "post_commit": [],
     "attach_docs": [],

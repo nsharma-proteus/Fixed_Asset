@@ -1,9 +1,9 @@
 {
   "obj_name": "fam_gen_dep_it_asset_ledger",
-  "name": "Generate Income Tax Depreciation – Asset Ledger (Form 3CD Clause 18)",
+  "name": "Generate Income Tax Depreciation \u2013 Asset Ledger (Form 3CD Clause 18)",
   "description": "ALLOCATION / DISCLOSURE LEDGER, NOT a re-computation of the statutory depreciation. Under the Income Tax Act, depreciation (Section 32, block-of-assets/WDV scheme) is computed and legally exists ONLY at BLOCK level - the sibling process fam_gen_dep_income_tax is the sole source of truth for the statutory block-wise OPENING_WDV/DEPRECIATION_AMOUNT/CLOSING_WDV, and this process does not alter that computation at all. However Tax Audit Form 3CD Clause 18 requires asset-level depreciation-claimed particulars for disclosure. Since no individual asset WDV exists under the Act, this process ALLOCATES each block's already-computed annual DEPRECIATION_AMOUNT across its member assets on a documented, defensible proportional basis (each asset's own 'weight' - its own cost for a full-rate addition, half its cost for a half-rate addition, or its own opening-WDV seed for a pre-existing opening-block member, 0 for an asset disposed during the year - as a share of the block's total weight) purely for audit-disclosure record-keeping. ASSUMPTIONS (no user available to confirm - see OPEN QUESTIONS): (1) Criteria (assessment_year, block_code default ALL, branch_code default ALL) and the eligibility rule (ar.CAPITALIZATION_DATE IS NOT NULL AND ar.INCOME_TAX_BLOCK_CODE IS NOT NULL) mirror the fam_gen_dep_income_tax sibling exactly, for consistency. (2) This is a run-once-per-Assessment-Year process (month/year-wise only, no ranges), same convention as the sibling. (3) block-level CTEs (eligible_assets/block_additions/block_disposals/block_base/block_step2..4 producing rate_pct/additions/disposals/opening_wdv/dep_base_full/depreciation_amount/net_block/closing_wdv per BLOCK_CODE) are DUPLICATED from the sibling's own source_sql rather than shared, because General Process objects have no mechanism to share CTEs/SQL across objects - each object's source_sql is independently authored and must stay in sync by hand if the statutory computation ever changes upstream in the sibling. (4) An asset's allocation share (own_weight) uses: full cost if it is this year's full-rate addition (put-to-use on/before 3-Oct), half cost if this year's half-rate addition (put-to-use after 3-Oct), its own legacy opening-WDV seed if it was already an opening-block member before this FY (0 if it has no legacy seed - a non-legacy pre-existing asset genuinely has no separately known own-WDV component to allocate against, since Income Tax never tracked one), or 0 if disposed during the year (a disposed asset is shown with DEPRECIATION_ALLOCATED=0/CLOSING_WDV_ALLOCATED=0 - Clause 18 typically discloses disposals via the block's own disposal figure, not a per-asset closing WDV that no longer exists under the Act). (5) DEPRECIATION_ALLOCATED = block's DEPRECIATION_AMOUNT * this asset's own_weight / SUM(own_weight) across all its block's member assets (0 if the block's total weight is nil/negative, e.g. an all-disposed block). GROSS_BLOCK per row is the asset's OWN full acquisition cost (TOTAL_CAPITALIZED_COST) - always exactly known, unlike WDV, so no allocation is needed for it. *** TEMPORARY BOOTSTRAP STUB #1 (asset_opening_wdv_seed, same reasoning as the fam_gen_dep_income_tax sibling's Task-1 fix) ***: FAM_ASSET_REGISTER gained two onboarding fields for a legacy asset that already had its own Income Tax WDV before this system went live - INCOME_TAX_OPENING_WDV (NUMBER, the asset's own legacy WDV) and INCOME_TAX_OPENING_WDV_AS_ON_DATE (DATE). asset_opening_wdv_seed = CASE WHEN ar.INCOME_TAX_OPENING_WDV_AS_ON_DATE IS NOT NULL AND p.fy_start > ar.INCOME_TAX_OPENING_WDV_AS_ON_DATE THEN COALESCE(ar.INCOME_TAX_OPENING_WDV, 0.0) ELSE 0.0 END - this legacy-seed-only fallback is safe to implement fully now (FAM_ASSET_REGISTER already exists), and is used as the OPENING_WDV_ALLOCATED value for an opening-block-member row and as its allocation weight. A real per-asset rollforward from THIS ledger's own prior-year posted row cannot be built yet - see stub #2. *** TEMPORARY BOOTSTRAP STUB #2 (ALREADY_POSTED + real prior-year seed, same reasoning as the sibling's own bootstrap) ***: ALREADY_POSTED is hard-coded to 'N' because this process's own target table FAM_DEP_IT_ASSET_LEDGER does not exist until its first successful Execute, and Postgres cannot parse a static SELECT referencing a not-yet-existing table (even inside EXISTS/CASE/subqueries) - so a real per-row lookup would fail Refresh Data on this genuinely-first-ever run, exactly as observed and fixed on the fam_gen_dep_income_tax and fam_gen_dep_companies_act siblings. 'N' is the factually correct value for a ledger with zero history anyway. MUST BE REVERTED once the table exists (i.e. right after the first Execute succeeds) to: (a) ALREADY_POSTED = CASE WHEN EXISTS (SELECT 1 FROM FAM_DEP_IT_ASSET_LEDGER t WHERE t.assessment_year = p.ay AND t.asset_code = ea.asset_code AND t.status = 'APPROVED') THEN 'Y' ELSE 'N' END; (b) the asset_opening_wdv_seed fallback used for an opening-block-member's OPENING_WDV_ALLOCATED and own_weight must become COALESCE((select closing_wdv_allocated from FAM_DEP_IT_ASSET_LEDGER where asset_code = ar.ASSET_CODE and assessment_year = p.ay - 1 and status = 'APPROVED'), <the legacy-seed CASE expression documented in stub #1 above>) - otherwise the 'cannot re-generate an already-posted year for an asset' protection and the real prior-year per-asset carry-forward stay permanently disabled and every year's allocation keeps regressing to the flat legacy seed instead of the asset's own posted history. (6) The FRS workflow (Generate/Edit/Submit-for-approval/Approve & Post/Cancel) is approximated within General Process capabilities exactly like both siblings: Generate = run + preview grid (execution_mode edit), the user edits REMARKS and STATUS (DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED), Execute persists the row - setting STATUS=APPROVED on Execute is the 'Approve & Post' action.",
   "source_connection_id": "",
-  "source_sql": "WITH params AS (SELECT CAST(?.assessment_year.number AS INTEGER) AS ay, make_date(CAST(?.assessment_year.number AS INTEGER) - 1, 4, 1) AS fy_start, make_date(CAST(?.assessment_year.number AS INTEGER), 3, 31) AS fy_end, make_date(CAST(?.assessment_year.number AS INTEGER) - 1, 10, 3) AS cutoff_180), eligible_assets AS (SELECT ar.ASSET_CODE AS asset_code, ar.ASSET_NAME AS asset_name, ar.INCOME_TAX_BLOCK_CODE AS block_code, CAST(ar.TOTAL_CAPITALIZED_COST AS DOUBLE PRECISION) AS total_capitalized_cost, COALESCE(inst.confirmed_install_date, ar.CAPITALIZATION_DATE) AS put_to_use_date, CAST(ar.INCOME_TAX_OPENING_WDV AS DOUBLE PRECISION) AS income_tax_opening_wdv, ar.INCOME_TAX_OPENING_WDV_AS_ON_DATE AS income_tax_opening_wdv_as_on_date FROM FAM_ASSET_REGISTER ar LEFT JOIN (SELECT ASSET_CODE, MIN(INSTALLATION_DATE) AS confirmed_install_date FROM FAM_ASSET_INSTALLATION WHERE STATUS = 'CONFIRMED' GROUP BY ASSET_CODE) inst ON inst.ASSET_CODE = ar.ASSET_CODE WHERE ar.CAPITALIZATION_DATE IS NOT NULL AND ar.INCOME_TAX_BLOCK_CODE IS NOT NULL AND (?.block_code.string = 'ALL' OR ar.INCOME_TAX_BLOCK_CODE = ?.block_code.string) AND (?.branch_code.string = 'ALL' OR ar.BRANCH_CODE = ?.branch_code.string)), block_additions AS (SELECT ea.block_code AS block_code, CAST(SUM(CASE WHEN ea.put_to_use_date BETWEEN p.fy_start AND p.cutoff_180 THEN ea.total_capitalized_cost ELSE 0.0 END) AS DOUBLE PRECISION) AS additions_180_days_or_more, CAST(SUM(CASE WHEN ea.put_to_use_date > p.cutoff_180 AND ea.put_to_use_date <= p.fy_end THEN ea.total_capitalized_cost ELSE 0.0 END) AS DOUBLE PRECISION) AS additions_less_than_180_days FROM eligible_assets ea CROSS JOIN params p WHERE ea.put_to_use_date BETWEEN p.fy_start AND p.fy_end GROUP BY ea.block_code), block_disposals AS (SELECT ea.block_code AS block_code, CAST(SUM(CAST(d.SALE_VALUE AS DOUBLE PRECISION)) AS DOUBLE PRECISION) AS disposal_proceeds FROM FAM_ASSET_DISPOSAL d JOIN eligible_assets ea ON ea.asset_code = d.ASSET_CODE CROSS JOIN params p WHERE d.STATUS = 'APPROVED' AND d.DISPOSAL_DATE BETWEEN p.fy_start AND p.fy_end GROUP BY ea.block_code), block_base AS (SELECT p.ay AS assessment_year, rt.BLOCK_CODE AS block_code, rt.BLOCK_DESCRIPTION AS block_description, CAST(COALESCE((SELECT r2.RATE_PCT FROM FAM_DEP_RATE_IT_MASTER r2 WHERE r2.BLOCK_CODE = rt.BLOCK_CODE AND r2.EFFECTIVE_FROM_DATE <= p.fy_start ORDER BY r2.EFFECTIVE_FROM_DATE DESC LIMIT 1), 0.0) AS DOUBLE PRECISION) AS rate_pct, COALESCE(ba.additions_180_days_or_more, 0.0) AS additions_180_days_or_more, COALESCE(ba.additions_less_than_180_days, 0.0) AS additions_less_than_180_days, COALESCE(bd.disposal_proceeds, 0.0) AS disposals_during_year, CASE WHEN rt.OPENING_WDV_AS_ON_DATE IS NOT NULL AND p.fy_start > rt.OPENING_WDV_AS_ON_DATE THEN COALESCE(rt.OPENING_WDV, 0.0) ELSE 0.0 END AS opening_wdv FROM FAM_DEP_RATE_IT_MASTER rt CROSS JOIN params p LEFT JOIN block_additions ba ON ba.block_code = rt.BLOCK_CODE LEFT JOIN block_disposals bd ON bd.block_code = rt.BLOCK_CODE WHERE (?.block_code.string = 'ALL' OR rt.BLOCK_CODE = ?.block_code.string)), block_step2 AS (SELECT b.*, (b.opening_wdv + b.additions_180_days_or_more + b.additions_less_than_180_days - b.disposals_during_year) AS net_block, GREATEST(b.opening_wdv + b.additions_180_days_or_more - b.disposals_during_year, 0.0) AS dep_base_full FROM block_base b), block_step3 AS (SELECT s.*, (s.dep_base_full * s.rate_pct / 100 + s.additions_less_than_180_days * s.rate_pct / 200) AS dep_amount_raw FROM block_step2 s), block_step4 AS (SELECT s.*, CASE WHEN s.net_block <= 0 THEN 0.0 WHEN s.dep_amount_raw > s.net_block THEN s.net_block ELSE s.dep_amount_raw END AS depreciation_amount FROM block_step3 s), asset_calc AS (SELECT ea.asset_code AS asset_code, ea.asset_name AS asset_name, ea.block_code AS block_code, ea.total_capitalized_cost AS own_cost, ea.put_to_use_date AS put_to_use_date, EXISTS (SELECT 1 FROM FAM_ASSET_DISPOSAL d WHERE d.ASSET_CODE = ea.asset_code AND d.STATUS = 'APPROVED' AND d.DISPOSAL_DATE BETWEEN p.fy_start AND p.fy_end) AS is_disposed_this_year, (ea.put_to_use_date BETWEEN p.fy_start AND p.cutoff_180) AS is_addition_full, (ea.put_to_use_date > p.cutoff_180 AND ea.put_to_use_date <= p.fy_end) AS is_addition_half, (ea.put_to_use_date < p.fy_start) AS is_opening_member, CASE WHEN ea.put_to_use_date < p.fy_start THEN CASE WHEN ea.income_tax_opening_wdv_as_on_date IS NOT NULL AND p.fy_start > ea.income_tax_opening_wdv_as_on_date THEN COALESCE(ea.income_tax_opening_wdv, 0.0) ELSE 0.0 END ELSE 0.0 END AS asset_opening_wdv_seed FROM eligible_assets ea CROSS JOIN params p), asset_weight AS (SELECT a.*, CASE WHEN a.is_disposed_this_year THEN 0.0 WHEN a.is_addition_full THEN a.own_cost WHEN a.is_addition_half THEN a.own_cost * 0.5 WHEN a.is_opening_member THEN a.asset_opening_wdv_seed ELSE 0.0 END AS own_weight FROM asset_calc a), block_weight_totals AS (SELECT block_code, SUM(own_weight) AS block_total_weight FROM asset_weight GROUP BY block_code), asset_dep AS (SELECT aw.*, blk.assessment_year AS assessment_year, blk.block_description AS block_description, blk.depreciation_amount AS block_depreciation_amount, bwt.block_total_weight AS block_total_weight FROM asset_weight aw JOIN block_weight_totals bwt ON bwt.block_code = aw.block_code JOIN block_step4 blk ON blk.block_code = aw.block_code), asset_final AS (SELECT ad.*, CASE WHEN ad.is_disposed_this_year OR ad.block_total_weight IS NULL OR ad.block_total_weight <= 0 THEN 0.0 ELSE ad.block_depreciation_amount * ad.own_weight / ad.block_total_weight END AS depreciation_allocated FROM asset_dep ad) SELECT af.assessment_year, af.asset_code, af.asset_name, af.block_code, af.block_description, ?.branch_code.string AS branch_code_filter, CASE WHEN af.is_disposed_this_year THEN 'DISPOSED' WHEN af.is_addition_full THEN 'ADDITION_FULL_RATE' WHEN af.is_addition_half THEN 'ADDITION_HALF_RATE' WHEN af.is_opening_member THEN 'OPENING_BLOCK_MEMBER' ELSE 'NOT_ELIGIBLE' END AS rate_category, af.own_cost AS gross_block, CASE WHEN af.is_opening_member THEN af.asset_opening_wdv_seed ELSE 0.0 END AS opening_wdv_allocated, af.depreciation_allocated AS depreciation_allocated, CASE WHEN af.is_disposed_this_year THEN 0.0 ELSE GREATEST(af.own_weight - af.depreciation_allocated, 0.0) END AS closing_wdv_allocated, 'N' AS already_posted, '' AS remarks, 'DRAFT' AS status FROM asset_final af",
+  "source_sql": "WITH params AS (SELECT CAST(?.assessment_year.number AS INTEGER) AS ay, make_date(CAST(?.assessment_year.number AS INTEGER) - 1, 4, 1) AS fy_start, make_date(CAST(?.assessment_year.number AS INTEGER), 3, 31) AS fy_end, make_date(CAST(?.assessment_year.number AS INTEGER) - 1, 10, 3) AS cutoff_180), eligible_assets AS (SELECT ar.ASSET_CODE AS asset_code, ar.ASSET_NAME AS asset_name, ar.INCOME_TAX_BLOCK_CODE AS block_code, CAST(ar.TOTAL_CAPITALIZED_COST AS DOUBLE PRECISION) AS total_capitalized_cost, COALESCE(inst.confirmed_install_date, ar.CAPITALIZATION_DATE) AS put_to_use_date, CAST(ar.INCOME_TAX_OPENING_WDV AS DOUBLE PRECISION) AS income_tax_opening_wdv, ar.INCOME_TAX_OPENING_WDV_AS_ON_DATE AS income_tax_opening_wdv_as_on_date FROM FAM_ASSET_REGISTER ar LEFT JOIN (SELECT ASSET_CODE, MIN(INSTALLATION_DATE) AS confirmed_install_date FROM FAM_ASSET_INSTALLATION WHERE STATUS = 'CONFIRMED' GROUP BY ASSET_CODE) inst ON inst.ASSET_CODE = ar.ASSET_CODE WHERE ar.CAPITALIZATION_DATE IS NOT NULL AND ar.INCOME_TAX_BLOCK_CODE IS NOT NULL AND (?.block_code.string = 'ALL' OR ar.INCOME_TAX_BLOCK_CODE = ?.block_code.string) AND (?.branch_code.string = 'ALL' OR ar.BRANCH_CODE = ?.branch_code.string)), block_additions AS (SELECT ea.block_code AS block_code, CAST(SUM(CASE WHEN ea.put_to_use_date BETWEEN p.fy_start AND p.cutoff_180 THEN ea.total_capitalized_cost ELSE 0.0 END) AS DOUBLE PRECISION) AS additions_180_days_or_more, CAST(SUM(CASE WHEN ea.put_to_use_date > p.cutoff_180 AND ea.put_to_use_date <= p.fy_end THEN ea.total_capitalized_cost ELSE 0.0 END) AS DOUBLE PRECISION) AS additions_less_than_180_days FROM eligible_assets ea CROSS JOIN params p WHERE ea.put_to_use_date BETWEEN p.fy_start AND p.fy_end GROUP BY ea.block_code), block_disposals AS (SELECT ea.block_code AS block_code, CAST(SUM(CAST(d.SALE_VALUE AS DOUBLE PRECISION)) AS DOUBLE PRECISION) AS disposal_proceeds FROM FAM_ASSET_DISPOSAL d JOIN eligible_assets ea ON ea.asset_code = d.ASSET_CODE CROSS JOIN params p WHERE d.STATUS = 'APPROVED' AND d.DISPOSAL_DATE BETWEEN p.fy_start AND p.fy_end GROUP BY ea.block_code), block_base AS (SELECT p.ay AS assessment_year, rt.BLOCK_CODE AS block_code, rt.BLOCK_DESCRIPTION AS block_description, CAST(COALESCE((SELECT r2.RATE_PCT FROM FAM_DEP_RATE_IT_MASTER r2 WHERE r2.BLOCK_CODE = rt.BLOCK_CODE AND r2.EFFECTIVE_FROM_DATE <= p.fy_start ORDER BY r2.EFFECTIVE_FROM_DATE DESC LIMIT 1), 0.0) AS DOUBLE PRECISION) AS rate_pct, COALESCE(ba.additions_180_days_or_more, 0.0) AS additions_180_days_or_more, COALESCE(ba.additions_less_than_180_days, 0.0) AS additions_less_than_180_days, COALESCE(bd.disposal_proceeds, 0.0) AS disposals_during_year, CASE WHEN rt.OPENING_WDV_AS_ON_DATE IS NOT NULL AND p.fy_start > rt.OPENING_WDV_AS_ON_DATE THEN COALESCE(rt.OPENING_WDV, 0.0) ELSE 0.0 END AS opening_wdv FROM FAM_DEP_RATE_IT_MASTER rt CROSS JOIN params p LEFT JOIN block_additions ba ON ba.block_code = rt.BLOCK_CODE LEFT JOIN block_disposals bd ON bd.block_code = rt.BLOCK_CODE WHERE (?.block_code.string = 'ALL' OR rt.BLOCK_CODE = ?.block_code.string)), block_step2 AS (SELECT b.*, (b.opening_wdv + b.additions_180_days_or_more + b.additions_less_than_180_days - b.disposals_during_year) AS net_block, GREATEST(b.opening_wdv + b.additions_180_days_or_more - b.disposals_during_year, 0.0) AS dep_base_full FROM block_base b), block_step3 AS (SELECT s.*, (s.dep_base_full * s.rate_pct / 100 + s.additions_less_than_180_days * s.rate_pct / 200) AS dep_amount_raw FROM block_step2 s), block_step4 AS (SELECT s.*, CASE WHEN s.net_block <= 0 THEN 0.0 WHEN s.dep_amount_raw > s.net_block THEN s.net_block ELSE s.dep_amount_raw END AS depreciation_amount FROM block_step3 s), asset_calc AS (SELECT ea.asset_code AS asset_code, ea.asset_name AS asset_name, ea.block_code AS block_code, ea.total_capitalized_cost AS own_cost, ea.put_to_use_date AS put_to_use_date, EXISTS (SELECT 1 FROM FAM_ASSET_DISPOSAL d WHERE d.ASSET_CODE = ea.asset_code AND d.STATUS = 'APPROVED' AND d.DISPOSAL_DATE BETWEEN p.fy_start AND p.fy_end) AS is_disposed_this_year, (ea.put_to_use_date BETWEEN p.fy_start AND p.cutoff_180) AS is_addition_full, (ea.put_to_use_date > p.cutoff_180 AND ea.put_to_use_date <= p.fy_end) AS is_addition_half, (ea.put_to_use_date < p.fy_start) AS is_opening_member, CASE WHEN ea.put_to_use_date < p.fy_start THEN CASE WHEN ea.income_tax_opening_wdv_as_on_date IS NOT NULL AND p.fy_start > ea.income_tax_opening_wdv_as_on_date THEN COALESCE(ea.income_tax_opening_wdv, 0.0) ELSE 0.0 END ELSE 0.0 END AS asset_opening_wdv_seed FROM eligible_assets ea CROSS JOIN params p), asset_weight AS (SELECT a.*, CASE WHEN a.is_disposed_this_year THEN 0.0 WHEN a.is_addition_full THEN a.own_cost WHEN a.is_addition_half THEN a.own_cost * 0.5 WHEN a.is_opening_member THEN a.asset_opening_wdv_seed ELSE 0.0 END AS own_weight FROM asset_calc a), block_weight_totals AS (SELECT block_code, SUM(own_weight) AS block_total_weight FROM asset_weight GROUP BY block_code), asset_dep AS (SELECT aw.*, blk.assessment_year AS assessment_year, blk.block_description AS block_description, blk.depreciation_amount AS block_depreciation_amount, bwt.block_total_weight AS block_total_weight FROM asset_weight aw JOIN block_weight_totals bwt ON bwt.block_code = aw.block_code JOIN block_step4 blk ON blk.block_code = aw.block_code), asset_final AS (SELECT ad.*, CASE WHEN ad.is_disposed_this_year OR ad.block_total_weight IS NULL OR ad.block_total_weight <= 0 THEN 0.0 ELSE ad.block_depreciation_amount * ad.own_weight / ad.block_total_weight END AS depreciation_allocated FROM asset_dep ad) SELECT CAST(af.assessment_year AS TEXT) AS assessment_year, af.asset_code, af.asset_name, af.block_code, af.block_description, ?.branch_code.string AS branch_code_filter, CASE WHEN af.is_disposed_this_year THEN 'DISPOSED' WHEN af.is_addition_full THEN 'ADDITION_FULL_RATE' WHEN af.is_addition_half THEN 'ADDITION_HALF_RATE' WHEN af.is_opening_member THEN 'OPENING_BLOCK_MEMBER' ELSE 'NOT_ELIGIBLE' END AS rate_category, af.own_cost AS gross_block, CASE WHEN af.is_opening_member THEN af.asset_opening_wdv_seed ELSE 0.0 END AS opening_wdv_allocated, af.depreciation_allocated AS depreciation_allocated, CASE WHEN af.is_disposed_this_year THEN 0.0 ELSE GREATEST(af.own_weight - af.depreciation_allocated, 0.0) END AS closing_wdv_allocated, 'N' AS already_posted, '' AS remarks, 'DRAFT' AS status FROM asset_final af",
   "default_params": {
     "assessment_year": 2026,
     "block_code": "ALL",
@@ -15,37 +15,123 @@
   "target_connection_id": "",
   "target_table": "FAM_DEP_IT_ASSET_LEDGER",
   "target_columns": [
-    { "name": "assessment_year", "type": "number", "source": "assessment_year" },
-    { "name": "asset_code", "type": "string", "source": "asset_code" },
-    { "name": "asset_name", "type": "string", "source": "asset_name" },
-    { "name": "block_code", "type": "string", "source": "block_code" },
-    { "name": "block_description", "type": "string", "source": "block_description" },
-    { "name": "branch_code_filter", "type": "string", "source": "branch_code_filter" },
-    { "name": "rate_category", "type": "string", "source": "rate_category" },
-    { "name": "gross_block", "type": "decimal", "source": "gross_block" },
-    { "name": "opening_wdv_allocated", "type": "decimal", "source": "opening_wdv_allocated" },
-    { "name": "depreciation_allocated", "type": "decimal", "source": "depreciation_allocated" },
-    { "name": "closing_wdv_allocated", "type": "decimal", "source": "closing_wdv_allocated" },
-    { "name": "already_posted", "type": "string", "source": "already_posted" },
-    { "name": "remarks", "type": "string", "source": "remarks" },
-    { "name": "status", "type": "string", "source": "status" }
+    {
+      "name": "assessment_year",
+      "type": "string",
+      "source": "assessment_year"
+    },
+    {
+      "name": "asset_code",
+      "type": "string",
+      "source": "asset_code"
+    },
+    {
+      "name": "asset_name",
+      "type": "string",
+      "source": "asset_name"
+    },
+    {
+      "name": "block_code",
+      "type": "string",
+      "source": "block_code"
+    },
+    {
+      "name": "block_description",
+      "type": "string",
+      "source": "block_description"
+    },
+    {
+      "name": "branch_code_filter",
+      "type": "string",
+      "source": "branch_code_filter"
+    },
+    {
+      "name": "rate_category",
+      "type": "string",
+      "source": "rate_category"
+    },
+    {
+      "name": "gross_block",
+      "type": "decimal",
+      "source": "gross_block"
+    },
+    {
+      "name": "opening_wdv_allocated",
+      "type": "decimal",
+      "source": "opening_wdv_allocated"
+    },
+    {
+      "name": "depreciation_allocated",
+      "type": "decimal",
+      "source": "depreciation_allocated"
+    },
+    {
+      "name": "closing_wdv_allocated",
+      "type": "decimal",
+      "source": "closing_wdv_allocated"
+    },
+    {
+      "name": "already_posted",
+      "type": "string",
+      "source": "already_posted"
+    },
+    {
+      "name": "remarks",
+      "type": "string",
+      "source": "remarks"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "source": "status"
+    }
   ],
-  "key_columns": ["assessment_year", "asset_code"],
-
+  "key_columns": [
+    "assessment_year",
+    "asset_code"
+  ],
+  "MultiRowSelect": true,
+  "columnEditing": true,
   "execution_mode": "edit",
-  "editableColumns": ["remarks", "status"],
+  "editableColumns": [
+    "remarks",
+    "status"
+  ],
   "criteria_lookups": {
-    "block_code": { "table": "FAM_DEP_RATE_IT_MASTER", "value_column": "BLOCK_CODE", "display_column": "BLOCK_DESCRIPTION" },
-    "branch_code": { "table": "FAM_BRANCH_MASTER", "value_column": "BRANCH_CODE", "display_column": "BRANCH_NAME", "filter": "STATUS = 'A'" }
+    "block_code": {
+      "table": "FAM_DEP_RATE_IT_MASTER",
+      "value_column": "BLOCK_CODE",
+      "display_column": "BLOCK_DESCRIPTION"
+    },
+    "branch_code": {
+      "table": "FAM_BRANCH_MASTER",
+      "value_column": "BRANCH_CODE",
+      "display_column": "BRANCH_NAME",
+      "filter": "STATUS = 'A'"
+    }
   },
   "editable_lookups": {},
   "item_changes": {},
   "validations": [
-    { "type": "expression", "name": "asset year not already posted", "error_code": "FAM_DEP_IT_ASSET_ALREADY_POSTED",
+    {
+      "type": "expression",
+      "name": "asset year not already posted",
+      "error_code": "FAM_DEP_IT_ASSET_ALREADY_POSTED",
       "expression": "{form.already_posted} != 'Y'",
-      "message": "Assessment year {form.assessment_year} asset {form.asset_code} is already Approved & Posted; this year cannot be re-generated for this asset", "severity": "E" },
-    { "type": "expression", "name": "valid status", "error_code": "FAM_DEP_IT_ASSET_BAD_STATUS",
+      "message": "Assessment year {form.assessment_year} asset {form.asset_code} is already Approved & Posted; this year cannot be re-generated for this asset",
+      "severity": "E"
+    },
+    {
+      "type": "expression",
+      "name": "valid status",
+      "error_code": "FAM_DEP_IT_ASSET_BAD_STATUS",
       "expression": "{form.status} in ['DRAFT','PENDING_APPROVAL','APPROVED','CANCELLED']",
-      "message": "Status for asset {form.asset_code} must be one of DRAFT, PENDING_APPROVAL, APPROVED or CANCELLED", "severity": "E" }
-  ]
+      "message": "Status for asset {form.asset_code} must be one of DRAFT, PENDING_APPROVAL, APPROVED or CANCELLED",
+      "severity": "E"
+    }
+  ],
+  "column_widths": {
+    "assessment_year": 182.984375,
+    "already_posted": 144.359375
+  }
 }

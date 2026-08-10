@@ -7,7 +7,7 @@ function_name: approve_verification_cycle
 action_name: Approve
 language: plpgsql
 description: Approve the verification cycle and apply findings to the Asset Register
-functional_specification: Set STATUS = 'CLOSED'. For every line on this VERIFICATION_CYCLE_NO with PHYSICAL_STATUS_FOUND = 'NOT_FOUND', update FAM_ASSET_REGISTER.STATUS = 'UNDER_INVESTIGATION' for that ASSET_CODE (dependency: FAM_ASSET_REGISTER does not yet have a STATUS column -- this update must be revisited once that column exists). For every line with PHYSICAL_STATUS_FOUND = 'DAMAGED', raise a follow-up remark flag (e.g. append a standard 'Damage follow-up required' note to REMARKS or create a follow-up task) for maintenance/insurance review. Return a confirmation message. Approved cycle data feeds the Verification Report (R).
+functional_specification: Set STATUS = 'CLOSED'. For every line on this VERIFICATION_CYCLE_NO that carries a VERIFIED_DATE, update FAM_ASSET_REGISTER.LAST_VERIFIED_DATE = VERIFIED_DATE for that ASSET_CODE. For every line with PHYSICAL_STATUS_FOUND = 'NOT_FOUND', update FAM_ASSET_REGISTER.STATUS = 'UNDER_INVESTIGATION' for that ASSET_CODE (dependency: FAM_ASSET_REGISTER does not yet have a STATUS column -- this update must be revisited once that column exists). For every line with PHYSICAL_STATUS_FOUND = 'DAMAGED', raise a follow-up remark flag (e.g. append a standard 'Damage follow-up required' note to REMARKS or create a follow-up task) for maintenance/insurance review. Return a confirmation message. Approved cycle data feeds the Verification Report (R).
 business_logic: Approve the verification cycle and apply findings to the Asset Register
 */
 
@@ -38,6 +38,14 @@ BEGIN
     UPDATE FAM_PHYSICAL_VERIFICATION
     SET STATUS = 'CLOSED'
     WHERE VERIFICATION_CYCLE_NO = v_cycle_no;
+
+    -- Stamp LAST_VERIFIED_DATE on the Asset Register for every line that carries a verification date
+    UPDATE FAM_ASSET_REGISTER ar
+    SET    LAST_VERIFIED_DATE = vl.VERIFIED_DATE
+    FROM   FAM_PHYSICAL_VERIFICATION_LINE vl
+    WHERE  vl.VERIFICATION_CYCLE_NO = v_cycle_no
+    AND    vl.VERIFIED_DATE IS NOT NULL
+    AND    ar.ASSET_CODE = vl.ASSET_CODE;
 
     -- Count NOT_FOUND lines (used in confirmation message)
     SELECT COUNT(*) INTO v_not_found_count
