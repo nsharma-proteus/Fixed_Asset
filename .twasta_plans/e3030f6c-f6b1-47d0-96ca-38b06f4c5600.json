@@ -1,0 +1,20 @@
+{
+  "id": "e3030f6c-f6b1-47d0-96ca-38b06f4c5600",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "Can you create a report on various transfer locations of an asset , I need to se",
+  "kind": "modify",
+  "status": "completed",
+  "description": "Can you create a report on various transfer locations of an asset , I need to se",
+  "created_at": 1786356893.732559,
+  "updated_at": 1786357174.8874414,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "Can you create a report on various transfer locations of an asset , I need to select an asset or a category of asset and it should provide asset wise how the asset has moved",
+  "resume_ref": {
+    "session_id": "c117f029-865a-48f0-bf77-478bbddaf669",
+    "claude_session_id": "b1f3753d-6e55-4a7f-bcda-83f7c960d579"
+  },
+  "depends_on": [],
+  "result_summary": "This looks correctly shaped and matches sibling entries. Now let me verify the visual model file and confirm it renders properly.Navigation is now confirmed through the proper single-writer tool. Let me verify the visual actually renders correctly.Confirmed: it renders with real data, no `needs_input`, correctly asset-then-date ordered, with 5 approved transfer rows across 4 assets.\n\nNow I'll update the FRS since this is a new object added to the application.I'll add a matching section for the new visual right after \"Warranty / AMC Expiry (V)\".- Drill-down: Clicking an ASSET_CODE opens the Asset Register detail for that asset.\n\n## Asset Movement History (V)\n- Visualization: Grid, one row per transfer/movement event, sorted asset-wise then chronologically (TRANSFER_DATE ascending) so it reads as a per-asset movement trail.\n- Source: FAM_ASSET_TRANSFER joined to FAM_ASSET_REGISTER (for CATEGORY_NAME) and FAM_ASSET_CATEGORY_MASTER.\n- Criteria: ASSET_CODE (optional lookup \u2014 pick one specific asset), CATEGORY_CODE (optional lookup \u2014 see a whole category's movement history), STATUS (defaults to APPROVED, since only Approved transfers are actual completed physical moves; can be broadened to Draft/Pending Approval/Cancelled).\n- Columns: ASSET_CODE, ASSET_NAME, CATEGORY_NAME, TRANSFER_NO, TRANSFER_DATE, STATUS, FROM_BRANCH_NAME, FROM_LOCATION_NAME, FROM_DEPARTMENT_NAME, FROM_EMPLOYEE_NAME, TO_BRANCH_NAME, TO_LOCATION_NAME, TO_DEPARTMENT_NAME, TO_EMPLOYEE_NAME, TRANSFER_REASON.\n\n## Management Dashboard (D)\"}## Summary\n\nCreated a new **Visual (V)** report, **\"Asset Movement History\"** (`fam_asset_movement_history`), showing asset-wise transfer history \u2014 where each asset has physically moved (branch/location/department/custodian, before and after) over time.\n\n**What it does:**\n- Lets you select **one asset** OR a whole **asset category** (both optional lookup criteria), plus a **Status** filter (defaults to `APPROVED` = actually-completed moves, widenable to see Draft/Pending/Cancelled proposals too)\n- Shows one row per transfer, sorted asset-wise then by date, with the full From\u2192To trail (branch, location, department, custodian) and the reason\n- Verified live: renders real data on first open, no unresolved prompts\n\n**Files touched:**\n- `Metadata_Model/visual_models/model_fam_asset_movement_history.json` \u2014 new visual (SQL-mode grid over `FAM_ASSET_TRANSFER` joined to `FAM_ASSET_REGISTER` + `FAM_ASSET_CATEGORY_MASTER`)\n- `application.json` \u2014 registered in the \"Reports & Analytics\" menu folder (confirmed via the navigation tool)\n- `requirement_doc.md` \u2014 added the \"Asset Movement History (V)\" section documenting criteria/columns\n\nFiles touched: requirement_doc.md, application.json, Metadata_Model/visual_models/model_fam_asset_movement_history.json"
+}

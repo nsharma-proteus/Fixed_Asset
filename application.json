@@ -306,6 +306,17 @@
       "functional_specs": "Grid visualization. Criteria: BRANCH_CODE, LOCATION_CODE, TYPE (Warranty/AMC), EXPIRY_DATE range, STATUS. Data points: ASSET_CODE, ASSET_NAME, TYPE, PROVIDER_VENDOR_CODE, START_DATE, END_DATE, DAYS_TO_EXPIRY, STATUS. Drill-down: clicking ASSET_CODE opens Asset Register detail for that asset."
     },
     {
+      "id": "fam.8.7",
+      "title": "Asset Movement History",
+      "parent_id": "fam.8",
+      "icon_image": "swap_horiz",
+      "description": "Asset-wise physical movement/transfer trail across branch, location, department and custodian",
+      "obj_name": "fam_asset_movement_history",
+      "obj_type": "V",
+      "menu_path": "fam.8.7",
+      "functional_specs": "Grid visualization listing FAM_ASSET_TRANSFER records, one row per transfer/movement event, sorted asset-wise then chronologically (TRANSFER_DATE ascending) so it reads as a per-asset movement trail. Criteria: ASSET_CODE (optional F2 lookup against FAM_ASSET_REGISTER to pick one specific asset), CATEGORY_CODE (optional F2 lookup against FAM_ASSET_CATEGORY_MASTER to see a whole category's movement history), STATUS (defaults to APPROVED \u2014 only Approved transfers are actual completed physical moves; user can broaden to Draft/Pending Approval/Cancelled). Columns: ASSET_CODE, ASSET_NAME, CATEGORY_NAME (via FAM_ASSET_REGISTER join), TRANSFER_NO, TRANSFER_DATE, STATUS, FROM_BRANCH_NAME, FROM_LOCATION_NAME, FROM_DEPARTMENT_NAME, FROM_EMPLOYEE_NAME, TO_BRANCH_NAME, TO_LOCATION_NAME, TO_DEPARTMENT_NAME, TO_EMPLOYEE_NAME, TRANSFER_REASON."
+    },
+    {
       "id": "fam.8.5",
       "title": "Management Dashboard",
       "parent_id": "fam.8",

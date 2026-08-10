@@ -168,6 +168,12 @@
 - Data points: ASSET_CODE, ASSET_NAME, TYPE, PROVIDER_VENDOR_CODE, START_DATE, END_DATE, DAYS_TO_EXPIRY, STATUS.
 - Drill-down: Clicking an ASSET_CODE opens the Asset Register detail for that asset.
 
+## Asset Movement History (V)
+- Visualization: Grid, one row per transfer/movement event, sorted asset-wise then chronologically (TRANSFER_DATE ascending) so it reads as a per-asset movement trail.
+- Source: FAM_ASSET_TRANSFER joined to FAM_ASSET_REGISTER (for CATEGORY_NAME) and FAM_ASSET_CATEGORY_MASTER.
+- Criteria: ASSET_CODE (optional lookup — pick one specific asset), CATEGORY_CODE (optional lookup — see a whole category's movement history), STATUS (defaults to APPROVED, since only Approved transfers are actual completed physical moves; can be broadened to Draft/Pending Approval/Cancelled).
+- Columns: ASSET_CODE, ASSET_NAME, CATEGORY_NAME, TRANSFER_NO, TRANSFER_DATE, STATUS, FROM_BRANCH_NAME, FROM_LOCATION_NAME, FROM_DEPARTMENT_NAME, FROM_EMPLOYEE_NAME, TO_BRANCH_NAME, TO_LOCATION_NAME, TO_DEPARTMENT_NAME, TO_EMPLOYEE_NAME, TRANSFER_REASON.
+
 ## Management Dashboard (D)
 - Role: Asset / Finance Manager.
 - Criteria: FINANCIAL_YEAR (default current FY), BRANCH_CODE (default: logged-in user's branch, selectable All).

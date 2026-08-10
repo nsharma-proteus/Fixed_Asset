@@ -24,6 +24,14 @@
       "verify_ok": false,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "34ee16cdd33d9b64"
+    },
+    "V:fam_asset_movement_history": {
+      "obj_type": "V",
+      "obj_name": "fam_asset_movement_history",
+      "verified_at": 1786357174.886564,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "4004525206e4fb99"
     }
   }
 }
