@@ -95,6 +95,7 @@
     "assessment_year",
     "block_code"
   ],
+  "MultiRowSelect": true,
   "columnEditing": true,
   "execution_mode": "edit",
   "editableColumns": [
@@ -143,9 +144,9 @@
     }
   ],
   "column_widths": {
-    "assessment_year": 214.03515625,
-    "additions_180_days_or_more": 228.26171875,
-    "rate_pct": 166.46484375,
+    "assessment_year": 118.86328125,
+    "additions_180_days_or_more": 223.19921875,
+    "rate_pct": 113.15234375,
     "additions_less_than_180_days": 257.05078125,
     "disposals_during_year": 205.3984375,
     "already_posted": 166.34765625,

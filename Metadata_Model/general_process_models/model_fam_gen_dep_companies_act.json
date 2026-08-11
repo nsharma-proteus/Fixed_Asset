@@ -2,7 +2,6 @@
   "obj_name": "fam_gen_dep_companies_act",
   "name": "Generate Depreciation - Companies Act (Monthly)",
   "description": "Computes and posts pro-rata monthly Schedule II (Companies Act) depreciation per capitalized asset (SLM/WDV), accounting for additions, transfers and disposals occurring during the period. ASSUMPTIONS (no user available to confirm - see OPEN QUESTIONS): (1) FINANCIAL_YEAR is the calendar year the FY STARTS (e.g. 2025 = FY 2025-04-01 to 2026-03-31, Indian convention); PERIOD_MONTH is the calendar month number 1-12 (4=April...3=March of the following calendar year) - no FRS-defined format existed for these two criteria so this is an assumed convention. (2) A 'capitalized' asset is identified via ar.CAPITALIZATION_DATE IS NOT NULL alone (CORRECTED to match the fam_gen_dep_income_tax sibling's own established definition - not a STATUS IN (...) filter, since live sample STATUS values in use, ACTIVE/DRAFT/DISPOSED/UNDER_MAINTENANCE, don't match the schema's declared enum CAPITALIZED/UNDER_TRANSFER/etc. anyway); an asset with an approved disposal is still generated for its disposal month (the DISPOSAL join's disposal_date, not STATUS, decides exclusion from LATER months) so the disposal-month depreciation and the ALREADY_POSTED-style history stay correct - it is excluded once disp.disposal_date < the period start. (3) CORRECTED after initial grounding: depreciation basis is the ASSET'S OWN per-asset editable COMPANIES_ACT_USEFUL_LIFE_YEARS / COMPANIES_ACT_METHOD / COMPANIES_ACT_RESIDUAL_VALUE_PCT fields on FAM_ASSET_REGISTER (defaulted from category at entry, but editable per-asset and already consumed by that object's own item_change), NOT a join to FAM_DEP_RATE_CA_MASTER - that master's CATEGORY_CODE values (BLDG-PERM/PLANT-HVY/...) do not overlap AT ALL with the codes actually in use on FAM_ASSET_REGISTER/FAM_ASSET_CATEGORY_MASTER (BUILDING/ELEC-APPL/...), so joining it would silently produce zero matching rows for every asset. Reading the asset's own stored fields avoids that mismatch entirely and correctly honors any per-asset override of its category's default rate. (4) Put-to-use date = GREATEST(CAPITALIZATION_DATE, confirmed FAM_ASSET_INSTALLATION.INSTALLATION_DATE where STATUS='CONFIRMED') per FRS 'CAPITALIZATION_DATE (or Installation Date if later)'. (5) WDV monthly rate = the Schedule-II-implied annual rate 1-(residual_value_pct/100)^(1/useful_life_years), divided by 12 (linear, not compounded) then pro-rated by days_used/days_in_month - 'monthly rate implied by the annual WDV rate' is open to a compounding alternative (OPEN QUESTION below). (6) ADDITIONS_DURING_MONTH / DISPOSALS_DURING_MONTH are populated with the asset's TOTAL_CAPITALIZED_COST when its put-to-use / approved-disposal date respectively falls inside the period (else 0) - one row is generated per asset per month, so these are per-asset addition/disposal flags-with-value, not a portfolio aggregate. (7) Opening WDV = prior period's posted (status=APPROVED) CLOSING_WDV for the same asset (previous calendar month, wrapping FY at April/March); if no prior posted period exists for the asset (first-ever run), opening_wdv falls back to TOTAL_CAPITALIZED_COST - there is NO stored 'already-posted accumulated depreciation' anywhere in this project's design for legacy assets (FAM_ASSET_REGISTER has no accumulated-depreciation column - see (8)), so a first-ever run cannot subtract any pre-existing depreciation; if some assets already carry real-world accumulated depreciation from before this system went live, this will overstate their opening WDV until that data is captured somewhere (OPEN QUESTION below). (8) The task brief asked this process to also update FAM_ASSET_REGISTER.TOTAL_ACCUMULATED_DEPRECIATION on Approve & Post, describing it as already added to the table in a prior session - THIS WAS VERIFIED FALSE via describe_table/get_column: FAM_ASSET_REGISTER currently has 37 columns and no TOTAL_ACCUMULATED_DEPRECIATION (or any ACCUMULATED* ) column. Separately, and regardless of that column existing, the General Process (G) object schema has NO post-persist cross-update/side-effect mechanism to a second table at all (persist_mode writes to exactly one target - a table or a transaction); this cross-update cannot be built into this model as specified (OPEN QUESTION below). (9) 'Period cannot be regenerated once posted' is enforced by an ALREADY_POSTED S-calc plus a blocking validation, same pattern as the fam_gen_dep_income_tax sibling. (10) The FRS/navigation workflow (Generate/Edit/Submit-for-approval/Approve & Post/Cancel, plus a 'Close Financial Year' action) is approximated within General Process capabilities exactly like the Income Tax sibling: Generate = run + preview grid (execution_mode edit), the user edits ADJUSTMENT_REMARKS and STATUS (DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED), Execute persists the row - setting STATUS=APPROVED on Execute is the 'Approve & Post' action. The 'Close Financial Year' action (locking 12 posted periods, rolling forward closing WDV) is NOT implemented here - there is no such G-object capability; it would need a separate control/process. (11) RESOLVED after re-grounding (was flagged as an open data-mismatch by an earlier pass of this model): reading the asset's own COMPANIES_ACT_* fields instead of joining FAM_DEP_RATE_CA_MASTER, and filtering on CAPITALIZATION_DATE IS NOT NULL instead of STATUS, means this process no longer depends on FAM_DEP_RATE_CA_MASTER's CATEGORY_CODE values or on FAM_ASSET_REGISTER.STATUS holding the schema's declared enum - it runs correctly against the CURRENT live sample data as-is. FAM_DEP_RATE_CA_MASTER itself is left untouched and still uses a disjoint CATEGORY_CODE set from FAM_ASSET_CATEGORY_MASTER; that pre-existing master-data gap only matters if some OTHER object still joins to it directly (e.g. the fam_depreciation_comparison_ca_it / fam_monthly_depreciation_trend_ca proxy visuals) - out of scope here and not touched. *** TEMPORARY BOOTSTRAP STUB (as of this edit) ***: ALREADY_POSTED and OPENING_WDV are currently hard-coded to 'N' / total_capitalized_cost in the 'base' CTE of source_sql (moved there from the old calculations array - see (12) below), instead of their real lookups against FAM_DEP_COMPANIES_ACT_REGISTER, because that table does not exist until this process's first successful Execute, and Postgres cannot parse a static SELECT that references a not-yet-existing table (even inside EXISTS/CASE) - so the real lookups would fail Refresh Data on this genuinely-first-ever run, exactly as observed and fixed on the fam_gen_dep_income_tax sibling. 'N'/total_capitalized_cost are the factually correct values for an asset/period with zero posting history anyway. MUST BE REVERTED to real lookups (case when exists (select 1 from FAM_DEP_COMPANIES_ACT_REGISTER t where t.financial_year = ... and t.period_month = ... and t.asset_code = ... and t.status = 'APPROVED') then 'Y' else 'N' end for already_posted; coalesce((select closing_wdv from FAM_DEP_COMPANIES_ACT_REGISTER where asset_code = ... and status = 'APPROVED' and ((pm = 4 and financial_year = fy - 1 and period_month = 3) or (pm <> 4 and financial_year = fy and period_month = pm - 1))), total_capitalized_cost) for opening_wdv) once the table exists (i.e. right after the first Execute succeeds), otherwise the 'cannot re-generate an already-posted period' protection and the real prior-month carry-forward stay permanently disabled. (12) RESTRUCTURED (this edit): all columns previously computed via the calculations[] array (already_posted, opening_wdv, residual_value, depreciable_base, slm_monthly_dep, wdv_annual_rate, wdv_monthly_dep, monthly_depreciation_amount_raw, monthly_depreciation_amount, closing_wdv, accumulated_depreciation, adjustment_remarks, status) are now computed as layered SQL CTEs (base/step2.../step6) inside source_sql, and calculations is now []. This mirrors the fam_gen_dep_income_tax sibling fix and avoids two problems: (a) a pandas dtype-mixing bug where a bare integer 0 fallback in a C-type conditional (slm_monthly_dep/wdv_annual_rate/wdv_monthly_dep previously used ': 0' instead of ': 0.0') silently produced an object-dtype column that poisoned later arithmetic - the exact 'unsupported operand type(s) for -: float64 and object' crash seen on the Income Tax object; (b) a review-grid display issue where calculations-array-derived columns rendered with unreadable low-contrast styling (yellow header/white text, white-on-white rows) - moving them into source_sql resolves that the same way it did for the sibling. (13) LEGACY ASSET OPENING WDV BASELINE (this edit): FAM_ASSET_REGISTER gained two onboarding fields for legacy assets that were already being depreciated before this system went live - OPENING_ACCUMULATED_DEPRECIATION (NUMBER, depreciation already accumulated pre-system) and OPENING_WDV_AS_ON_DATE (DATE, optional, the date that balance is stated as on; blank for assets capitalized/depreciated for the first time within this system). Both are now pulled into the 'eligible' CTE. A per-asset PROCESSING_START_ANCHOR is derived = GREATEST(put_to_use_date, OPENING_WDV_AS_ON_DATE + 1 day) when OPENING_WDV_AS_ON_DATE IS NOT NULL, else put_to_use_date unchanged; this anchor (not the raw put_to_use_date) now drives both the eligibility WHERE-clause ('e.processing_start_anchor <= p.period_end', replacing 'e.put_to_use_date <= p.period_end') and the effective_start_date/days_used pro-ration ('GREATEST(p.period_start, e.processing_start_anchor)', replacing 'GREATEST(p.period_start, e.put_to_use_date)'), so a legacy asset is never depreciated by this process for any period on or before its OPENING_WDV_AS_ON_DATE (that balance is already accounted for outside the system as of that date) - only for periods starting after it. The ORIGINAL put_to_use_date is deliberately left driving additions_during_month unchanged, so a legacy asset resuming processing under this system does not show up as a fresh capital addition in the month its depreciation merely resumes (a legacy asset's true put_to_use_date/capitalization_date is necessarily in the past relative to its opening_wdv_as_on_date, so this falls out correctly on its own). The 'base' CTE's opening_wdv bootstrap fallback (see the TEMPORARY BOOTSTRAP STUB note above) is now baseline-aware instead of flatly equal to total_capitalized_cost for every row: opening_wdv = CASE WHEN b0.opening_wdv_as_on_date IS NOT NULL AND b0.period_start > b0.opening_wdv_as_on_date THEN b0.total_capitalized_cost - COALESCE(b0.opening_accumulated_depreciation, 0.0) ELSE b0.total_capitalized_cost END. already_posted stays hard-coded to 'N' exactly as before - that still has the same not-yet-existing-table blocker as already_posted's sibling stub and is intentionally NOT touched here. IMPORTANT FOR THE FUTURE REVERT: when the 'MUST BE REVERTED to real lookups ... once the table exists' step described earlier in this same description is eventually done, the real prior-period lookup's fallback documented there as coalesce((select closing_wdv from FAM_DEP_COMPANIES_ACT_REGISTER ...), total_capitalized_cost) must ALSO be updated at that time to fall back to this same baseline-aware CASE expression instead of flat total_capitalized_cost, i.e. it must become: coalesce((select closing_wdv from FAM_DEP_COMPANIES_ACT_REGISTER where asset_code = ... and status = 'APPROVED' and ((pm = 4 and financial_year = fy - 1 and period_month = 3) or (pm <> 4 and financial_year = fy and period_month = pm - 1))), CASE WHEN b0.opening_wdv_as_on_date IS NOT NULL AND b0.period_start > b0.opening_wdv_as_on_date THEN b0.total_capitalized_cost - COALESCE(b0.opening_accumulated_depreciation, 0.0) ELSE b0.total_capitalized_cost END) for opening_wdv - otherwise a legacy asset's real prior-month carry-forward would silently regress back to overstating opening WDV (ignoring its pre-system accumulated depreciation) the moment that revert is done.",
-
   "source_connection_id": "",
   "source_sql": "WITH params AS (SELECT CAST(?.financial_year.number AS INTEGER) AS fy, CAST(?.period_month.number AS INTEGER) AS pm, CASE WHEN CAST(?.period_month.number AS INTEGER) >= 4 THEN CAST(?.financial_year.number AS INTEGER) ELSE CAST(?.financial_year.number AS INTEGER) + 1 END AS period_calendar_year), period AS (SELECT fy, pm, make_date(period_calendar_year, pm, 1) AS period_start, CAST((make_date(period_calendar_year, pm, 1) + INTERVAL '1 month' - INTERVAL '1 day') AS DATE) AS period_end FROM params), eligible AS (SELECT ar.ASSET_CODE AS asset_code, ar.ASSET_NAME AS asset_name, ar.CATEGORY_CODE AS category_code, CAST(ar.TOTAL_CAPITALIZED_COST AS DOUBLE PRECISION) AS total_capitalized_cost, ar.BRANCH_CODE AS branch_code, CAST(ar.COMPANIES_ACT_USEFUL_LIFE_YEARS AS DOUBLE PRECISION) AS useful_life_years, ar.COMPANIES_ACT_METHOD AS depreciation_method, CAST(ar.COMPANIES_ACT_RESIDUAL_VALUE_PCT AS DOUBLE PRECISION) AS residual_value_pct, GREATEST(ar.CAPITALIZATION_DATE, COALESCE(inst.confirmed_install_date, ar.CAPITALIZATION_DATE)) AS put_to_use_date, CASE WHEN ar.OPENING_WDV_AS_ON_DATE IS NOT NULL THEN GREATEST(GREATEST(ar.CAPITALIZATION_DATE, COALESCE(inst.confirmed_install_date, ar.CAPITALIZATION_DATE)), (ar.OPENING_WDV_AS_ON_DATE + INTERVAL '1 day')::date) ELSE GREATEST(ar.CAPITALIZATION_DATE, COALESCE(inst.confirmed_install_date, ar.CAPITALIZATION_DATE)) END AS processing_start_anchor, CAST(ar.OPENING_ACCUMULATED_DEPRECIATION AS DOUBLE PRECISION) AS opening_accumulated_depreciation, ar.OPENING_WDV_AS_ON_DATE AS opening_wdv_as_on_date, disp.disposal_date AS disposal_date FROM FAM_ASSET_REGISTER ar LEFT JOIN (SELECT ASSET_CODE, MIN(INSTALLATION_DATE) AS confirmed_install_date FROM FAM_ASSET_INSTALLATION WHERE STATUS = 'CONFIRMED' GROUP BY ASSET_CODE) inst ON inst.ASSET_CODE = ar.ASSET_CODE LEFT JOIN (SELECT ASSET_CODE, DISPOSAL_DATE FROM FAM_ASSET_DISPOSAL WHERE STATUS = 'APPROVED') disp ON disp.ASSET_CODE = ar.ASSET_CODE WHERE ar.CAPITALIZATION_DATE IS NOT NULL AND (?.branch_code.string = 'ALL' OR ar.BRANCH_CODE = ?.branch_code.string)), base0 AS (SELECT p.fy AS financial_year, p.pm AS period_month, e.asset_code AS asset_code, e.asset_name AS asset_name, e.category_code AS category_code, e.total_capitalized_cost AS total_capitalized_cost, e.useful_life_years AS useful_life_years, e.depreciation_method AS depreciation_method, e.residual_value_pct AS residual_value_pct, e.put_to_use_date AS put_to_use_date, e.processing_start_anchor AS processing_start_anchor, e.opening_accumulated_depreciation AS opening_accumulated_depreciation, e.opening_wdv_as_on_date AS opening_wdv_as_on_date, e.disposal_date AS disposal_date, p.period_start AS period_start, p.period_end AS period_end, (p.period_end - p.period_start + 1) AS days_in_month, GREATEST(p.period_start, e.processing_start_anchor) AS effective_start_date, LEAST(p.period_end, COALESCE(e.disposal_date, p.period_end)) AS effective_end_date, (LEAST(p.period_end, COALESCE(e.disposal_date, p.period_end)) - GREATEST(p.period_start, e.processing_start_anchor) + 1) AS days_used, CASE WHEN e.put_to_use_date BETWEEN p.period_start AND p.period_end THEN e.total_capitalized_cost ELSE 0.0 END AS additions_during_month, CASE WHEN e.disposal_date BETWEEN p.period_start AND p.period_end THEN e.total_capitalized_cost ELSE 0.0 END AS disposals_during_month FROM eligible e CROSS JOIN period p WHERE e.processing_start_anchor <= p.period_end AND (e.disposal_date IS NULL OR e.disposal_date >= p.period_start)), base AS (SELECT b0.*, 'N' AS already_posted, CASE WHEN b0.opening_wdv_as_on_date IS NOT NULL AND b0.period_start > b0.opening_wdv_as_on_date THEN b0.total_capitalized_cost - COALESCE(b0.opening_accumulated_depreciation, 0.0) ELSE b0.total_capitalized_cost END AS opening_wdv FROM base0 b0), step2 AS (SELECT b.*, (b.total_capitalized_cost * b.residual_value_pct / 100.0) AS residual_value, (b.total_capitalized_cost - (b.total_capitalized_cost * b.residual_value_pct / 100.0)) AS depreciable_base FROM base b), step3 AS (SELECT s.*, CASE WHEN s.useful_life_years > 0 THEN (s.depreciable_base / s.useful_life_years / 12.0) * (CAST(s.days_used AS DOUBLE PRECISION) / s.days_in_month) ELSE 0.0 END AS slm_monthly_dep, CASE WHEN s.useful_life_years > 0 THEN 1.0 - POWER(s.residual_value_pct / 100.0, 1.0 / s.useful_life_years) ELSE 0.0 END AS wdv_annual_rate FROM step2 s), step4 AS (SELECT s.*, CASE WHEN s.useful_life_years > 0 THEN s.opening_wdv * (s.wdv_annual_rate / 12.0) * (CAST(s.days_used AS DOUBLE PRECISION) / s.days_in_month) ELSE 0.0 END AS wdv_monthly_dep FROM step3 s), step5 AS (SELECT s.*, CASE WHEN s.depreciation_method = 'SLM' THEN s.slm_monthly_dep ELSE s.wdv_monthly_dep END AS monthly_depreciation_amount_raw FROM step4 s), step6 AS (SELECT s.*, CASE WHEN (s.opening_wdv - s.monthly_depreciation_amount_raw) < s.residual_value THEN GREATEST(s.opening_wdv - s.residual_value, 0.0) ELSE s.monthly_depreciation_amount_raw END AS monthly_depreciation_amount FROM step5 s) SELECT s.financial_year, s.period_month, s.asset_code, s.asset_name, s.category_code, s.total_capitalized_cost, s.useful_life_years, s.depreciation_method, s.residual_value_pct, s.put_to_use_date, s.disposal_date, s.period_start, s.period_end, s.days_in_month, s.effective_start_date, s.effective_end_date, s.days_used, s.additions_during_month, s.disposals_during_month, s.already_posted, s.opening_wdv, s.residual_value, s.depreciable_base, s.slm_monthly_dep, s.wdv_annual_rate, s.wdv_monthly_dep, s.monthly_depreciation_amount_raw, s.monthly_depreciation_amount, CASE WHEN (s.opening_wdv - s.monthly_depreciation_amount) < s.residual_value THEN s.residual_value ELSE s.opening_wdv - s.monthly_depreciation_amount END AS closing_wdv, s.total_capitalized_cost - (CASE WHEN (s.opening_wdv - s.monthly_depreciation_amount) < s.residual_value THEN s.residual_value ELSE s.opening_wdv - s.monthly_depreciation_amount END) AS accumulated_depreciation, '' AS adjustment_remarks, 'DRAFT' AS status FROM step6 s",
   "default_params": {
@@ -10,54 +9,155 @@
     "period_month": 4,
     "branch_code": "ALL"
   },
-
   "calculations": [],
-
   "lookups": [],
-
   "persist_mode": "table",
   "target_connection_id": "",
   "target_table": "FAM_DEP_COMPANIES_ACT_REGISTER",
   "target_columns": [
-    { "name": "financial_year", "type": "number", "source": "financial_year" },
-    { "name": "period_month", "type": "number", "source": "period_month" },
-    { "name": "asset_code", "type": "string", "source": "asset_code" },
-    { "name": "asset_name", "type": "string", "source": "asset_name" },
-    { "name": "category_code", "type": "string", "source": "category_code" },
-    { "name": "opening_wdv", "type": "decimal", "source": "opening_wdv" },
-    { "name": "additions_during_month", "type": "decimal", "source": "additions_during_month" },
-    { "name": "disposals_during_month", "type": "decimal", "source": "disposals_during_month" },
-    { "name": "depreciation_method", "type": "string", "source": "depreciation_method" },
-    { "name": "monthly_depreciation_amount", "type": "decimal", "source": "monthly_depreciation_amount" },
-    { "name": "closing_wdv", "type": "decimal", "source": "closing_wdv" },
-    { "name": "accumulated_depreciation", "type": "decimal", "source": "accumulated_depreciation" },
-    { "name": "adjustment_remarks", "type": "string", "source": "adjustment_remarks" },
-    { "name": "status", "type": "string", "source": "status" }
+    {
+      "name": "financial_year",
+      "type": "number",
+      "source": "financial_year"
+    },
+    {
+      "name": "period_month",
+      "type": "number",
+      "source": "period_month"
+    },
+    {
+      "name": "asset_code",
+      "type": "string",
+      "source": "asset_code"
+    },
+    {
+      "name": "asset_name",
+      "type": "string",
+      "source": "asset_name"
+    },
+    {
+      "name": "category_code",
+      "type": "string",
+      "source": "category_code"
+    },
+    {
+      "name": "opening_wdv",
+      "type": "decimal",
+      "source": "opening_wdv"
+    },
+    {
+      "name": "additions_during_month",
+      "type": "decimal",
+      "source": "additions_during_month"
+    },
+    {
+      "name": "disposals_during_month",
+      "type": "decimal",
+      "source": "disposals_during_month"
+    },
+    {
+      "name": "depreciation_method",
+      "type": "string",
+      "source": "depreciation_method"
+    },
+    {
+      "name": "monthly_depreciation_amount",
+      "type": "decimal",
+      "source": "monthly_depreciation_amount"
+    },
+    {
+      "name": "closing_wdv",
+      "type": "decimal",
+      "source": "closing_wdv"
+    },
+    {
+      "name": "accumulated_depreciation",
+      "type": "decimal",
+      "source": "accumulated_depreciation"
+    },
+    {
+      "name": "adjustment_remarks",
+      "type": "string",
+      "source": "adjustment_remarks"
+    },
+    {
+      "name": "status",
+      "type": "string",
+      "source": "status"
+    }
   ],
-  "key_columns": ["financial_year", "period_month", "asset_code"],
-
+  "key_columns": [
+    "financial_year",
+    "period_month",
+    "asset_code"
+  ],
+  "MultiRowSelect": true,
+  "columnEditing": true,
   "execution_mode": "edit",
-  "editableColumns": ["adjustment_remarks", "status"],
+  "editableColumns": [
+    "adjustment_remarks",
+    "status"
+  ],
   "criteria_lookups": {
-    "branch_code": { "table": "FAM_BRANCH_MASTER", "value_column": "BRANCH_CODE", "display_column": "BRANCH_NAME", "filter": "STATUS = 'A'" }
+    "branch_code": {
+      "table": "FAM_BRANCH_MASTER",
+      "value_column": "BRANCH_CODE",
+      "display_column": "BRANCH_NAME",
+      "filter": "STATUS = 'A'"
+    }
   },
   "editable_lookups": {},
   "item_changes": {},
   "validations": [
-    { "type": "expression", "name": "period not already posted", "error_code": "FAM_DEP_CA_ALREADY_POSTED",
+    {
+      "type": "expression",
+      "name": "period not already posted",
+      "error_code": "FAM_DEP_CA_ALREADY_POSTED",
       "expression": "{form.already_posted} != 'Y'",
-      "message": "Financial year {form.financial_year} period {form.period_month} for asset {form.asset_code} is already Approved & Posted; this period cannot be re-generated", "severity": "E" },
-    { "type": "expression", "name": "Companies Act depreciation rate defined", "error_code": "FAM_DEP_CA_NO_RATE",
+      "message": "Financial year {form.financial_year} period {form.period_month} for asset {form.asset_code} is already Approved & Posted; this period cannot be re-generated",
+      "severity": "E"
+    },
+    {
+      "type": "expression",
+      "name": "Companies Act depreciation rate defined",
+      "error_code": "FAM_DEP_CA_NO_RATE",
       "expression": "{form.useful_life_years} > 0",
-      "message": "No Companies Act (Schedule II) depreciation rate found for category {form.category_code} of asset {form.asset_code}", "severity": "E" },
-    { "type": "expression", "name": "valid depreciation method", "error_code": "FAM_DEP_CA_BAD_METHOD",
+      "message": "No Companies Act (Schedule II) depreciation rate found for category {form.category_code} of asset {form.asset_code}",
+      "severity": "E"
+    },
+    {
+      "type": "expression",
+      "name": "valid depreciation method",
+      "error_code": "FAM_DEP_CA_BAD_METHOD",
       "expression": "{form.depreciation_method} in ['SLM','WDV']",
-      "message": "Depreciation method for asset {form.asset_code} must be SLM or WDV", "severity": "E" },
-    { "type": "expression", "name": "closing WDV not below residual value", "error_code": "FAM_DEP_CA_BELOW_RESIDUAL",
+      "message": "Depreciation method for asset {form.asset_code} must be SLM or WDV",
+      "severity": "E"
+    },
+    {
+      "type": "expression",
+      "name": "closing WDV not below residual value",
+      "error_code": "FAM_DEP_CA_BELOW_RESIDUAL",
       "expression": "{form.closing_wdv} >= 0",
-      "message": "Closing WDV for asset {form.asset_code} cannot be negative", "severity": "E" },
-    { "type": "expression", "name": "valid status", "error_code": "FAM_DEP_CA_BAD_STATUS",
+      "message": "Closing WDV for asset {form.asset_code} cannot be negative",
+      "severity": "E"
+    },
+    {
+      "type": "expression",
+      "name": "valid status",
+      "error_code": "FAM_DEP_CA_BAD_STATUS",
       "expression": "{form.status} in ['DRAFT','PENDING_APPROVAL','APPROVED','CANCELLED']",
-      "message": "Status for asset {form.asset_code} must be one of DRAFT, PENDING_APPROVAL, APPROVED or CANCELLED", "severity": "E" }
-  ]
+      "message": "Status for asset {form.asset_code} must be one of DRAFT, PENDING_APPROVAL, APPROVED or CANCELLED",
+      "severity": "E"
+    }
+  ],
+  "column_widths": {
+    "wdv_annual_rate": 124.66015625,
+    "wdv_monthly_dep": 156.953125,
+    "slm_monthly_dep": 135,
+    "monthly_depreciation_amount_raw": 156.234375,
+    "monthly_depreciation_amount": 135.296875,
+    "closing_wdv": 130.98046875,
+    "accumulated_depreciation": 163.84765625,
+    "opening_wdv": 146.6015625
+  }
 }

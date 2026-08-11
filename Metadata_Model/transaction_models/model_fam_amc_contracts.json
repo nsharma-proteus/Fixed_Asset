@@ -252,7 +252,13 @@
                 "default_function": "",
                 "expression": "",
                 "validations": "",
-                "lookup": ""
+                "lookup": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "",
+                  "match_mode": "simple",
+                  "fill": []
+                }
               }
             },
             {
@@ -550,6 +556,104 @@
                   "expression": "in_list({form.status}, \"DRAFT\")"
                 }
               ]
+            },
+            {
+              "name": "Submit for Approval",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "submit_amc_contract_for_approval",
+                "description": "Submit a Draft AMC contract for approval",
+                "spec": "Validate the header is in DRAFT status and has at least one covered-asset line, then set FAM_AMC_CONTRACTS.STATUS = PENDING_APPROVAL for this AMC_CONTRACT_NO and return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Draft",
+                  "message": "Only Draft contracts can be submitted for approval (current status {form.status}).",
+                  "expression": "in_list({form.status}, \"DRAFT\")"
+                },
+                {
+                  "type": "builtin",
+                  "name": "At least one covered asset",
+                  "message": "Add at least one covered asset before submitting for approval.",
+                  "builtin": {
+                    "kind": "child_form_has_entry",
+                    "child_form": "2",
+                    "min_rows": 1
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Approve",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "approve_amc_contract",
+                "description": "Approve a Draft or Pending Approval AMC contract",
+                "spec": "Set FAM_AMC_CONTRACTS.STATUS = ACTIVE for this AMC_CONTRACT_NO. For every FAM_AMC_CONTRACT_LINE row under this contract, flag the covered asset's AMC_APPLICABLE = Y (dependency: FAM_ASSET_REGISTER currently only carries ASSET_CODE, ASSET_NAME, CAPITALIZATION_DATE -- it does not yet have an AMC_APPLICABLE column, so this flagging cannot be persisted until that column is added; implement the STATUS update now and add the flagging once the column exists). Return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Draft or Pending Approval",
+                  "message": "Only Draft or Pending Approval contracts can be approved (current status {form.status}).",
+                  "expression": "in_list({form.status}, \"DRAFT,PENDING_APPROVAL\")"
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Approve AMC contract {form.amc_contract_no}? Covered assets will be flagged as AMC applicable."
+              }
+            },
+            {
+              "name": "Renew",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "renew_amc_contract",
+                "description": "Renew an Active or Expired AMC contract into a new contract",
+                "spec": "Create a new FAM_AMC_CONTRACTS row with AMC_CONTRACT_NO auto-generated, PREVIOUS_CONTRACT_NO = this contract's AMC_CONTRACT_NO, AMC_VENDOR_CODE copied from this contract, STATUS = DRAFT, and START_DATE/END_DATE/CONTRACT_COST left for the user to fill in on the new record. Copy every FAM_AMC_CONTRACT_LINE row (ASSET_CODE, COVERAGE_REMARKS) from this contract onto the new AMC_CONTRACT_NO. Set this contract's STATUS = RENEWED. Return a confirmation message including the new AMC_CONTRACT_NO.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Active or Expired",
+                  "message": "Only Active or Expired contracts can be renewed (current status {form.status}).",
+                  "expression": "in_list({form.status}, \"ACTIVE,EXPIRED\")"
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Renew AMC contract {form.amc_contract_no}? A new linked contract will be created and this one marked Renewed."
+              }
+            },
+            {
+              "name": "Cancel",
+              "handler": "message",
+              "scope": "row",
+              "business_logic": {
+                "method": "cancel_amc_contract",
+                "description": "Cancel an AMC contract",
+                "spec": "Set FAM_AMC_CONTRACTS.STATUS = CANCELLED for this AMC_CONTRACT_NO and return a confirmation message.",
+                "language": "plpgsql"
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Cannot cancel a Renewed or already Cancelled contract",
+                  "message": "This contract cannot be cancelled (current status {form.status}).",
+                  "expression": "not in_list({form.status}, \"CANCELLED,RENEWED\")"
+                }
+              ],
+              "confirmation": {
+                "mode": "reconfirm",
+                "message": "Cancel AMC contract {form.amc_contract_no}?"
+              }
             }
           ]
         }
@@ -925,106 +1029,7 @@
         }
       }
     ],
-    "actions": [
-      {
-        "name": "Submit for Approval",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "submit_amc_contract_for_approval",
-          "description": "Submit a Draft AMC contract for approval",
-          "spec": "Validate the header is in DRAFT status and has at least one covered-asset line, then set FAM_AMC_CONTRACTS.STATUS = PENDING_APPROVAL for this AMC_CONTRACT_NO and return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be Draft",
-            "message": "Only Draft contracts can be submitted for approval (current status {form.status}).",
-            "expression": "in_list({form.status}, \"DRAFT\")"
-          },
-          {
-            "type": "builtin",
-            "name": "At least one covered asset",
-            "message": "Add at least one covered asset before submitting for approval.",
-            "builtin": {
-              "kind": "child_form_has_entry",
-              "child_form": "2",
-              "min_rows": 1
-            }
-          }
-        ]
-      },
-      {
-        "name": "Approve",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "approve_amc_contract",
-          "description": "Approve a Pending Approval AMC contract",
-          "spec": "Set FAM_AMC_CONTRACTS.STATUS = ACTIVE for this AMC_CONTRACT_NO. For every FAM_AMC_CONTRACT_LINE row under this contract, flag the covered asset's AMC_APPLICABLE = Y (dependency: FAM_ASSET_REGISTER currently only carries ASSET_CODE, ASSET_NAME, CAPITALIZATION_DATE -- it does not yet have an AMC_APPLICABLE column, so this flagging cannot be persisted until that column is added; implement the STATUS update now and add the flagging once the column exists). Return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be Pending Approval",
-            "message": "Only contracts Pending Approval can be approved (current status {form.status}).",
-            "expression": "in_list({form.status}, \"PENDING_APPROVAL\")"
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Approve AMC contract {form.amc_contract_no}? Covered assets will be flagged as AMC applicable."
-        }
-      },
-      {
-        "name": "Renew",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "renew_amc_contract",
-          "description": "Renew an Active or Expired AMC contract into a new contract",
-          "spec": "Create a new FAM_AMC_CONTRACTS row with AMC_CONTRACT_NO auto-generated, PREVIOUS_CONTRACT_NO = this contract's AMC_CONTRACT_NO, AMC_VENDOR_CODE copied from this contract, STATUS = DRAFT, and START_DATE/END_DATE/CONTRACT_COST left for the user to fill in on the new record. Copy every FAM_AMC_CONTRACT_LINE row (ASSET_CODE, COVERAGE_REMARKS) from this contract onto the new AMC_CONTRACT_NO. Set this contract's STATUS = RENEWED. Return a confirmation message including the new AMC_CONTRACT_NO.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Must be Active or Expired",
-            "message": "Only Active or Expired contracts can be renewed (current status {form.status}).",
-            "expression": "in_list({form.status}, \"ACTIVE,EXPIRED\")"
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Renew AMC contract {form.amc_contract_no}? A new linked contract will be created and this one marked Renewed."
-        }
-      },
-      {
-        "name": "Cancel",
-        "handler": "message",
-        "scope": "row",
-        "business_logic": {
-          "method": "cancel_amc_contract",
-          "description": "Cancel an AMC contract",
-          "spec": "Set FAM_AMC_CONTRACTS.STATUS = CANCELLED for this AMC_CONTRACT_NO and return a confirmation message.",
-          "language": "plpgsql"
-        },
-        "validations": [
-          {
-            "type": "expression",
-            "name": "Cannot cancel a Renewed or already Cancelled contract",
-            "message": "This contract cannot be cancelled (current status {form.status}).",
-            "expression": "not in_list({form.status}, \"CANCELLED,RENEWED\")"
-          }
-        ],
-        "confirmation": {
-          "mode": "reconfirm",
-          "message": "Cancel AMC contract {form.amc_contract_no}?"
-        }
-      }
-    ],
+    "actions": [],
     "cross_updates": [],
     "pre_commit": [],
     "post_commit": [],

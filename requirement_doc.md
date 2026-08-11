@@ -113,8 +113,8 @@
 ## Physical Verification
 ### Conduct Physical Verification
 - Description: Plan and execute periodic physical confirmation of assets at a branch/location, capturing findings against the Asset Register and resolving discrepancies.
-- Data points (header): VERIFICATION_CYCLE_NO (auto), VERIFICATION_DATE, BRANCH_CODE, LOCATION_CODE, VERIFIER_EMPLOYEE_CODE, STATUS (Planned/In Progress/Pending Approval/Closed). Data points (lines): ASSET_CODE, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE, PHYSICAL_STATUS_FOUND (Found/Not Found/Damaged/Extra-Unregistered), VERIFIED_DATE, REMARKS.
-- Business rules: Line items default from all Capitalized assets in the selected BRANCH_CODE/LOCATION_CODE; each ASSET_CODE can appear once per cycle; cycle cannot close while any line is unverified.
+- Data points (header): VERIFICATION_CYCLE_NO (auto), VERIFICATION_DATE, BRANCH_CODE, LOCATION_CODE, VERIFIER_EMPLOYEE_CODE, STATUS (Planned/In Progress/Pending Approval/Closed). Data points (lines): ASSET_CODE, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE, PHYSICAL_STATUS_FOUND (Found/Not Found/Damaged/Extra-Unregistered), VERIFIED_DATE, REMARKS, ASSET_PHOTO_URL (optional photo evidence of the asset's physical condition/location captured during verification; image upload with a thumbnail shown in the line list).
+- Business rules: Line items default from all Capitalized assets in the selected BRANCH_CODE/LOCATION_CODE; the line's ASSET_CODE picker is restricted to assets belonging to the header's BRANCH_CODE; each ASSET_CODE can appear once per cycle; cycle cannot close while any line is unverified; the header and all line rows can only be added, edited or deleted while the cycle STATUS is Planned or In Progress — once the cycle is submitted for approval, approved (Closed) or cancelled, the cycle and its lines become view-only.
 - Business actions: Search, Add cycle, Scan QR code/Barcode to confirm asset, Mark Found/Not Found/Damaged, Submit-for-approval, Approve, Cancel.
 - Additional data management: On Approve, every line carrying a VERIFIED_DATE updates the Asset Register's LAST_VERIFIED_DATE for that asset; assets marked Not Found update Asset Register STATUS to Under Investigation; assets marked Damaged raise a remark flag for follow-up; approved cycle data feeds the Verification Report (R).
 
@@ -130,7 +130,7 @@
 - Description: Record and track Annual Maintenance Contracts covering one or more assets, including validity and renewal.
 - Data points (header): AMC_CONTRACT_NO (auto), AMC_VENDOR_CODE, START_DATE, END_DATE, CONTRACT_COST, STATUS (Active/Expired/Renewed/Cancelled), PREVIOUS_CONTRACT_NO (for renewals). Data points (lines): ASSET_CODE, ASSET_NAME, COVERAGE_REMARKS.
 - Business rules: END_DATE > START_DATE; each line ASSET_CODE must be Capitalized; renewal creates a new AMC_CONTRACT_NO linked to PREVIOUS_CONTRACT_NO and sets the prior contract to Renewed.
-- Business actions: Search, Add, Edit, Renew, Submit-for-approval, Approve, Cancel.
+- Business actions: Search, Add, Edit, Renew, Submit-for-approval, Approve, Expire, Cancel. Approve can be run directly on a Draft contract (Submit-for-approval to Pending Approval first is optional, not mandatory). Edit is only available while a contract is Draft. Expire is a manual action, available only on an Active contract whose END_DATE has already passed, that sets STATUS = Expired (status does not change automatically with the passage of time).
 - Additional data management: On Approve, covered assets are flagged AMC_APPLICABLE = Y on the Asset Register; contract validity feeds the Warranty / AMC Expiry (V).
 - Trigger: send-notification to the asset owner/branch when Warranty or AMC coverage is within 30 days of WARRANTY_END_DATE/END_DATE.
 
@@ -162,11 +162,30 @@
 - Columns: ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, PHYSICAL_STATUS_FOUND, REMARKS, VERIFIED_DATE.
 - Footer: Signature blocks for Verifier and Approver.
 
+## Asset Verification Coverage by Category (V)
+- Visualization: Grid, one row per Asset Category.
+- Purpose: shows what proportion of each category's in-service assets have actually been physically verified within a chosen recent period.
+- Criteria: Asset Category (optional, lookup to Asset Category Master, defaults to all categories); Verification Period From date (defaults to 12 months before today — the upper bound is always the current date).
+- Columns: CATEGORY_NAME, TOTAL_ASSETS (count of Asset Register rows in that category with STATUS = Active), VERIFIED_ASSETS (of those, the count with at least one Physical Verification line whose VERIFIED_DATE falls within the selected period), PCT_VERIFIED (VERIFIED_ASSETS / TOTAL_ASSETS, 0 when the category has no active assets).
+
 ## Warranty / AMC Expiry (V)
 - Visualization: Grid.
 - Criteria: BRANCH_CODE, LOCATION_CODE, TYPE (Warranty/AMC), EXPIRY_DATE range, STATUS.
 - Data points: ASSET_CODE, ASSET_NAME, TYPE, PROVIDER_VENDOR_CODE, START_DATE, END_DATE, DAYS_TO_EXPIRY, STATUS.
 - Drill-down: Clicking an ASSET_CODE opens the Asset Register detail for that asset.
+
+## Assets Not Under AMC (V)
+- Visualization: Grid over the Asset Register.
+- Purpose: lists assets that are NOT currently covered by any AMC contract (AMC_APPLICABLE flag is not 'Y').
+- Criteria: Asset Category (optional, lookup to Asset Category Master, defaults to all categories); Branch (optional, lookup to Branch Master, defaults to all branches).
+- Columns: ASSET_CODE, ASSET_NAME, CATEGORY_NAME, BRANCH_NAME, STATUS, MAKE, MODEL, PURCHASE_DATE, PURCHASE_COST.
+
+## AMC Coverage & Expiry (V)
+- Visualization: Grid joining AMC Contracts -> AMC Contract Line -> Asset Register.
+- Purpose: shows AMC contract details together with each covered asset, restricted to coverage that has already expired or will expire by a selected date.
+- Criteria: Expiring On or Before (date, defaults to today) filters to contract lines whose END_DATE <= this date; Branch (optional, lookup to Branch Master, defaults to all branches).
+- Columns: AMC_CONTRACT_NO, AMC_VENDOR_CODE, START_DATE, END_DATE, CONTRACT STATUS, ASSET_CODE, ASSET_NAME, BRANCH_NAME, CATEGORY_NAME, DAYS_TO_EXPIRY, EXPIRY_INDICATOR.
+- Sort: END_DATE ascending (most overdue / soonest expiring first).
 
 ## Asset Movement History (V)
 - Visualization: Grid, one row per transfer/movement event, sorted asset-wise then chronologically (TRANSFER_DATE ascending) so it reads as a per-asset movement trail.

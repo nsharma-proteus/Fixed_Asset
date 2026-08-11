@@ -317,6 +317,27 @@
                 "default_value": "PLANNED",
                 "protect": "1",
                 "mandatory": true,
+                "item_change": {
+                  "mode": "rule",
+                  "protect": [
+                    {
+                      "form_col": "verification_date",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "branch_code",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "location_code",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "verifier_employee_code",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    }
+                  ]
+                },
                 "edit_mask": {
                   "mask": "ddlb",
                   "values": [
@@ -566,19 +587,6 @@
           },
           "actions": [
             {
-              "name": "Edit",
-              "handler": "system",
-              "system_op": "edit",
-              "validations": [
-                {
-                  "type": "expression",
-                  "name": "Editable only before approval",
-                  "message": "Only cycles in Planned or In Progress status can be edited.",
-                  "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
-                }
-              ]
-            },
-            {
               "name": "Load Assets",
               "handler": "select_grid",
               "scope": "row",
@@ -707,6 +715,39 @@
                 "key": true,
                 "hidden": 1,
                 "protect": "1",
+                "item_change": {
+                  "mode": "rule",
+                  "protect": [
+                    {
+                      "form_col": "asset_code",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "physical_status_found",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "verified_date",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "remarks",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "asset_photo_url",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "expected_location_code",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "expected_employee_code",
+                      "when": "not (in_list({header.status}, \"PLANNED,IN_PROGRESS\"))"
+                    }
+                  ]
+                },
                 "x": "100",
                 "y": "100",
                 "col_id": "1",
@@ -762,6 +803,7 @@
                 "descr": "Asset being verified",
                 "mandatory": true,
                 "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+                "lookup_filter": "BRANCH_CODE = {header.branch_code}",
                 "validations": [
                   {
                     "type": "business_logic",
@@ -968,6 +1010,39 @@
                 "default_value": "",
                 "expression": "",
                 "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_photo_url",
+                "db_name": "ASSET_PHOTO_URL",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Asset Photo",
+                "descr": "Photo evidence of the asset's physical condition/location, captured during verification",
+                "mandatory": false,
+                "edit_mask": {
+                  "mask": "image"
+                },
+                "display": {
+                  "type": "image"
+                },
+                "x": "55",
+                "y": "55",
+                "col_id": "18",
+                "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
+                "table_display_name": "Physical verification line items",
+                "db_size": "500",
+                "width": 150,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
                 "protect": "",
                 "validations": "",
                 "lookup": ""
@@ -1319,6 +1394,32 @@
           },
           "validations": [],
           "actions": [
+            {
+              "name": "Add",
+              "handler": "system",
+              "system_op": "add",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Cycle open for adding lines",
+                  "message": "Lines can only be added while the cycle is Planned or In Progress.",
+                  "expression": "in_list({header.status}, \"PLANNED,IN_PROGRESS\")"
+                }
+              ]
+            },
+            {
+              "name": "Delete",
+              "handler": "system",
+              "system_op": "delete",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Cycle open for deleting lines",
+                  "message": "Lines can only be deleted while the cycle is Planned or In Progress.",
+                  "expression": "in_list({header.status}, \"PLANNED,IN_PROGRESS\")"
+                }
+              ]
+            },
             {
               "name": "Scan to Confirm",
               "handler": "item_change",

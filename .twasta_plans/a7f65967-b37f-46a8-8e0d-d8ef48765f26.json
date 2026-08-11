@@ -1,0 +1,20 @@
+{
+  "id": "a7f65967-b37f-46a8-8e0d-d8ef48765f26",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "can you create an asset verification report - this should show the asset categor",
+  "kind": "modify",
+  "status": "completed",
+  "description": "can you create an asset verification report - this should show the asset categor",
+  "created_at": 1786431888.6145263,
+  "updated_at": 1786432425.2090812,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "can you create an asset verification report - this should show the asset category and the % of assets that were verifed in the past 12 months \nThere should be an option to choose the asset category and the the past period",
+  "resume_ref": {
+    "session_id": "d7f1e01b-750e-475a-ac31-39aaf284a4e2",
+    "claude_session_id": "76866c5a-c222-4f9b-8824-3f4fc96de460"
+  },
+  "depends_on": [],
+  "result_summary": "Now updating the FRS to document this new report.## Asset Verification Coverage by Category (V)\n- Visualization: Grid, one row per Asset Category.\n- Purpose: shows what proportion of each category's in-service assets have actually been physically verified within a chosen recent period.\n- Criteria: Asset Category (optional, lookup to Asset Category Master, defaults to all categories); Verification Period From date (defaults to 12 months before today \u2014 the upper bound is always the current date).\n- Columns: CATEGORY_NAME, TOTAL_ASSETS (count of Asset Register rows in that category with STATUS = Active), VERIFIED_ASSETS (of those, the count with at least one Physical Verification line whose VERIFIED_DATE falls within the selected period), PCT_VERIFIED (VERIFIED_ASSETS / TOTAL_ASSETS, 0 when the category has no active assets).\n\n## Warranty / AMC Expiry (V)\n- Visualization: Grid.\n- Criteria: BRANCH_CODE, LOCATION_CODE, TYPE (Warranty/AMC), EXPIRY_DATE range, STATUS.\n- Data points: ASSET_CODE, ASSET_NAME, TYPE, PROVIDER_VENDOR_CODE, START_DATE, END_DATE, DAYS_TO_EXPIRY, STATUS.\n- Drill-down: Clicking an ASSET_CODE opens the Asset Register detail for that asset.\"}Done. Created a new Visual (V) report and wired it into the menu.\n\n**What was built:** `fam_asset_verification_coverage` \u2014 \"Asset Verification Coverage by Category\", a grid showing, per asset category, Total Assets / Verified Assets / % Verified for a chosen period. Two criteria: **Asset Category** (optional picker, defaults to all) and **Verification Period From** (defaults to 12 months back; upper bound is always today).\n\n**Logic:** Total = active (`STATUS='ACTIVE'`) assets in the category from `FAM_ASSET_REGISTER`; Verified = of those, the ones with a `FAM_PHYSICAL_VERIFICATION_LINE.VERIFIED_DATE` inside the selected window. Both structure (joins, grain safety) and data (independently recomputed against the live tables) were reviewed and passed \u2014 one non-blocking note: the period-from default is a literal date computed at build time (`2025-08-11`), since the platform has no relative \"N months ago\" token, so it should be refreshed periodically rather than left indefinitely.\n\n**Files touched:**\n- `Metadata_Model/visual_models/model_fam_asset_verification_coverage.json` \u2014 new visual\n- `application.json` \u2014 new nav entry under \"Reports & Analytics\"\n- `requirement_doc.md` \u2014 added the \"Asset Verification Coverage by Category (V)\" section\n\nNote: this is separate from the existing `fam_verification_report` (R) nav stub, which is a different, still-unbuilt per-cycle confirmation document \u2014 I left that untouched.\n\nFiles touched: requirement_doc.md, application.json, Metadata_Model/visual_models/model_fam_asset_verification_coverage.json"
+}

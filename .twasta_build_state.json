@@ -32,6 +32,30 @@
       "verify_ok": true,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "4004525206e4fb99"
+    },
+    "V:fam_asset_verification_coverage": {
+      "obj_type": "V",
+      "obj_name": "fam_asset_verification_coverage",
+      "verified_at": 1786432425.2056565,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "0a1c804351a7527a"
+    },
+    "V:fam_assets_not_under_amc": {
+      "obj_type": "V",
+      "obj_name": "fam_assets_not_under_amc",
+      "verified_at": 1786434784.0822089,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "41ca8945871322af"
+    },
+    "V:fam_amc_coverage_expiry": {
+      "obj_type": "V",
+      "obj_name": "fam_amc_coverage_expiry",
+      "verified_at": 1786434784.0827253,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "4caa4b64d553d26e"
     }
   }
 }

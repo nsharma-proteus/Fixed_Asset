@@ -350,6 +350,42 @@
       "menu_path": "fam.4.3",
       "functional_specs": "Generates a per-asset, per-Assessment-Year Income Tax depreciation ledger to satisfy Tax Audit Form 3CD Clause 18, which requires depreciation-claimed particulars at asset level. Under the Income Tax Act depreciation is computed and legally exists only at BLOCK level (see the sibling process \"Generate Depreciation - Income Tax\"); this process does NOT recompute the statutory figure. Instead it takes each block's already-computed annual depreciation amount and ALLOCATES it across the block's member assets on a documented proportional basis, purely for disclosure/record-keeping.\n\nCriteria: Assessment Year (number, required), Block Code (dropdown from Depreciation Rate Master - Income Tax, default ALL), Branch (dropdown from Branch Master, default ALL).\n\nSource logic: recomputes the same block-wise WDV depreciation as the sibling block process (opening WDV incl. the block's legacy Opening WDV/As-On-Date onboarding fields, additions split by the 180-day put-to-use rule at full/half rate, disposals during the year, rate from the Income Tax Rate Master, depreciation amount capped at net block). For each eligible asset (has a Capitalization Date and an Income Tax Block Code) it then determines: RATE_CATEGORY (DISPOSED / ADDITION_FULL_RATE / ADDITION_HALF_RATE / OPENING_BLOCK_MEMBER / NOT_ELIGIBLE) and an allocation weight \u2014 its own acquisition cost for a full-rate addition this year, half its cost for a half-rate addition, its own legacy Income Tax Opening WDV seed (from the Asset Register's Income Tax Opening WDV / Income Tax Opening WDV As On Date fields) if it was already a block member before this financial year, or 0 if disposed during the year. DEPRECIATION_ALLOCATED = the block's total depreciation amount x this asset's weight / sum of weights of all its block's member assets. GROSS_BLOCK is always the asset's own full acquisition cost. OPENING_WDV_ALLOCATED and CLOSING_WDV_ALLOCATED are shown per asset on the same allocation basis.\n\nOutput columns per row (one per Assessment Year + Asset): Assessment Year, Asset Code, Asset Name, Block Code, Block Description, Branch Code Filter, Rate Category, Gross Block, Opening WDV Allocated, Depreciation Allocated, Closing WDV Allocated, Already Posted, Remarks, Status.\n\nWorkflow: Generate (run the process and review/edit the grid), edit Remarks and Status (DRAFT/PENDING_APPROVAL/APPROVED/CANCELLED), Execute persists the rows into FAM_DEP_IT_ASSET_LEDGER keyed by Assessment Year + Asset Code (upsert); setting Status=APPROVED and Executing is the Approve & Post step. A validation blocks re-generating an asset's year that is already Approved & Posted.",
       "order": 3
+    },
+    {
+      "id": "fam.8.8",
+      "title": "Asset Verification Coverage by Category",
+      "parent_id": "fam.8",
+      "icon_image": "insert_chart",
+      "description": "",
+      "obj_name": "fam_asset_verification_coverage",
+      "obj_type": "V",
+      "menu_path": "fam.8.8",
+      "functional_specs": "Table showing, per Asset Category, the count of active (STATUS='ACTIVE') assets, how many were physically verified within the selected period (a verification cycle line with VERIFIED_DATE in range), and the resulting % Verified. Criteria: Asset Category (optional, lookup to Asset Category Master, defaults to all categories) and Verification Period From date (defaults to 12 months before today; the upper bound is always the current date).",
+      "order": 5
+    },
+    {
+      "id": "fam.8.9",
+      "title": "Assets Not Under AMC",
+      "parent_id": "fam.8",
+      "icon_image": "insert_chart",
+      "description": "",
+      "obj_name": "fam_assets_not_under_amc",
+      "obj_type": "V",
+      "menu_path": "fam.8.9",
+      "functional_specs": "Grid listing assets from the Asset Register that are NOT currently covered by any AMC contract (AMC_APPLICABLE flag is not 'Y'). Shows Asset Code, Asset Name, Category, Branch, Status, Make, Model, Purchase Date and Purchase Cost. Filterable by Asset Category and Branch (both optional, default to all).",
+      "order": 6
+    },
+    {
+      "id": "fam.8.10",
+      "title": "AMC Coverage & Expiry",
+      "parent_id": "fam.8",
+      "icon_image": "insert_chart",
+      "description": "",
+      "obj_name": "fam_amc_coverage_expiry",
+      "obj_type": "V",
+      "menu_path": "fam.8.10",
+      "functional_specs": "Grid showing AMC contract details together with each covered asset (Contract No, Vendor, Contract Start/End Date, Contract Status, Asset Code, Asset Name, Branch, Category, Days to Expiry, Expiry Indicator) for contract lines whose coverage END_DATE is on or before a selected \"Expiring On or Before\" date (default today) \u2014 i.e. assets whose AMC has already expired or will expire by that date. Filterable by Branch, with an \"All Branches\" default. Sorted by End Date ascending (most overdue/soonest expiring first).",
+      "order": 7
     }
   ]
 }

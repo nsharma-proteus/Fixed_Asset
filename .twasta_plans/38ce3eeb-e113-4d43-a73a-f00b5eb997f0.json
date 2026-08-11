@@ -1,0 +1,20 @@
+{
+  "id": "38ce3eeb-e113-4d43-a73a-f00b5eb997f0",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "In the Physical verification screen , the assets in the drop down in the detail ",
+  "kind": "modify",
+  "status": "completed",
+  "description": "In the Physical verification screen , the assets in the drop down in the detail ",
+  "created_at": 1786359540.9446063,
+  "updated_at": 1786359594.4498303,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "In the Physical verification screen , the assets in the drop down in the detail screen should be only assets of that branch which was selected in the headrt screen",
+  "resume_ref": {
+    "session_id": "c117f029-865a-48f0-bf77-478bbddaf669",
+    "claude_session_id": "73fa2916-d920-4a87-a620-485ba50c1355"
+  },
+  "depends_on": [],
+  "result_summary": "\"mandatory\": true,\n                \"lookup\": \"FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)\",\n                \"lookup_filter\": \"BRANCH_CODE = {header.branch_code}\",\n                \"validations\": [\n                  {\n                    \"type\": \"business_logic\",\n                    \"name\": \"Asset valid for verification\",\"}- Business rules: Line items default from all Capitalized assets in the selected BRANCH_CODE/LOCATION_CODE; the line's ASSET_CODE picker is restricted to assets belonging to the header's BRANCH_CODE; each ASSET_CODE can appear once per cycle; cycle cannot close while any line is unverified.\"}Restricted the asset lookup on the Verification Lines detail form to only show assets belonging to the branch selected on the header.\n\n**Changes:**\n- `Metadata_Model/transaction_models/model_fam_physical_verification.json` \u2014 added `\"lookup_filter\": \"BRANCH_CODE = {header.branch_code}\"` to the `asset_code` column (form 2, Verification Lines), matching the same `{header.branch_code}` pattern already used for `expected_location_code` in the same model.\n- `requirement_doc.md` \u2014 updated the Physical Verification business rules line to document that the ASSET_CODE picker is scoped to the header's branch.\n\nNote: `FAM_ASSET_REGISTER` does carry a `BRANCH_CODE` column, so this filters correctly. I left the \"Load Assets\" pick-grid action's business-logic spec untouched since you only asked about the detail-screen dropdown \u2014 its spec still notes it hasn't been updated to filter by branch/location; let me know if you'd like that fixed too.\n\nFiles touched: requirement_doc.md, Metadata_Model/transaction_models/model_fam_physical_verification.json"
+}
