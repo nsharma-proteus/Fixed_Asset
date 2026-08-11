@@ -56,6 +56,38 @@
       "verify_ok": true,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "4caa4b64d553d26e"
+    },
+    "V:fam_asset_verification_coverage_pie": {
+      "obj_type": "V",
+      "obj_name": "fam_asset_verification_coverage_pie",
+      "verified_at": 1786435432.1411936,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "26e285991d675a7a"
+    },
+    "D:fam_management_dashboard": {
+      "obj_type": "D",
+      "obj_name": "fam_management_dashboard",
+      "verified_at": 1786435432.141884,
+      "verify_ok": false,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "61e03daaf98e9b9b"
+    },
+    "V:fam_asset_disposal_value_waterfall": {
+      "obj_type": "V",
+      "obj_name": "fam_asset_disposal_value_waterfall",
+      "verified_at": 1786435924.8269746,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "bf7362832e45ab80"
+    },
+    "V:fam_depreciation_posting_compliance": {
+      "obj_type": "V",
+      "obj_name": "fam_depreciation_posting_compliance",
+      "verified_at": 1786435924.827552,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "66caf8c420accf02"
     }
   }
 }

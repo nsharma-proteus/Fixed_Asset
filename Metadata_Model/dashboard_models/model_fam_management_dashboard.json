@@ -139,6 +139,13 @@
           { "VISUAL_PARAM": "financial_year", "BIND_TYPE": "global", "GLOBAL_PARAM": "FINANCIAL_YEAR" },
           { "VISUAL_PARAM": "branch_code", "BIND_TYPE": "global", "GLOBAL_PARAM": "BRANCH_CODE" }
         ]
+      },
+      {
+        "VISUAL_ID": "VIS_012",
+        "VISUAL_NAME": "Asset Verification Coverage by Category",
+        "POSITION": { "X": 0, "Y": 16, "WIDTH": 6, "HEIGHT": 4 },
+        "VISUAL_CONFIG_REF": "model_fam_asset_verification_coverage_pie.json",
+        "CRITERIA_BINDINGS": []
       }
     ],
 
