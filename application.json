@@ -20,6 +20,18 @@
   },
   "navigation": [
     {
+      "id": "fam.0",
+      "title": "Home",
+      "parent_id": "",
+      "icon_image": "home",
+      "description": "Landing page with quick access to the Asset Register, dashboards and every functional area",
+      "obj_name": "fam_home",
+      "obj_type": "S",
+      "menu_path": "fam.0",
+      "functional_specs": "Application landing/home page: hero banner with the app identity, quick-access cards to the Management Dashboard, Asset Depreciation Reconciliation and Asset Register, and grouped card sections for every functional area (Asset Register, Locations & Assignment, Depreciation - Companies Act, Depreciation - Income Tax, Asset Lifecycle, Physical Verification, Warranty & AMC, Reports & Analytics).",
+      "order": 0
+    },
+    {
       "id": "fam.1",
       "title": "Asset Register",
       "parent_id": "",

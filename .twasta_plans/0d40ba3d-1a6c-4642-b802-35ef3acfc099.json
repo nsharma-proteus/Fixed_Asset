@@ -1,0 +1,20 @@
+{
+  "id": "0d40ba3d-1a6c-4642-b802-35ef3acfc099",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "Can you create a landing / home page for the application",
+  "kind": "modify",
+  "status": "completed",
+  "description": "Can you create a landing / home page for the application",
+  "created_at": 1786441255.451544,
+  "updated_at": 1786441562.0460777,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "Can you create a landing / home page for the application",
+  "resume_ref": {
+    "session_id": "b2d90efa-870a-4f51-a367-79e27937f7d6",
+    "claude_session_id": "3850d176-6ae1-4f1c-99b4-cb6dc1c10936"
+  },
+  "depends_on": [],
+  "result_summary": "No landing page exists yet. I'll delegate to the smart-page-designer to build a home page with quick links to the key screens (Asset Register, Depreciation, Lifecycle, Verification, Warranty/AMC) and the two dashboards, then run the structure reviewer.Good, the entry looks correctly formed. Now I'll run the smart-page-reviewer to verify every CTA is live before reporting done.This is a small targeted fix \u2014 remove the dead CTA card since `fam_verification_report` (R) was never actually built (a pre-existing menu stub, not something I created). I'll drop the CTA link but keep it informational, matching the reviewer's suggested fix.              {\n                \"id\": \"c_warranty_amc_expiry\",\"}The card grid still has \"columns\": 3 with now 8 cards instead of 9 in that section \u2014 fine for a grid layout, no issue. This is a cosmetic landing-page addition, so no FRS update is needed.\n\n**Summary:** Created a new Home landing page for the Fixed Asset Management app.\n\n- **New file:** `Metadata_Model/page_models/model_fam_home.json` (Smart Page `fam_home`) \u2014 hero banner with app identity, stats strip, a quick-access card grid (Management Dashboard, Depreciation Reconciliation dashboard, Asset Register), and grouped card sections with live navigate CTAs for every functional area (Asset Register, Locations & Assignment, CA/IT Depreciation, Asset Lifecycle, Physical Verification, Warranty & AMC, Reports & Analytics), plus a closing CTA banner.\n- **`application.json`** \u2014 added a new top-level nav entry `fam.0` (\"Home\", obj_type S, obj_name `fam_home`, order 0) so it's the first item in the menu.\n- Ran the smart-page-reviewer, which flagged one dead CTA \u2014 a card linking to `fam_verification_report`, an R-type object that's only a menu stub (never actually built, pre-existing before this task). I removed that card from the Reports & Analytics section rather than leave a broken link; all other 24 CTAs were verified to resolve to real, existing objects.\n\nNo FRS changes were needed (this is a new navigational/cosmetic page, not a functional business change).\n\nFiles touched: application.json, Metadata_Model/page_models/model_fam_home.json"
+}

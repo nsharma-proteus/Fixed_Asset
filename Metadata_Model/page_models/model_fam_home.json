@@ -1,0 +1,390 @@
+{
+  "page": {
+    "obj_name": "fam_home",
+    "title": "Home",
+    "kind": "internal",
+    "pageMode": "web",
+    "pageSchemaVersion": 2,
+    "inputs": [],
+    "actions": [],
+    "sections": [
+      {
+        "id": "sec_main",
+        "tag": "main",
+        "blocks": [
+          {
+            "id": "hero_1",
+            "type": "hero",
+            "eyebrow": "Welcome to",
+            "title": "Fixed Asset Management",
+            "subtitle": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
+            "align": "left",
+            "height": "normal",
+            "background": { "kind": "gradient", "gradientFrom": "#2E5B87", "gradientTo": "#16324f", "gradientAngle": 135 },
+            "textColor": "#ffffff",
+            "primaryCta": {
+              "id": "hero_cta_dashboard",
+              "label": "Open Management Dashboard",
+              "variant": "primary",
+              "size": "md",
+              "on_click": { "kind": "navigate", "obj_type": "D", "obj_name": "fam_management_dashboard" }
+            },
+            "secondaryCta": {
+              "id": "hero_cta_register",
+              "label": "Go to Asset Register",
+              "variant": "outline",
+              "size": "md",
+              "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_register" }
+            },
+            "imageSide": "none",
+            "imageUrl": ""
+          },
+          {
+            "id": "stats_1",
+            "type": "stats",
+            "heading": "What's inside",
+            "columns": 4,
+            "align": "center",
+            "items": [
+              { "id": "s1", "value": "8", "suffix": "", "label": "Functional Areas", "description": "Register, locations, depreciation, lifecycle, verification, warranty & reporting" },
+              { "id": "s2", "value": "14", "suffix": "", "label": "Master & Transaction Screens", "description": "Category, branch, location, department, employee, installation, transfer, disposal, verification, warranty, AMC" },
+              { "id": "s3", "value": "9", "suffix": "", "label": "Dashboards, Visuals & Reports", "description": "Management Dashboard, Depreciation Reconciliation and analytics grids" },
+              { "id": "s4", "value": "3", "suffix": "", "label": "Automated Generation Processes", "description": "Companies Act, Income Tax block and Income Tax asset-ledger depreciation" }
+            ]
+          },
+          { "id": "divider_top", "type": "divider" },
+          { "id": "heading_quick", "type": "heading", "level": 2, "text": "Quick Access" },
+          { "id": "para_quick", "type": "paragraph", "text": "The most valuable daily-use views, one click away." },
+          {
+            "id": "cg_quick",
+            "type": "card_grid",
+            "columns": 3,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "qc_mgmt_dashboard",
+                "title": "Management Dashboard",
+                "subtitle": "Consolidated KPIs",
+                "body": "Asset value, depreciation trend, verification status and posting compliance at a glance.",
+                "imageUrl": "",
+                "badge": "Recommended",
+                "cta": {
+                  "id": "qc_mgmt_dashboard_cta",
+                  "label": "Open Dashboard",
+                  "variant": "primary",
+                  "on_click": { "kind": "navigate", "obj_type": "D", "obj_name": "fam_management_dashboard" }
+                }
+              },
+              {
+                "id": "qc_recon_dashboard",
+                "title": "Asset Depreciation Reconciliation",
+                "subtitle": "Companies Act vs Income Tax",
+                "body": "Pick an asset and compare its Companies Act and Income Tax depreciation side by side.",
+                "imageUrl": "",
+                "badge": "Recommended",
+                "cta": {
+                  "id": "qc_recon_dashboard_cta",
+                  "label": "Open Reconciliation",
+                  "variant": "primary",
+                  "on_click": { "kind": "navigate", "obj_type": "D", "obj_name": "fam_asset_depreciation_reconciliation" }
+                }
+              },
+              {
+                "id": "qc_asset_register",
+                "title": "Asset Register",
+                "subtitle": "Core day-to-day screen",
+                "body": "Search, add and maintain the complete statutory record of every fixed asset.",
+                "imageUrl": "",
+                "badge": "",
+                "cta": {
+                  "id": "qc_asset_register_cta",
+                  "label": "Go to Asset Register",
+                  "variant": "primary",
+                  "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_register" }
+                }
+              }
+            ]
+          },
+          { "id": "divider_1", "type": "divider" },
+          { "id": "heading_asset_register", "type": "heading", "level": 2, "text": "📦 Asset Register" },
+          {
+            "id": "cg_asset_register",
+            "type": "card_grid",
+            "columns": 2,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_cat_master",
+                "title": "Asset Category Master",
+                "subtitle": "Classification",
+                "body": "Maintain the classification of assets used to default useful life, depreciation method and statutory rates.",
+                "imageUrl": "",
+                "cta": { "id": "c_cat_master_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_category_master" } }
+              },
+              {
+                "id": "c_asset_register",
+                "title": "Asset Register",
+                "subtitle": "Statutory record",
+                "body": "Capture and maintain the complete statutory record of each fixed asset, from acquisition through its active life.",
+                "imageUrl": "",
+                "cta": { "id": "c_asset_register_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_register" } }
+              }
+            ]
+          },
+          { "id": "divider_2", "type": "divider" },
+          { "id": "heading_locations", "type": "heading", "level": 2, "text": "📍 Locations & Assignment" },
+          {
+            "id": "cg_locations",
+            "type": "card_grid",
+            "columns": 4,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_branch",
+                "title": "Branch Master",
+                "subtitle": "Organisation branches",
+                "body": "Maintain branches used across the register.",
+                "imageUrl": "",
+                "cta": { "id": "c_branch_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_branch_master" } }
+              },
+              {
+                "id": "c_location",
+                "title": "Location Master",
+                "subtitle": "Physical locations",
+                "body": "Maintain physical locations within a branch.",
+                "imageUrl": "",
+                "cta": { "id": "c_location_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_location_master" } }
+              },
+              {
+                "id": "c_department",
+                "title": "Department Master",
+                "subtitle": "Cost centres",
+                "body": "Maintain departments/cost centres within a branch.",
+                "imageUrl": "",
+                "cta": { "id": "c_department_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_department_master" } }
+              },
+              {
+                "id": "c_employee",
+                "title": "Employee Master",
+                "subtitle": "Custody directory",
+                "body": "Lightweight employee directory used to assign custody of assets.",
+                "imageUrl": "",
+                "cta": { "id": "c_employee_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_employee_master" } }
+              }
+            ]
+          },
+          { "id": "divider_3", "type": "divider" },
+          { "id": "heading_dep_ca", "type": "heading", "level": 2, "text": "🧮 Depreciation - Companies Act" },
+          {
+            "id": "cg_dep_ca",
+            "type": "card_grid",
+            "columns": 2,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_dep_rate_ca",
+                "title": "Depreciation Rate Master - Companies Act",
+                "subtitle": "Schedule II norms",
+                "body": "Maintain Schedule II useful life, method and residual norms per category.",
+                "imageUrl": "",
+                "cta": { "id": "c_dep_rate_ca_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_dep_rate_ca_master" } }
+              },
+              {
+                "id": "c_gen_dep_ca",
+                "title": "Generate Depreciation - Companies Act",
+                "subtitle": "Monthly generation",
+                "body": "Compute and post pro-rata monthly Schedule II depreciation.",
+                "imageUrl": "",
+                "cta": { "id": "c_gen_dep_ca_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "G", "obj_name": "fam_gen_dep_companies_act" } }
+              }
+            ]
+          },
+          { "id": "divider_4", "type": "divider" },
+          { "id": "heading_dep_it", "type": "heading", "level": 2, "text": "🏦 Depreciation - Income Tax" },
+          {
+            "id": "cg_dep_it",
+            "type": "card_grid",
+            "columns": 3,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_dep_rate_it",
+                "title": "Depreciation Rate Master - Income Tax",
+                "subtitle": "Block-of-assets rates",
+                "body": "Maintain block-of-assets rates under the Income Tax Rules.",
+                "imageUrl": "",
+                "cta": { "id": "c_dep_rate_it_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_dep_rate_it_master" } }
+              },
+              {
+                "id": "c_gen_dep_it",
+                "title": "Generate Depreciation - Income Tax",
+                "subtitle": "Annual block generation",
+                "body": "Compute and post annual block-wise WDV depreciation.",
+                "imageUrl": "",
+                "cta": { "id": "c_gen_dep_it_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "G", "obj_name": "fam_gen_dep_income_tax" } }
+              },
+              {
+                "id": "c_gen_dep_it_ledger",
+                "title": "Income Tax Depreciation - Asset Ledger (Form 3CD)",
+                "subtitle": "Tax audit disclosure",
+                "body": "Asset-level Income Tax depreciation ledger for Tax Audit Form 3CD Clause 18.",
+                "imageUrl": "",
+                "cta": { "id": "c_gen_dep_it_ledger_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "G", "obj_name": "fam_gen_dep_it_asset_ledger" } }
+              }
+            ]
+          },
+          { "id": "divider_5", "type": "divider" },
+          { "id": "heading_lifecycle", "type": "heading", "level": 2, "text": "🔄 Asset Lifecycle" },
+          {
+            "id": "cg_lifecycle",
+            "type": "card_grid",
+            "columns": 3,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_installation",
+                "title": "Asset Installation",
+                "subtitle": "Commissioning",
+                "body": "Record and confirm asset installation/commissioning.",
+                "imageUrl": "",
+                "cta": { "id": "c_installation_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_installation" } }
+              },
+              {
+                "id": "c_transfer",
+                "title": "Asset Transfer",
+                "subtitle": "Movement",
+                "body": "Move assets between branch, location, department or employee.",
+                "imageUrl": "",
+                "cta": { "id": "c_transfer_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_transfer" } }
+              },
+              {
+                "id": "c_disposal",
+                "title": "Asset Sale / Scrap",
+                "subtitle": "Disposal",
+                "body": "Record asset disposal by sale or scrap.",
+                "imageUrl": "",
+                "cta": { "id": "c_disposal_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_disposal" } }
+              }
+            ]
+          },
+          { "id": "divider_6", "type": "divider" },
+          { "id": "heading_verification", "type": "heading", "level": 2, "text": "✅ Physical Verification" },
+          {
+            "id": "cg_verification",
+            "type": "card_grid",
+            "columns": 3,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_verification",
+                "title": "Conduct Physical Verification",
+                "subtitle": "Verification cycles",
+                "body": "Plan and execute periodic asset verification cycles, scan QR/barcode to confirm assets.",
+                "imageUrl": "",
+                "cta": { "id": "c_verification_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_physical_verification" } }
+              }
+            ]
+          },
+          { "id": "divider_7", "type": "divider" },
+          { "id": "heading_warranty", "type": "heading", "level": 2, "text": "🛡️ Warranty & AMC" },
+          {
+            "id": "cg_warranty",
+            "type": "card_grid",
+            "columns": 2,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_warranty",
+                "title": "Warranty Details",
+                "subtitle": "Coverage tracking",
+                "body": "Record manufacturer/vendor warranty coverage per asset.",
+                "imageUrl": "",
+                "cta": { "id": "c_warranty_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_warranty_details" } }
+              },
+              {
+                "id": "c_amc",
+                "title": "AMC Contracts",
+                "subtitle": "Maintenance contracts",
+                "body": "Track Annual Maintenance Contracts and renewals.",
+                "imageUrl": "",
+                "cta": { "id": "c_amc_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_amc_contracts" } }
+              }
+            ]
+          },
+          { "id": "divider_8", "type": "divider" },
+          { "id": "heading_reports", "type": "heading", "level": 2, "text": "📊 Reports & Analytics" },
+          {
+            "id": "cg_reports",
+            "type": "card_grid",
+            "columns": 3,
+            "gap": 16,
+            "cards": [
+              {
+                "id": "c_warranty_amc_expiry",
+                "title": "Warranty / AMC Expiry",
+                "subtitle": "Expiry grid",
+                "body": "Warranty and AMC coverage approaching expiry, drills to the Asset Register.",
+                "imageUrl": "",
+                "cta": { "id": "c_warranty_amc_expiry_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "V", "obj_name": "fam_warranty_amc_expiry" } }
+              },
+              {
+                "id": "c_movement_history",
+                "title": "Asset Movement History",
+                "subtitle": "Transfer trail",
+                "body": "Asset-wise physical movement/transfer trail across branch, location, department and custodian.",
+                "imageUrl": "",
+                "cta": { "id": "c_movement_history_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "V", "obj_name": "fam_asset_movement_history" } }
+              },
+              {
+                "id": "c_verification_coverage",
+                "title": "Asset Verification Coverage by Category",
+                "subtitle": "Coverage %",
+                "body": "Active asset counts vs verified counts per category, with % verified.",
+                "imageUrl": "",
+                "cta": { "id": "c_verification_coverage_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "V", "obj_name": "fam_asset_verification_coverage" } }
+              },
+              {
+                "id": "c_not_under_amc",
+                "title": "Assets Not Under AMC",
+                "subtitle": "Coverage gaps",
+                "body": "Assets from the Asset Register that are not currently covered by any AMC contract.",
+                "imageUrl": "",
+                "cta": { "id": "c_not_under_amc_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "V", "obj_name": "fam_assets_not_under_amc" } }
+              },
+              {
+                "id": "c_amc_coverage_expiry",
+                "title": "AMC Coverage & Expiry",
+                "subtitle": "Expired/expiring contracts",
+                "body": "AMC contract details together with each covered asset, for contracts expired or expiring by a chosen date.",
+                "imageUrl": "",
+                "cta": { "id": "c_amc_coverage_expiry_cta", "label": "Open", "variant": "outline", "on_click": { "kind": "navigate", "obj_type": "V", "obj_name": "fam_amc_coverage_expiry" } }
+              }
+            ]
+          },
+          {
+            "id": "cta_banner_1",
+            "type": "cta_banner",
+            "title": "Ready to dive in?",
+            "subtitle": "Jump straight into the Asset Register or explore the Management Dashboard.",
+            "align": "center",
+            "background": { "kind": "color", "color": "#2E5B87" },
+            "textColor": "#ffffff",
+            "primaryCta": {
+              "id": "cta_banner_1_primary",
+              "label": "Go to Asset Register",
+              "variant": "secondary",
+              "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_register" }
+            },
+            "secondaryCta": {
+              "id": "cta_banner_1_secondary",
+              "label": "Open Management Dashboard",
+              "variant": "outline",
+              "on_click": { "kind": "navigate", "obj_type": "D", "obj_name": "fam_management_dashboard" }
+            }
+          }
+        ]
+      }
+    ],
+    "blocks": []
+  }
+}
