@@ -1,0 +1,20 @@
+{
+  "id": "f80c4b43-29d1-4608-9ccf-7deccac36e89",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "In asset Registe status what is the meaning of active",
+  "kind": "modify",
+  "status": "completed",
+  "description": "In asset Registe status what is the meaning of active",
+  "created_at": 1786437200.7467146,
+  "updated_at": 1786437231.7658987,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "In asset Registe status what is the meaning of active",
+  "resume_ref": {
+    "session_id": "d7f1e01b-750e-475a-ac31-39aaf284a4e2",
+    "claude_session_id": "86f7acfa-ba1a-49b5-91d5-63c58f459164"
+  },
+  "depends_on": [],
+  "result_summary": "In the **Asset Register**'s `STATUS` field, there is no literal value called \"Active\" \u2014 the actual dropdown values are: `Draft`, `Pending Approval`, `Capitalized`, `Under Transfer`, `Disposed`, `Under Investigation` (see `Metadata_Model/transaction_models/model_fam_asset_register.json`).\n\n\"Active\" is used informally elsewhere in the FRS (and in things like AMC contract status, employee status) as shorthand for **\"Capitalized\" / in-service** \u2014 i.e. an asset that has been approved and put into use, as opposed to Draft (not yet submitted), Under Transfer, Disposed, or Under Investigation. For example, the FRS's Asset Verification Coverage report literally says `STATUS = Active` when it actually means `STATUS = Capitalized` in the real model.\n\nNo files were changed \u2014 this was a question, not a change request. If you'd like, I can tidy the FRS wording (lines 101/169) to say \"Capitalized\" instead of \"Active\" so it matches the real status values exactly \u2014 just say the word."
+}
