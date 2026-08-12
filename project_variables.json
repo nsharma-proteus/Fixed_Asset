@@ -1,0 +1,10 @@
+{
+  "variables": [
+    {
+      "name": "other_asset_type_code",
+      "kind": "value",
+      "value": "OTHER_ASSET",
+      "description": "Fixed literal used to scope the Other Asset Register screen (fam_other_asset_register) to FAM_ASSET_REGISTER rows where ASSET_TYPE = 'OTHER_ASSET' via row_security. Also auto-stamps ASSET_TYPE = 'OTHER_ASSET' on every row added through that screen, so it can never create a FIXED_ASSET row."
+    }
+  ]
+}

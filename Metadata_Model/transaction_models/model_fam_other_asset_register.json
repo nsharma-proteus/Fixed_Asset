@@ -1,0 +1,1429 @@
+{
+  "transaction": {
+    "obj_name": "fam_other_asset_register",
+    "sql_models": [
+      {
+        "sql_model": {
+          "form_title": "Other Asset Register",
+          "form_descr": "Other Asset Register — track non-depreciable, non-statutory informational items (low-value equipment, consumables, etc.) with the same location, custody, supplier and value information as the Fixed Asset Register, but WITHOUT any depreciation or capitalization accounting. This screen writes to the same physical asset register as the Fixed Asset Register, scoped to ASSET_TYPE = 'OTHER_ASSET' only.",
+          "form_no": "1",
+          "main_table": "FAM_ASSET_REGISTER",
+          "row_security": {
+            "column": "ASSET_TYPE",
+            "source": ":other_asset_type_code"
+          },
+          "columns": [
+            {
+              "column": {
+                "name": "asset_code",
+                "db_name": "ASSET_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Code",
+                "descr": "System-generated unique code identifying the asset (same series as the Fixed Asset Register — one shared table)",
+                "key": true,
+                "mandatory": true,
+                "protect": "1",
+                "default_value": "auto_generate()",
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 59,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_name",
+                "db_name": "ASSET_NAME",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Name",
+                "descr": "Descriptive name of the asset",
+                "mandatory": true,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "100",
+                "width": 288,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_type",
+                "db_name": "ASSET_TYPE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Type",
+                "descr": "Fixed to Other Asset on this screen and enforced by row security — this screen can never create or show a Fixed Asset (depreciable) record. Use the Asset Register screen for Fixed Assets.",
+                "default_value": "OTHER_ASSET",
+                "mandatory": true,
+                "protect": "1",
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "FIXED_ASSET",
+                      "display": "Fixed Asset"
+                    },
+                    {
+                      "data": "OTHER_ASSET",
+                      "display": "Other Asset"
+                    }
+                  ]
+                },
+                "x": "25",
+                "y": "25",
+                "col_id": "3",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 130,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "category_code",
+                "db_name": "CATEGORY_CODE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Category",
+                "descr": "Asset category (scoped to Other Asset categories only)",
+                "mandatory": true,
+                "lookup": "FAM_ASSET_CATEGORY_MASTER(CATEGORY_NAME, CATEGORY_CODE)",
+                "lookup_filter": "STATUS = 'A' AND ASSET_TYPE = 'OTHER_ASSET'",
+                "must_exist_in": "FAM_ASSET_CATEGORY_MASTER",
+                "x": "30",
+                "y": "30",
+                "col_id": "4",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "category_name",
+                "db_name": "CATEGORY_NAME",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Category Name",
+                "descr": "Name of the selected asset category",
+                "protect": "1",
+                "x": "40",
+                "y": "40",
+                "col_id": "5",
+                "table_display_name": "Asset category master (lookup for category name)",
+                "db_size": "100",
+                "width": 266,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "status",
+                "db_name": "STATUS",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Status",
+                "descr": "Lifecycle status of the record. 'Capitalized' here simply means the record is confirmed/active in the register — it has no depreciation or capitalization accounting meaning for an Other Asset.",
+                "default_value": "DRAFT",
+                "mandatory": true,
+                "protect": "1",
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "DRAFT",
+                      "display": "Draft"
+                    },
+                    {
+                      "data": "PENDING_APPROVAL",
+                      "display": "Pending Approval"
+                    },
+                    {
+                      "data": "CAPITALIZED",
+                      "display": "Active"
+                    },
+                    {
+                      "data": "UNDER_TRANSFER",
+                      "display": "Under Transfer"
+                    },
+                    {
+                      "data": "DISPOSED",
+                      "display": "Disposed"
+                    },
+                    {
+                      "data": "UNDER_INVESTIGATION",
+                      "display": "Under Investigation"
+                    }
+                  ]
+                },
+                "display": {
+                  "type": "status_tag",
+                  "map": [
+                    {
+                      "when": "DRAFT",
+                      "color": "grey",
+                      "icon": "●",
+                      "label": "Draft"
+                    },
+                    {
+                      "when": "PENDING_APPROVAL",
+                      "color": "amber",
+                      "icon": "◷",
+                      "label": "Pending Approval"
+                    },
+                    {
+                      "when": "CAPITALIZED",
+                      "color": "green",
+                      "icon": "✓",
+                      "label": "Active"
+                    },
+                    {
+                      "when": "UNDER_TRANSFER",
+                      "color": "blue",
+                      "icon": "●",
+                      "label": "Under Transfer"
+                    },
+                    {
+                      "when": "DISPOSED",
+                      "color": "red",
+                      "icon": "✕",
+                      "label": "Disposed"
+                    },
+                    {
+                      "when": "UNDER_INVESTIGATION",
+                      "color": "orange",
+                      "icon": "⚠",
+                      "label": "Under Investigation"
+                    }
+                  ],
+                  "defaultColor": "grey"
+                },
+                "x": "50",
+                "y": "50",
+                "col_id": "6",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 157,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "disposal_date",
+                "db_name": "DISPOSAL_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Disposal Date",
+                "descr": "Date the item was disposed (sale/scrap); set automatically when the linked Asset Disposal record is approved",
+                "mandatory": false,
+                "protect": "1",
+                "x": "60",
+                "y": "50.5",
+                "col_id": "7",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "last_verified_date",
+                "db_name": "LAST_VERIFIED_DATE",
+                "group_name": "Basic",
+                "col_type": "DATE",
+                "heading": "Last Verified",
+                "descr": "Date the item was last physically verified; set automatically when a Conduct Physical Verification cycle covering this item is approved",
+                "mandatory": false,
+                "protect": "1",
+                "x": "70",
+                "y": "50.6",
+                "col_id": "8",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 111,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "serial_no",
+                "db_name": "SERIAL_NO",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "Serial No",
+                "descr": "Manufacturer serial number; must be unique within the item's category",
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Serial no unique within category",
+                    "error_code": "SERIAL_DUP",
+                    "message": "Serial No {form.serial_no} already exists for category {form.category_code}.",
+                    "builtin": {
+                      "kind": "must_be_unique",
+                      "conditions": [
+                        {
+                          "column": "category_code",
+                          "op": "=",
+                          "source": "form",
+                          "value": "category_code"
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "x": "80",
+                "y": "60",
+                "col_id": "9",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "60",
+                "width": 229,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "make",
+                "db_name": "MAKE",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "Make",
+                "descr": "Manufacturer/brand of the item",
+                "x": "90",
+                "y": "70",
+                "col_id": "10",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "100",
+                "width": 243,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "model",
+                "db_name": "MODEL",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "Model",
+                "descr": "Model number/name of the item",
+                "x": "100",
+                "y": "80",
+                "col_id": "11",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "100",
+                "width": 174,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "description",
+                "db_name": "DESCRIPTION",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "Description",
+                "descr": "Free text description of the item",
+                "x": "110",
+                "y": "90",
+                "col_id": "12",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_photo",
+                "db_name": "ASSET_PHOTO",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "Photo",
+                "descr": "Photo of the item",
+                "edit_mask": {
+                  "mask": "image"
+                },
+                "display": {
+                  "type": "image"
+                },
+                "x": "120",
+                "y": "100",
+                "col_id": "13",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "qr_barcode_tag",
+                "db_name": "QR_BARCODE_TAG",
+                "group_name": "Identification",
+                "col_type": "VARCHAR",
+                "heading": "QR/Barcode Tag",
+                "descr": "Generated QR code / barcode tag value identifying this item (use the Generate QR/Barcode Tag action)",
+                "protect": "1",
+                "display": {
+                  "type": "qr"
+                },
+                "x": "130",
+                "y": "110",
+                "col_id": "14",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "200",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "branch_code",
+                "db_name": "BRANCH_CODE",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Branch",
+                "descr": "Branch where the item is located",
+                "mandatory": true,
+                "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+                "must_exist_in": "FAM_BRANCH_MASTER",
+                "x": "140",
+                "y": "120",
+                "col_id": "15",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "branch_name",
+                "db_name": "BRANCH_NAME",
+                "table_name": "FAM_BRANCH_MASTER",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Branch Name",
+                "descr": "Name of the selected branch",
+                "protect": "1",
+                "x": "150",
+                "y": "130",
+                "col_id": "16",
+                "table_display_name": "Branch master (lookup for branch name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "location_code",
+                "db_name": "LOCATION_CODE",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Location",
+                "descr": "Physical location (building/floor/room/site) within the branch",
+                "mandatory": true,
+                "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.branch_code}",
+                "must_exist_in": "FAM_LOCATION_MASTER",
+                "x": "160",
+                "y": "140",
+                "col_id": "17",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "location_name",
+                "db_name": "LOCATION_NAME",
+                "table_name": "FAM_LOCATION_MASTER",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Location Name",
+                "descr": "Name of the selected location",
+                "protect": "1",
+                "x": "170",
+                "y": "150",
+                "col_id": "18",
+                "table_display_name": "Location master (lookup for location name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "department_code",
+                "db_name": "DEPARTMENT_CODE",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Department",
+                "descr": "Department/cost centre the item belongs to",
+                "lookup": "FAM_DEPARTMENT_MASTER(DEPARTMENT_NAME, DEPARTMENT_CODE)",
+                "lookup_filter": "BRANCH_CODE = {form.branch_code}",
+                "must_exist_in": "FAM_DEPARTMENT_MASTER",
+                "x": "180",
+                "y": "160",
+                "col_id": "19",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "department_name",
+                "db_name": "DEPARTMENT_NAME",
+                "table_name": "FAM_DEPARTMENT_MASTER",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Department Name",
+                "descr": "Name of the selected department",
+                "protect": "1",
+                "x": "190",
+                "y": "170",
+                "col_id": "20",
+                "table_display_name": "Department master (lookup for department name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "assigned_employee_code",
+                "db_name": "ASSIGNED_EMPLOYEE_CODE",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Assigned Employee",
+                "descr": "Employee currently in custody of the item",
+                "lookup": "FAM_EMPLOYEE_MASTER(EMPLOYEE_NAME, EMPLOYEE_CODE)",
+                "must_exist_in": "FAM_EMPLOYEE_MASTER",
+                "x": "200",
+                "y": "180",
+                "col_id": "21",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": ""
+              }
+            },
+            {
+              "column": {
+                "name": "assigned_employee_name",
+                "db_name": "EMPLOYEE_NAME",
+                "table_name": "FAM_EMPLOYEE_MASTER",
+                "group_name": "Location & Assignment",
+                "col_type": "VARCHAR",
+                "heading": "Assigned Employee Name",
+                "descr": "Name of the assigned employee",
+                "protect": "1",
+                "x": "210",
+                "y": "190",
+                "col_id": "22",
+                "table_display_name": "Employee master (lookup for assigned employee name)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "vendor_name",
+                "db_name": "VENDOR_NAME",
+                "group_name": "Purchase & Value",
+                "col_type": "VARCHAR",
+                "heading": "Vendor Name",
+                "descr": "Free text vendor/supplier name; not validated against a master",
+                "x": "220",
+                "y": "200",
+                "col_id": "23",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "purchase_invoice_no",
+                "db_name": "PURCHASE_INVOICE_NO",
+                "group_name": "Purchase & Value",
+                "col_type": "VARCHAR",
+                "heading": "Purchase Invoice No",
+                "descr": "Vendor invoice number for the purchase",
+                "x": "230",
+                "y": "210",
+                "col_id": "24",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "50",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "purchase_date",
+                "db_name": "PURCHASE_DATE",
+                "group_name": "Purchase & Value",
+                "col_type": "DATE",
+                "heading": "Purchase Date",
+                "descr": "Date the item was purchased",
+                "mandatory": true,
+                "x": "240",
+                "y": "220",
+                "col_id": "25",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "purchase_cost",
+                "db_name": "PURCHASE_COST",
+                "group_name": "Purchase & Value",
+                "col_type": "NUMBER",
+                "heading": "Purchase Cost",
+                "descr": "Base purchase cost of the item",
+                "mandatory": true,
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Purchase cost positive",
+                    "error_code": "PUR_COST_MIN",
+                    "message": "Purchase cost must be greater than 0.",
+                    "expression": "{form.purchase_cost} > 0"
+                  }
+                ],
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "recompute_total_accumulated_depreciation",
+                    "description": "Recompute the total value (Purchase Cost + Other Capitalized Cost) shown on this record",
+                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form — those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
+                  }
+                },
+                "x": "250",
+                "y": "230",
+                "col_id": "26",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "other_capitalized_cost",
+                "db_name": "OTHER_CAPITALIZED_COST",
+                "group_name": "Purchase & Value",
+                "col_type": "NUMBER",
+                "heading": "Other Costs",
+                "descr": "Freight, installation and other costs added to the item's value",
+                "default_value": "0",
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "recompute_total_accumulated_depreciation",
+                    "description": "Recompute the total value (Purchase Cost + Other Capitalized Cost) shown on this record",
+                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form — those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
+                  }
+                },
+                "x": "260",
+                "y": "240",
+                "col_id": "27",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "total_capitalized_cost",
+                "db_name": "TOTAL_CAPITALIZED_COST",
+                "group_name": "Purchase & Value",
+                "col_type": "NUMBER",
+                "heading": "Total Value",
+                "descr": "Computed as Purchase Cost + Other Costs — the total recorded value of this item (no capitalization/depreciation implication for an Other Asset)",
+                "protect": "1",
+                "x": "270",
+                "y": "250",
+                "col_id": "28",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "14,2",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_start_date",
+                "db_name": "WARRANTY_START_DATE",
+                "group_name": "Warranty & AMC",
+                "col_type": "DATE",
+                "heading": "Warranty Start Date",
+                "descr": "Start date of the manufacturer/vendor warranty",
+                "x": "410",
+                "y": "330",
+                "col_id": "29",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_end_date",
+                "db_name": "WARRANTY_END_DATE",
+                "group_name": "Warranty & AMC",
+                "col_type": "DATE",
+                "heading": "Warranty End Date",
+                "descr": "End date of the manufacturer/vendor warranty",
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Warranty end after start",
+                    "error_code": "WAR_DATE_RANGE",
+                    "message": "Warranty End Date must be after Warranty Start Date.",
+                    "expression": "is_empty({form.warranty_end_date}) or is_empty({form.warranty_start_date}) or {form.warranty_end_date} > {form.warranty_start_date}"
+                  }
+                ],
+                "x": "420",
+                "y": "340",
+                "col_id": "30",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "amc_applicable",
+                "db_name": "AMC_APPLICABLE",
+                "group_name": "Warranty & AMC",
+                "col_type": "VARCHAR",
+                "heading": "AMC Applicable",
+                "descr": "Whether an Annual Maintenance Contract currently covers this item",
+                "default_value": "N",
+                "edit_mask": {
+                  "mask": "bool_check",
+                  "values": [
+                    {
+                      "data": "Y",
+                      "display": "Yes"
+                    },
+                    {
+                      "data": "N",
+                      "display": "No"
+                    }
+                  ]
+                },
+                "x": "430",
+                "y": "350",
+                "col_id": "31",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "1",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "remarks",
+                "db_name": "REMARKS",
+                "group_name": "Additional Info",
+                "col_type": "VARCHAR",
+                "heading": "Remarks",
+                "descr": "Free text remarks about the item",
+                "x": "440",
+                "y": "360",
+                "col_id": "32",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "500",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "group_name": "Others",
+                "col_type": "NUMBER",
+                "heading": "Id",
+                "descr": "Internal surrogate identifier",
+                "default_value": "auto_generate()",
+                "protect": "1",
+                "hidden": 1,
+                "x": "370",
+                "y": "370",
+                "col_id": "33",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Added On",
+                "descr": "Date/time the record was created",
+                "default_value": ":audit_add_date",
+                "protect": "1",
+                "x": "450",
+                "y": "380",
+                "col_id": "34",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added By",
+                "descr": "User who created the record",
+                "default_value": ":audit_add_user",
+                "protect": "1",
+                "x": "460",
+                "y": "390",
+                "col_id": "35",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Added Terminal",
+                "descr": "Terminal/IP from which the record was created",
+                "default_value": ":audit_add_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "400",
+                "y": "400",
+                "col_id": "36",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "group_name": "Others",
+                "col_type": "DATETIME",
+                "heading": "Last Changed On",
+                "descr": "Date/time the record was last changed",
+                "default_value": ":audit_chg_date",
+                "protect": "1",
+                "x": "470",
+                "y": "410",
+                "col_id": "37",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "",
+                "width": 50,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Last Changed By",
+                "descr": "User who last changed the record",
+                "default_value": ":audit_chg_user",
+                "protect": "1",
+                "x": "480",
+                "y": "420",
+                "col_id": "38",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "10",
+                "width": 100,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "group_name": "Others",
+                "col_type": "VARCHAR",
+                "heading": "Last Changed Terminal",
+                "descr": "Terminal/IP from which the record was last changed",
+                "default_value": ":audit_chg_terminal",
+                "protect": "1",
+                "hidden": 1,
+                "x": "430",
+                "y": "430",
+                "col_id": "39",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "15",
+                "width": 150,
+                "key": false,
+                "mandatory": false,
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_ASSET_REGISTER",
+                  "main_table": true,
+                  "table_descr": "Asset register (main table)"
+                },
+                {
+                  "table": "FAM_ASSET_CATEGORY_MASTER",
+                  "main_table": false,
+                  "table_descr": "Asset category master (lookup for category name)",
+                  "column": "CATEGORY_CODE",
+                  "join_table": "FAM_ASSET_REGISTER",
+                  "join_column": "CATEGORY_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_BRANCH_MASTER",
+                  "main_table": false,
+                  "table_descr": "Branch master (lookup for branch name)",
+                  "column": "BRANCH_CODE",
+                  "join_table": "FAM_ASSET_REGISTER",
+                  "join_column": "BRANCH_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_LOCATION_MASTER",
+                  "main_table": false,
+                  "table_descr": "Location master (lookup for location name)",
+                  "column": "LOCATION_CODE",
+                  "join_table": "FAM_ASSET_REGISTER",
+                  "join_column": "LOCATION_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_DEPARTMENT_MASTER",
+                  "main_table": false,
+                  "table_descr": "Department master (lookup for department name)",
+                  "column": "DEPARTMENT_CODE",
+                  "join_table": "FAM_ASSET_REGISTER",
+                  "join_column": "DEPARTMENT_CODE",
+                  "join_type": "left"
+                },
+                {
+                  "table": "FAM_EMPLOYEE_MASTER",
+                  "main_table": false,
+                  "table_descr": "Employee master (lookup for assigned employee name)",
+                  "column": "EMPLOYEE_CODE",
+                  "join_table": "FAM_ASSET_REGISTER",
+                  "join_column": "ASSIGNED_EMPLOYEE_CODE",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "actions": [
+            {
+              "name": "Delete",
+              "handler": "system",
+              "system_op": "delete",
+              "scope": "row",
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Draft only",
+                  "error_code": "DEL_NOT_DRAFT",
+                  "message": "Only Draft records can be deleted (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\""
+                }
+              ]
+            },
+            {
+              "name": "Submit for Approval",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "submit_asset_for_approval",
+                "description": "Submit a draft record for approval",
+                "spec": "Confirm that ASSET_NAME, CATEGORY_CODE, BRANCH_CODE, LOCATION_CODE, PURCHASE_DATE and PURCHASE_COST are all populated for every asset regardless of ASSET_TYPE. Additionally, when ASSET_TYPE = 'FIXED_ASSET', CAPITALIZATION_DATE must also be populated (it is NOT required when ASSET_TYPE = 'OTHER_ASSET' — Other Assets are never capitalized/depreciated). If any required field is missing return {\"error\": \"...\"} naming the missing field(s). Otherwise set STATUS to 'PENDING_APPROVAL' and return {\"updates\": {\"status\": \"PENDING_APPROVAL\"}}. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE. Every row reachable from this screen has ASSET_TYPE = 'OTHER_ASSET', so in practice CAPITALIZATION_DATE is never required here."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Draft",
+                  "error_code": "SUBMIT_NOT_DRAFT",
+                  "message": "Only Draft records can be submitted for approval (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\""
+                }
+              ]
+            },
+            {
+              "name": "Approve",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "approve_asset",
+                "description": "Approve/confirm the record",
+                "spec": "Set STATUS to 'CAPITALIZED' and lock the core fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE, OPENING_ACCUMULATED_DEPRECIATION) so they cannot be changed once approved, by returning them as protected cells. Return {\"updates\": {\"status\": \"CAPITALIZED\", \"purchase_cost\": {\"protect\": \"1\"}, \"capitalization_date\": {\"protect\": \"1\"}, \"category_code\": {\"protect\": \"1\"}, \"opening_accumulated_depreciation\": {\"protect\": \"1\"}}}. For an ASSET_TYPE = 'FIXED_ASSET' row, STATUS = 'CAPITALIZED' means the asset is now capitalized and becomes eligible for depreciation processing and visible in Locations & Assignment, Depreciation, Lifecycle and Verification activities. For an ASSET_TYPE = 'OTHER_ASSET' row (every row reachable from THIS screen), STATUS = 'CAPITALIZED' carries NO capitalization/depreciation meaning at all — it simply means the record is confirmed/active in the register (the same status code is reused for both types purely so Transfer/Verification's existing 'must be Capitalized/Active' checks keep working unmodified for Other Asset rows too). CAPITALIZATION_DATE and OPENING_ACCUMULATED_DEPRECIATION do not exist as columns on the fam_other_asset_register form; protecting them via a cell update on a column absent from the calling form is a no-op and must not error. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending Approval",
+                  "error_code": "APPROVE_NOT_PENDING",
+                  "message": "Only records Pending Approval can be approved (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING_APPROVAL\""
+                }
+              ]
+            },
+            {
+              "name": "Reject",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "reject_asset",
+                "description": "Reject a submitted record back to Draft",
+                "spec": "Set STATUS back to 'DRAFT' so the record details can be corrected and resubmitted, and return {\"updates\": {\"status\": \"DRAFT\"}}. This function is shared by both the fam_asset_register and fam_other_asset_register transaction screens."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Must be Pending Approval",
+                  "error_code": "REJECT_NOT_PENDING",
+                  "message": "Only records Pending Approval can be rejected (current status {form.status}).",
+                  "expression": "{form.status} == \"PENDING_APPROVAL\""
+                }
+              ]
+            },
+            {
+              "name": "Generate QR/Barcode Tag",
+              "handler": "item_change",
+              "scope": "row",
+              "business_logic": {
+                "method": "generate_asset_tag",
+                "description": "Generate a QR code / barcode tag for the item",
+                "spec": "Generate a scannable QR/barcode payload (e.g. a short encoded string or URL embedding ASSET_CODE) that uniquely identifies this item, and return {\"updates\": {\"qr_barcode_tag\": {\"value\": <generated tag>, \"protect\": \"1\"}}} so the generated tag becomes read-only on the form. This function is shared by both the fam_asset_register and fam_other_asset_register transaction screens."
+              },
+              "validations": [
+                {
+                  "type": "expression",
+                  "name": "Record must be saved",
+                  "error_code": "TAG_NO_ASSET_CODE",
+                  "message": "Save the record before generating its QR/Barcode tag.",
+                  "expression": "not_empty({form.asset_code})"
+                }
+              ]
+            }
+          ],
+          "validations": []
+        }
+      }
+    ],
+    "actions": [],
+    "cross_updates": [],
+    "pre_commit": [],
+    "post_commit": [],
+    "attach_docs": [],
+    "follow_up_actions": []
+  }
+}

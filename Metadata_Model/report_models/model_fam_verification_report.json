@@ -1,0 +1,84 @@
+{
+  "OBJ_NAME": "fam_verification_report",
+  "OBJ_TYPE": "R",
+  "TITLE": "Verification Report",
+  "REPORT": {
+    "MAIN_JRXML": "report.jrxml",
+    "JRXML_FILES": ["report.jrxml"],
+    "DEFAULT_OUTPUT_FORMAT": "pdf",
+    "OUTPUT_FORMATS": ["html", "pdf", "excel", "csv"],
+    "PARAMETERS": [
+      {"name": "VERIFICATION_CYCLE_NO", "java_class": "java.lang.String"},
+      {"name": "BRANCH_CODE", "java_class": "java.lang.String"},
+      {"name": "LOCATION_CODE", "java_class": "java.lang.String"},
+      {"name": "FROM_DATE", "java_class": "java.sql.Date"},
+      {"name": "TO_DATE", "java_class": "java.sql.Date"}
+    ]
+  },
+  "SQLMODEL": {
+    "DATABASE_DETAIL": {"CONNECTION_ID": ""},
+    "CRITERIA": {"query": {"condition": "and", "rules": [
+      {
+        "id": "Criteria_1",
+        "field": "VERIFICATION_CYCLE_NO",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Verification Cycle No",
+        "value": "", "chipValue": [],
+        "JASPER_PARAM": "VERIFICATION_CYCLE_NO",
+        "lookup": "FAM_PHYSICAL_VERIFICATION(VERIFICATION_CYCLE_NO, VERIFICATION_CYCLE_NO)",
+        "lookup_sql": "SELECT DISTINCT verification_cycle_no AS label, verification_cycle_no FROM fam_physical_verification ORDER BY 1",
+        "lookup_sql_data_col": "verification_cycle_no", "lookup_title": "Verification Cycles",
+        "options": [], "item_change": null
+      },
+      {
+        "id": "Criteria_2",
+        "field": "BRANCH_CODE",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Branch",
+        "value": "", "chipValue": [],
+        "JASPER_PARAM": "BRANCH_CODE",
+        "lookup": "FAM_BRANCH_MASTER(BRANCH_NAME, BRANCH_CODE)",
+        "lookup_sql": "SELECT branch_code, branch_name FROM fam_branch_master WHERE status = 'A' ORDER BY branch_name",
+        "lookup_sql_data_col": "branch_code", "lookup_title": "Branches",
+        "options": [], "item_change": null
+      },
+      {
+        "id": "Criteria_3",
+        "field": "LOCATION_CODE",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Location",
+        "value": "", "chipValue": [],
+        "JASPER_PARAM": "LOCATION_CODE",
+        "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
+        "lookup_sql": "SELECT location_code, location_name FROM fam_location_master WHERE status = 'A' ORDER BY location_name",
+        "lookup_sql_data_col": "location_code", "lookup_title": "Locations",
+        "options": [], "item_change": null
+      },
+      {
+        "id": "Criteria_4",
+        "field": "VERIFICATION_DATE",
+        "COLTYPE": "date", "currentFieldType": "date",
+        "operator": ">=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Verification Date From",
+        "value": ":calendar_month_start", "chipValue": [],
+        "JASPER_PARAM": "FROM_DATE",
+        "lookup": "", "lookup_sql": "", "lookup_sql_data_col": "", "lookup_title": "",
+        "options": [], "item_change": null
+      },
+      {
+        "id": "Criteria_5",
+        "field": "VERIFICATION_DATE",
+        "COLTYPE": "date", "currentFieldType": "date",
+        "operator": "<=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Verification Date To",
+        "value": ":calendar_month_end", "chipValue": [],
+        "JASPER_PARAM": "TO_DATE",
+        "lookup": "", "lookup_sql": "", "lookup_sql_data_col": "", "lookup_title": "",
+        "options": [], "item_change": null
+      }
+    ]}}
+  }
+}

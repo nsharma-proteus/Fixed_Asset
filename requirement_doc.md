@@ -2,7 +2,7 @@
 ### Manage Asset Category Master
 - Description: Maintain the classification of assets used to default useful life, depreciation method and applicable statutory rates on the Asset Register.
 - Data points: CATEGORY_CODE, CATEGORY_NAME, PARENT_CATEGORY_CODE, COMPANIES_ACT_USEFUL_LIFE_YEARS, COMPANIES_ACT_DEFAULT_METHOD (SLM/WDV), COMPANIES_ACT_RESIDUAL_VALUE_PCT, INCOME_TAX_BLOCK_CODE (default), STATUS (Active/Inactive).
-- Business rules: CATEGORY_CODE unique; COMPANIES_ACT_USEFUL_LIFE_YEARS > 0; COMPANIES_ACT_RESIDUAL_VALUE_PCT between 0 and 100; INCOME_TAX_BLOCK_CODE must exist in Income Tax Block Master.
+- Business rules: CATEGORY_CODE unique; COMPANIES_ACT_USEFUL_LIFE_YEARS > 0; COMPANIES_ACT_RESIDUAL_VALUE_PCT between 0 and 100; INCOME_TAX_BLOCK_CODE must exist in Income Tax Block Master. COMPANIES_ACT_USEFUL_LIFE_YEARS, COMPANIES_ACT_DEFAULT_METHOD, COMPANIES_ACT_RESIDUAL_VALUE_PCT and INCOME_TAX_BLOCK_CODE are mandatory when ASSET_TYPE = Fixed Asset; they are optional (not mandatory) when ASSET_TYPE = Other Asset. CATEGORY_CODE, CATEGORY_NAME, STATUS and ASSET_TYPE are always mandatory regardless of Asset Type.
 - Business actions: Search, Add, Edit, Delete (only if unused), Activate/Deactivate.
 - Additional data management: Deactivating a category blocks its use on new Asset Register entries but does not affect existing assets.
 

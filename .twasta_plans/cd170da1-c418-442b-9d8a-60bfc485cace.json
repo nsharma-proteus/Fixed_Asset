@@ -1,0 +1,20 @@
+{
+  "id": "cd170da1-c418-442b-9d8a-60bfc485cace",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "Report object 'fam_verification_report' not found in 'Fixed_Asset'.",
+  "kind": "modify",
+  "status": "completed",
+  "description": "Report object 'fam_verification_report' not found in 'Fixed_Asset'.",
+  "created_at": 1786457373.5971045,
+  "updated_at": 1786457631.3550758,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "Report object 'fam_verification_report' not found in 'Fixed_Asset'.",
+  "resume_ref": {
+    "session_id": "b4b34a3d-10ff-469c-84b1-4b672a51964a",
+    "claude_session_id": "0115bc10-7f1d-4580-9c92-21e03ab015cf"
+  },
+  "depends_on": [],
+  "result_summary": "The report is registered in navigation but was never actually built \u2014 there's no report model or JRXML for it. I'll delegate to the report-designer to author it per the spec already in the nav entry's functional_specs.The sub-agent authored the report but couldn't run the platform's actual validate/execute self-check (it claimed the tools weren't available). I have those tools myself \u2014 let me verify directly.The report engine (pyjasper) isn't installed in this environment, so neither I nor the sub-agent could run the actual JasperReports validate/execute self-check \u2014 this matches the sub-agent's own caveat. The model JSON is valid and the JRXML file exists; the SQL was independently verified against live data, but the JRXML XML structure itself is unverified against the JasperReports engine.\n\n**What changed:**\n- `Metadata_Model/report_models/model_fam_verification_report.json` (new) \u2014 report model with criteria VERIFICATION_CYCLE_NO, BRANCH_CODE, LOCATION_CODE, VERIFICATION_DATE range; default output PDF.\n- `Report_Design/fam_verification_report/report.jrxml` (new) \u2014 grouped by location, per-status counts + grand total, detail columns (asset code/name, expected location, status found, remarks, verified date), Verifier/Approver signature blocks. Built on `fam_physical_verification` (header) + `fam_physical_verification_line` (detail) + `fam_asset_register` (asset name).\n\n**Caveat:** JRXML XSD-validation and live render could not be run here (pyjasper not installed) \u2014 recommend opening the report in the designer/preview to confirm it renders before relying on it in production. No FRS update needed since this restores a nav entry's already-declared spec rather than changing functional scope.\n\nFiles touched: Metadata_Model/report_models/model_fam_verification_report.json, Report_Design/fam_verification_report/report.jrxml"
+}

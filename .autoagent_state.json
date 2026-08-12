@@ -1,221 +1,335 @@
 {
   "version": 2,
-  "id": "9f03708f-74e9-4e40-bca4-484c5f563abc",
+  "id": "05a1b7ae-21d8-468a-b47e-58187b99a009",
   "project": "Fixed_Asset",
   "description": "Need an application to manage fixed assets for organisation, It should be able to calculate depreciation as per Indian laws \nShould have the following requirement \nAsset Location : Identify where your assets are located by your branches , location within your branch and departments and option to assign to employees if required \n\nAsset Register : Asset register requirements as per Companies Act India including serial numbers, Make and model of the asset \nDepreciation calculation \u2013 Company\u2019s Act (Monthly) and yearly \nDepreciation calculation \u2013 Income Tax (Annual) Process\nAsset Installation: Feature to record and confirm the date of installation and other details \nAsset Transfer : Provision to record and transfer assets from one location to another\nAsset Sales / Scrap : Provision to remove the asset from the Asset Register \nAsset confirmation : A process to undertake the physical confirmation of the assets \nWarranty and AMC tracking : Provision to track the validity of the warranty and an active AMC\n\n=== CONFIRMED SCOPE AND COMPLEXITY (user-approved \u2014 this OVERRIDES any conflicting inference from the brief) ===\n* Which functional areas should be included in the application?\n  - Include: Asset Register; Locations & Assignment; Depreciation \u2013 Co. Act; Depreciation \u2013 Inc. Tax; Asset Lifecycle; Physical Verification; Warranty & AMC\n  - EXCLUDE (explicitly declined by the user \u2014 do NOT specify these): Capital Budgeting\n* How fully-featured should the initial build be?\n  - Include: Standard\n* Should any asset actions require a manager's approval before they are recorded?\n  - Include: All key actions\n* Which reports and outputs are essential for day-to-day use and audits?\n  - Include: Depreciation Register; Verification Report; Warranty / AMC Expiry; Asset Register Report; Management Dashboard\nWrite the specification to cover EXACTLY this confirmed scope at the confirmed complexity level: include every confirmed item, honour every added point, and do not add functional areas, activities or enterprise features beyond it.",
-  "active_plan_id": "f4c8f40e-8745-4544-98d0-e42f36b24af2",
+  "active_plan_id": "3301d50a-2970-4741-bb46-8c828264c043",
   "plans": [
     {
-      "id": "33f32b8b-9097-4cf1-94cf-f1b9411a022c",
-      "title": "The 180-day / 50% rule is mentioned in the application.json spec ('180-day usage",
-      "kind": "change",
-      "status": "completed",
-      "description": "have you ensured in income tax depreciation calculation the follwoing requirement  : If a new asset is put to use for less than 180 days in a financial year, only 50% of the normal depreciation rate is allowed",
+      "id": "3301d50a-2970-4741-bb46-8c828264c043",
+      "title": "Build application",
+      "kind": "build",
+      "status": "running",
+      "description": "Need an application to manage fixed assets for organisation, It should be able to calculate depreciation as per Indian laws \nShould have the following requirement \nAsset Location : Identify where your assets are located by your branches , location within your branch and departments and option to assign to employees if required \n\nAsset Register : Asset register requirements as per Companies Act India including serial numbers, Make and model of the asset \nDepreciation calculation \u2013 Company\u2019s Act (Monthly) and yearly \nDepreciation calculation \u2013 Income Tax (Annual) Process\nAsset Installation: Feature to record and confirm the date of installation and other details \nAsset Transfer : Provision to record and transfer assets from one location to another\nAsset Sales / Scrap : Provision to remove the asset from the Asset Register \nAsset confirmation : A process to undertake the physical confirmation of the assets \nWarranty and AMC tracking : Provision to track the validity of the warranty and an active AMC\n\n=== CONFIRMED SCOPE AND COMPLEXITY (user-approved \u2014 this OVERRIDES any conflicting inference from the brief) ===\n* Which functional areas should be included in the application?\n  - Include: Asset Register; Locations & Assignment; Depreciation \u2013 Co. Act; Depreciation \u2013 Inc. Tax; Asset Lifecycle; Physical Verification; Warranty & AMC\n  - EXCLUDE (explicitly declined by the user \u2014 do NOT specify these): Capital Budgeting\n* How fully-featured should the initial build be?\n  - Include: Standard\n* Should any asset actions require a manager's approval before they are recorded?\n  - Include: All key actions\n* Which reports and outputs are essential for day-to-day use and audits?\n  - Include: Depreciation Register; Verification Report; Warranty / AMC Expiry; Asset Register Report; Management Dashboard\nWrite the specification to cover EXACTLY this confirmed scope at the confirmed complexity level: include every confirmed item, honour every added point, and do not add functional areas, activities or enterprise features beyond it.",
       "todos": [
         {
-          "id": "change_1",
-          "step": "change",
-          "label": "Update FRS \u2014 Income Tax depreciation 50% rule",
+          "id": "frs",
+          "step": "frs",
+          "label": "Generate Functional Requirements",
           "status": "completed",
           "error": null,
           "obj_name": null,
           "obj_type": null,
-          "phase_id": null,
-          "started_at": 1785552955.2618928,
-          "completed_at": 1785552986.8416297
+          "phase_id": null
         },
         {
-          "id": "change_2",
-          "step": "change",
-          "label": "Update application.json \u2014 fam_gen_dep_income_tax functional_specs with explicit 50% formula",
+          "id": "app_json",
+          "step": "app_json",
+          "label": "Generate Application Structure",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_gen_dep_income_tax",
-          "obj_type": "G",
-          "phase_id": null,
-          "started_at": 1785552986.8500485,
-          "completed_at": 1785553019.2826922
-        },
-        {
-          "id": "change_3",
-          "step": "change",
-          "label": "Create G model \u2014 fam_gen_dep_income_tax",
-          "status": "completed",
-          "error": null,
-          "obj_name": "fam_gen_dep_income_tax",
-          "obj_type": "G",
-          "phase_id": null,
-          "started_at": 1785553019.2905009,
-          "completed_at": 1785553324.55668
-        }
-      ],
-      "phases": [],
-      "profile_id": null,
-      "created_at": 1785552955.2460997,
-      "updated_at": 1785553626.3476121,
-      "depends_on": [],
-      "dependency_spec": null,
-      "run_scope": null
-    },
-    {
-      "id": "f4c8f40e-8745-4544-98d0-e42f36b24af2",
-      "title": "Build the Asset Register screen (fam_asset_register) and its Category Master (fa",
-      "kind": "change",
-      "status": "paused",
-      "description": "[The user currently has the \"Generate Depreciation - Companies Act\" screen open (object fam_gen_dep_companies_act, type G). Resolve \"this\", \"this form/page/screen\", or \"here\" to this object unless they name a different one.]\n\nI need the category code to be added but dont need a vendor code , just a free text of the vendor name in the asset register",
-      "todos": [
-        {
-          "id": "change_1",
-          "step": "change",
-          "label": "Update FRS: Asset Register vendor field becomes free-text VENDOR_NAME",
-          "status": "completed",
-          "error": null,
-          "obj_name": "fam_asset_register",
+          "obj_name": null,
           "obj_type": null,
-          "phase_id": null,
-          "started_at": 1785759811.2470188,
-          "completed_at": 1785759832.1757505
+          "phase_id": null
         },
         {
-          "id": "change_2",
-          "step": "change",
-          "label": "Register Asset Category Master in navigation",
+          "id": "analyze_deps",
+          "step": "analyze_deps",
+          "label": "Analyze Object Dependencies",
+          "status": "completed",
+          "error": null,
+          "obj_name": null,
+          "obj_type": null,
+          "phase_id": null
+        },
+        {
+          "id": "obj_fam_branch_master",
+          "step": "object",
+          "label": "Build & verify: Branch Master",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_branch_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_location_master",
+          "step": "object",
+          "label": "Build & verify: Location Master",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_location_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_department_master",
+          "step": "object",
+          "label": "Build & verify: Department Master",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_department_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_employee_master",
+          "step": "object",
+          "label": "Build & verify: Employee Master",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_employee_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_asset_category_master",
+          "step": "object",
+          "label": "Build & verify: Asset Category Master",
           "status": "completed",
           "error": null,
           "obj_name": "fam_asset_category_master",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785759832.1850243,
-          "completed_at": 1785759868.33311
+          "phase_id": "phase_1",
+          "review_iters": 1,
+          "stage": "bl_done"
         },
         {
-          "id": "change_3",
-          "step": "change",
-          "label": "Register Asset Register in navigation",
+          "id": "obj_fam_dep_rate_ca_master",
+          "step": "object",
+          "label": "Build & verify: Depreciation Rate Master - Companies Act",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_dep_rate_ca_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_dep_rate_it_master",
+          "step": "object",
+          "label": "Build & verify: Depreciation Rate Master - Income Tax",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_dep_rate_it_master",
+          "obj_type": "T",
+          "phase_id": "phase_1"
+        },
+        {
+          "id": "obj_fam_asset_register",
+          "step": "object",
+          "label": "Build & verify: Asset Register",
           "status": "completed",
           "error": null,
           "obj_name": "fam_asset_register",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785759868.3417802,
-          "completed_at": 1785759897.5614154
+          "phase_id": "phase_2"
         },
         {
-          "id": "change_4",
-          "step": "change",
-          "label": "Create fam_asset_category_master model",
+          "id": "obj_fam_asset_installation",
+          "step": "object",
+          "label": "Build & verify: Asset Installation",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_category_master",
+          "obj_name": "fam_asset_installation",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785759897.5699584,
-          "completed_at": 1785760077.1456845
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_5",
-          "step": "change",
-          "label": "Business logic: check_category_unused",
+          "id": "obj_fam_asset_transfer",
+          "step": "object",
+          "label": "Build & verify: Asset Transfer",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_category_master",
+          "obj_name": "fam_asset_transfer",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760077.1576796,
-          "completed_at": 1785760110.6163917
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_6",
-          "step": "change",
-          "label": "Business logic: activate_category",
-          "status": "error",
-          "error": "I couldn't apply this change automatically \u2014 the edit didn't take. Try rephrasing what you want, or adjust it in the designer.",
-          "obj_name": "fam_asset_category_master",
-          "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760110.7057793,
-          "completed_at": 1785760143.0134048
-        },
-        {
-          "id": "change_7",
-          "step": "change",
-          "label": "Business logic: deactivate_category",
+          "id": "obj_fam_asset_disposal",
+          "step": "object",
+          "label": "Build & verify: Asset Sale / Scrap",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_category_master",
+          "obj_name": "fam_asset_disposal",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760143.0222328,
-          "completed_at": 1785760165.0886617
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_8",
-          "step": "change",
-          "label": "Create fam_asset_register model",
+          "id": "obj_fam_physical_verification",
+          "step": "object",
+          "label": "Build & verify: Conduct Physical Verification",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_register",
+          "obj_name": "fam_physical_verification",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760165.1242976,
-          "completed_at": 1785760558.259117
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_9",
-          "step": "change",
-          "label": "Business logic: submit_asset_register_for_approval",
+          "id": "obj_fam_warranty_details",
+          "step": "object",
+          "label": "Build & verify: Warranty Details",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_register",
+          "obj_name": "fam_warranty_details",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760558.2677357,
-          "completed_at": 1785760584.103035
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_10",
-          "step": "change",
-          "label": "Business logic: approve_asset_register",
+          "id": "obj_fam_amc_contracts",
+          "step": "object",
+          "label": "Build & verify: AMC Contracts",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_register",
+          "obj_name": "fam_amc_contracts",
           "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760584.1414824,
-          "completed_at": 1785760598.466504
+          "phase_id": "phase_3"
         },
         {
-          "id": "change_11",
-          "step": "change",
-          "label": "Business logic: reject_asset_register",
+          "id": "obj_fam_warranty_amc_expiry",
+          "step": "object",
+          "label": "Build & verify: Warranty / AMC Expiry",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_register",
-          "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760598.9260328,
-          "completed_at": 1785760622.676575
+          "obj_name": "fam_warranty_amc_expiry",
+          "obj_type": "V",
+          "phase_id": "phase_4"
         },
         {
-          "id": "change_12",
-          "step": "change",
-          "label": "Business logic: generate_asset_register_tag",
+          "id": "obj_fam_asset_movement_history",
+          "step": "object",
+          "label": "Build & verify: Asset Movement History",
           "status": "completed",
           "error": null,
-          "obj_name": "fam_asset_register",
-          "obj_type": "T",
-          "phase_id": null,
-          "started_at": 1785760622.7129726,
-          "completed_at": 1785760653.2891364
+          "obj_name": "fam_asset_movement_history",
+          "obj_type": "V",
+          "phase_id": "phase_4"
+        },
+        {
+          "id": "obj_fam_asset_verification_coverage",
+          "step": "object",
+          "label": "Build & verify: Asset Verification Coverage by Category",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_verification_coverage",
+          "obj_type": "V",
+          "phase_id": "phase_4"
+        },
+        {
+          "id": "obj_fam_assets_not_under_amc",
+          "step": "object",
+          "label": "Build & verify: Assets Not Under AMC",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_assets_not_under_amc",
+          "obj_type": "V",
+          "phase_id": "phase_4"
+        },
+        {
+          "id": "obj_fam_amc_coverage_expiry",
+          "step": "object",
+          "label": "Build & verify: AMC Coverage & Expiry",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_amc_coverage_expiry",
+          "obj_type": "V",
+          "phase_id": "phase_4"
+        },
+        {
+          "id": "obj_fam_management_dashboard",
+          "step": "object",
+          "label": "Build & verify: Management Dashboard",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_management_dashboard",
+          "obj_type": "D",
+          "phase_id": "phase_5"
+        },
+        {
+          "id": "obj_fam_asset_depreciation_reconciliation",
+          "step": "object",
+          "label": "Build & verify: Asset Depreciation Reconciliation (CA vs IT)",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_asset_depreciation_reconciliation",
+          "obj_type": "D",
+          "phase_id": "phase_5"
+        },
+        {
+          "id": "obj_fam_home",
+          "step": "object",
+          "label": "Build & verify: Home",
+          "status": "completed",
+          "error": null,
+          "obj_name": "fam_home",
+          "obj_type": "S",
+          "phase_id": "phase_5"
         }
       ],
-      "phases": [],
+      "phases": [
+        {
+          "id": "phase_1",
+          "title": "Organisation & Rate Masters",
+          "rationale": "All lookup/master tables referenced by the Asset Register and lifecycle transactions \u2014 build first so downstream objects have valid foreign keys and defaults.",
+          "objects": [
+            "fam_branch_master",
+            "fam_location_master",
+            "fam_department_master",
+            "fam_employee_master",
+            "fam_asset_category_master",
+            "fam_dep_rate_ca_master",
+            "fam_dep_rate_it_master"
+          ]
+        },
+        {
+          "id": "phase_2",
+          "title": "Core Asset Register",
+          "rationale": "The central statutory asset record that all lifecycle transactions, visuals and dashboards depend on \u2014 must exist before any downstream object is built.",
+          "objects": [
+            "fam_asset_register"
+          ]
+        },
+        {
+          "id": "phase_3",
+          "title": "Asset Lifecycle Transactions",
+          "rationale": "Operational transactions that record events against registered assets; depend on the Asset Register and supporting masters.",
+          "objects": [
+            "fam_asset_installation",
+            "fam_asset_transfer",
+            "fam_asset_disposal",
+            "fam_physical_verification",
+            "fam_warranty_details",
+            "fam_amc_contracts"
+          ]
+        },
+        {
+          "id": "phase_4",
+          "title": "Analytics Visuals",
+          "rationale": "Charts and grids drawn from the populated transaction tables; must precede the dashboards that embed them.",
+          "objects": [
+            "fam_warranty_amc_expiry",
+            "fam_asset_movement_history",
+            "fam_asset_verification_coverage",
+            "fam_assets_not_under_amc",
+            "fam_amc_coverage_expiry"
+          ]
+        },
+        {
+          "id": "phase_5",
+          "title": "Dashboards & Home Page",
+          "rationale": "Dashboards embed the completed visuals; the home Smart Page links to all functional objects, so it is built last.",
+          "objects": [
+            "fam_management_dashboard",
+            "fam_asset_depreciation_reconciliation",
+            "fam_home"
+          ]
+        }
+      ],
       "profile_id": null,
-      "created_at": 1785759811.2269156,
-      "updated_at": 1785765414.823358,
+      "created_at": 1786522996.7550178,
+      "updated_at": 1786534175.3321285,
       "depends_on": [],
       "dependency_spec": null,
-      "run_scope": null
+      "run_scope": "phase"
     }
   ]
 }

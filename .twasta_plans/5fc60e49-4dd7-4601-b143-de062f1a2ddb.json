@@ -1,0 +1,20 @@
+{
+  "id": "5fc60e49-4dd7-4601-b143-de062f1a2ddb",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "Query failed: relation \"fam_dep_companies_act_register\" does not exist LINE 1: .",
+  "kind": "modify",
+  "status": "completed",
+  "description": "Query failed: relation \"fam_dep_companies_act_register\" does not exist LINE 1: .",
+  "created_at": 1786458349.8168092,
+  "updated_at": 1786459496.0629542,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "Query failed: relation \"fam_dep_companies_act_register\" does not exist LINE 1: ...S ACCUMULATED_DEPRECIATION, status AS STATUS FROM fam_dep_co... ^ getting error in Companies Act - Period-Wise Depreciation (Real)\n[follow-up] Income Tax - Block Level Context (Not Asset-Specific) + Estimated Allocation\nlive query\nQuery failed: relation \"fam_dep_income_tax_block\" does not exist LINE 1: ...asset_code = '1'), block_rows AS (SELECT b.* FROM fam_dep_in... ^",
+  "resume_ref": {
+    "session_id": "b4b34a3d-10ff-469c-84b1-4b672a51964a",
+    "claude_session_id": "5325552d-de42-4e26-93c3-021299beef10"
+  },
+  "depends_on": [],
+  "result_summary": "This is the same root cause I diagnosed last turn for the sibling tile \u2014 no new bug, just the other tile in the pair.\n\n**Root cause (unchanged):** the \"Income Tax - Block Level Context (Not Asset-Specific) + Estimated Allocation\" tile runs visual `fam_dep_it_block_context`, whose SQL correctly selects from `fam_dep_income_tax_block` \u2014 the exact `target_table` declared in General Process `fam_gen_dep_income_tax`. That table is only auto-created on the process's **first successful Execute**, and per `live_tables` it still doesn't exist in the live database (I re-checked below). The visual model's own `SCHEMA_DESCR` already documents this as expected until the process is run at least once.Confirmed: `fam_dep_income_tax_block` still doesn't exist. Nothing changed since last turn on this front.\n\n**No file changes made** \u2014 same as the Companies Act tile, this is not a model bug. `fam_dep_income_tax_block` is the `target_table` of General Process **\"Generate Depreciation - Income Tax (Block)\"** (`fam_gen_dep_income_tax`), and per platform behavior a `persist_mode: \"table\"` target is only auto-created on that process's **first successful Execute**. It hasn't been run yet, so the table genuinely doesn't exist \u2014 the query, the visual (`fam_dep_it_block_context`), and the dashboard tile are all correctly built.\n\n**To fix it:** open the General Process **\"Generate Depreciation - Income Tax (Block)\"** in the app, run **Generate** for a financial year, review the block rows, then **Execute** (Approve & Post) at least once. That creates `fam_dep_income_tax_block`, and this tile will then render live data instead of erroring \u2014 same step needed for the Companies Act sibling table.\n\nIf you'd like, I can seed this by walking through what values `fam_gen_dep_income_tax` needs (financial year / branch), but I can't run the process myself \u2014 running it requires the interactive review-and-execute step in the live preview."
+}

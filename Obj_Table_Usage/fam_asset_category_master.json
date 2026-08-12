@@ -2,26 +2,27 @@
   "object_name": "fam_asset_category_master",
   "tables": {
     "FAM_ASSET_CATEGORY_MASTER": [
-      "INCOME_TAX_BLOCK_CODE",
       "parent_category_name",
-      "ADD_USER",
-      "CATEGORY_CODE",
-      "COMPANIES_ACT_USEFUL_LIFE_YEARS",
-      "ADD_DATE",
-      "PARENT_CATEGORY_CODE",
-      "STATUS",
+      "ASSET_TYPE",
       "CHG_USER",
-      "ID",
+      "INCOME_TAX_BLOCK_CODE",
+      "PARENT_CATEGORY_CODE",
       "CATEGORY_NAME",
       "COMPANIES_ACT_DEFAULT_METHOD",
-      "ADD_TERM",
+      "CATEGORY_CODE",
+      "ADD_USER",
       "CHG_DATE",
+      "CHG_TERM",
+      "ID",
+      "STATUS",
       "COMPANIES_ACT_RESIDUAL_VALUE_PCT",
-      "CHG_TERM"
+      "ADD_DATE",
+      "ADD_TERM",
+      "COMPANIES_ACT_USEFUL_LIFE_YEARS"
     ],
     "FAM_DEP_RATE_IT_MASTER": [
-      "BLOCK_DESCRIPTION",
-      "BLOCK_CODE"
+      "BLOCK_CODE",
+      "BLOCK_DESCRIPTION"
     ]
   }
 }

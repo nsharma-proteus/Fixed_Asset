@@ -1,6 +1,16 @@
 {
   "transaction": {
     "obj_name": "fam_asset_register",
+    "unit_test": {
+      "sample": {
+        "asset_type": "FIXED_ASSET",
+        "purchase_date": "2026-01-01",
+        "capitalization_date": "2026-08-01",
+        "companies_act_useful_life_years": 5,
+        "companies_act_method": "SLM"
+      },
+      "note": "asset_type defaults to FIXED_ASSET which requires capitalization_date, companies_act_useful_life_years and companies_act_method (CAP_DATE_REQUIRED/CA_LIFE_REQUIRED/CA_METHOD_REQUIRED validations)."
+    },
     "sql_models": [
       {
         "sql_model": {
@@ -21,6 +31,21 @@
                 "mandatory": true,
                 "protect": "1",
                 "default_value": "auto_generate()",
+                "item_change": {
+                  "mode": "rule",
+                  "fill": [
+                    {
+                      "form_col": "asset_type",
+                      "expr": "{form.asset_type}"
+                    }
+                  ],
+                  "protect": [
+                    {
+                      "form_col": "asset_type",
+                      "when": "not_empty({form.asset_code})"
+                    }
+                  ]
+                },
                 "x": "10",
                 "y": "10",
                 "col_id": "1",
@@ -67,6 +92,46 @@
             },
             {
               "column": {
+                "name": "asset_type",
+                "db_name": "ASSET_TYPE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Type",
+                "descr": "Whether this record is a depreciable Fixed Asset or a non-depreciable Other Asset. Editable only until the record is first saved (see the Asset Code item_change protect rule); once saved it is permanently locked — an asset must never be reclassified after creation.",
+                "default_value": "FIXED_ASSET",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "FIXED_ASSET",
+                      "display": "Fixed Asset"
+                    },
+                    {
+                      "data": "OTHER_ASSET",
+                      "display": "Other Asset"
+                    }
+                  ]
+                },
+                "x": "25",
+                "y": "25",
+                "col_id": "2a",
+                "table_name": "FAM_ASSET_REGISTER",
+                "table_display_name": "Asset register (main table)",
+                "db_size": "20",
+                "width": 130,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
                 "name": "category_code",
                 "db_name": "CATEGORY_CODE",
                 "group_name": "Basic",
@@ -75,6 +140,7 @@
                 "descr": "Asset category, used to default useful life, depreciation method and residual value",
                 "mandatory": true,
                 "lookup": "FAM_ASSET_CATEGORY_MASTER(CATEGORY_NAME, CATEGORY_CODE)",
+                "lookup_filter": "STATUS = 'A' AND ASSET_TYPE = {form.asset_type}",
                 "must_exist_in": "FAM_ASSET_CATEGORY_MASTER",
                 "item_change": {
                   "mode": "rule",
@@ -927,15 +993,22 @@
                 "group_name": "Purchase & Capitalization",
                 "col_type": "DATE",
                 "heading": "Capitalization Date",
-                "descr": "Date the asset was capitalized; must not be before the Purchase Date",
-                "mandatory": true,
+                "descr": "Date the asset was capitalized; must not be before the Purchase Date. Required for Fixed Asset records; not applicable (leave blank) for Other Asset records.",
+                "mandatory": false,
                 "validations": [
                   {
                     "type": "expression",
                     "name": "Capitalization date not before purchase date",
                     "error_code": "CAP_DATE_MIN",
                     "message": "Capitalization date cannot be earlier than the Purchase Date.",
-                    "expression": "{form.capitalization_date} >= {form.purchase_date}"
+                    "expression": "is_empty({form.capitalization_date}) or {form.capitalization_date} >= {form.purchase_date}"
+                  },
+                  {
+                    "type": "expression",
+                    "name": "Capitalization date required for Fixed Asset",
+                    "error_code": "CAP_DATE_REQUIRED",
+                    "message": "Capitalization Date is required for a Fixed Asset record.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.capitalization_date})"
                   }
                 ],
                 "item_change": {
@@ -971,8 +1044,8 @@
                 "group_name": "Companies Act Depreciation",
                 "col_type": "NUMBER",
                 "heading": "Useful Life (Years)",
-                "descr": "Useful life in years under the Companies Act; defaulted from the asset's category and editable",
-                "mandatory": true,
+                "descr": "Useful life in years under the Companies Act; defaulted from the asset's category and editable. Required for Fixed Asset records; not applicable (leave blank) for Other Asset records.",
+                "mandatory": false,
                 "item_change": {
                   "mode": "business_logic",
                   "business_logic": {
@@ -996,7 +1069,15 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": "",
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Useful life required for Fixed Asset",
+                    "error_code": "CA_LIFE_REQUIRED",
+                    "message": "Companies Act useful life is required for a Fixed Asset record.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_useful_life_years})"
+                  }
+                ],
                 "lookup": ""
               }
             },
@@ -1007,8 +1088,8 @@
                 "group_name": "Companies Act Depreciation",
                 "col_type": "VARCHAR",
                 "heading": "Method",
-                "descr": "Depreciation method under the Companies Act; defaulted from the asset's category and editable",
-                "mandatory": true,
+                "descr": "Depreciation method under the Companies Act; defaulted from the asset's category and editable. Required for Fixed Asset records; not applicable (leave blank) for Other Asset records.",
+                "mandatory": false,
                 "edit_mask": {
                   "mask": "ddlb",
                   "values": [
@@ -1044,7 +1125,15 @@
                 "default_value": "",
                 "expression": "",
                 "protect": "",
-                "validations": "",
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Method required for Fixed Asset",
+                    "error_code": "CA_METHOD_REQUIRED",
+                    "message": "Companies Act depreciation method is required for a Fixed Asset record.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_method})"
+                  }
+                ],
                 "lookup": ""
               }
             },
@@ -1754,7 +1843,7 @@
               "business_logic": {
                 "method": "submit_asset_for_approval",
                 "description": "Submit a draft asset for approval",
-                "spec": "Confirm that ASSET_NAME, CATEGORY_CODE, BRANCH_CODE, LOCATION_CODE, PURCHASE_DATE, PURCHASE_COST and CAPITALIZATION_DATE are all populated; if any is missing return {\"error\": \"...\"} naming the missing field(s). Otherwise set STATUS to 'PENDING_APPROVAL' and return {\"updates\": {\"status\": \"PENDING_APPROVAL\"}}."
+                "spec": "Confirm that ASSET_NAME, CATEGORY_CODE, BRANCH_CODE, LOCATION_CODE, PURCHASE_DATE and PURCHASE_COST are all populated for every asset regardless of ASSET_TYPE. Additionally, when ASSET_TYPE = 'FIXED_ASSET', CAPITALIZATION_DATE must also be populated (it is NOT required when ASSET_TYPE = 'OTHER_ASSET' — Other Assets are never capitalized/depreciated). If any required field is missing return {\"error\": \"...\"} naming the missing field(s). Otherwise set STATUS to 'PENDING_APPROVAL' and return {\"updates\": {\"status\": \"PENDING_APPROVAL\"}}. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE."
               },
               "validations": [
                 {
@@ -1772,8 +1861,8 @@
               "scope": "row",
               "business_logic": {
                 "method": "approve_asset",
-                "description": "Approve and capitalize the asset",
-                "spec": "Set STATUS to 'CAPITALIZED' and lock the core financial fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE, OPENING_ACCUMULATED_DEPRECIATION) so they cannot be changed once capitalized, by returning them as protected cells. Return {\"updates\": {\"status\": \"CAPITALIZED\", \"purchase_cost\": {\"protect\": \"1\"}, \"capitalization_date\": {\"protect\": \"1\"}, \"category_code\": {\"protect\": \"1\"}, \"opening_accumulated_depreciation\": {\"protect\": \"1\"}}}. Once approved the asset becomes eligible for depreciation processing and visible in Locations & Assignment, Depreciation, Lifecycle and Verification activities."
+                "description": "Approve/confirm the asset record",
+                "spec": "Set STATUS to 'CAPITALIZED' and lock the core fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE, OPENING_ACCUMULATED_DEPRECIATION) so they cannot be changed once approved, by returning them as protected cells. Return {\"updates\": {\"status\": \"CAPITALIZED\", \"purchase_cost\": {\"protect\": \"1\"}, \"capitalization_date\": {\"protect\": \"1\"}, \"category_code\": {\"protect\": \"1\"}, \"opening_accumulated_depreciation\": {\"protect\": \"1\"}}}. For an ASSET_TYPE = 'FIXED_ASSET' row, STATUS = 'CAPITALIZED' means the asset is now capitalized and becomes eligible for depreciation processing and visible in Locations & Assignment, Depreciation, Lifecycle and Verification activities. For an ASSET_TYPE = 'OTHER_ASSET' row, STATUS = 'CAPITALIZED' carries NO capitalization/depreciation meaning at all — it simply means the record is confirmed/active in the register (the same status code is reused for both types purely so Transfer/Verification's existing 'must be Capitalized/Active' checks keep working unmodified for Other Asset rows too). This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE."
               },
               "validations": [
                 {

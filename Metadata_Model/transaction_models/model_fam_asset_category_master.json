@@ -62,7 +62,7 @@
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "100",
-                "width": 286,
+                "width": 500,
                 "key": false,
                 "hidden": "",
                 "format": "",
@@ -122,7 +122,47 @@
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "1",
-                "width": 102,
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "asset_type",
+                "db_name": "ASSET_TYPE",
+                "group_name": "Basic",
+                "col_type": "VARCHAR",
+                "heading": "Asset Type",
+                "descr": "Scopes which register screen (Asset Register for Fixed Assets, Other Asset Register for non-depreciable items) this category is offered on. Fixed Assets carry Companies Act / Income Tax depreciation defaults; Other Assets never do.",
+                "default_value": "FIXED_ASSET",
+                "mandatory": true,
+                "edit_mask": {
+                  "mask": "ddlb",
+                  "values": [
+                    {
+                      "data": "FIXED_ASSET",
+                      "display": "Fixed Asset"
+                    },
+                    {
+                      "data": "OTHER_ASSET",
+                      "display": "Other Asset"
+                    }
+                  ]
+                },
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_ASSET_CATEGORY_MASTER",
+                "table_display_name": "Asset category master (main table)",
+                "db_size": "20",
+                "width": 200,
                 "key": false,
                 "hidden": "",
                 "format": "",
@@ -156,9 +196,9 @@
                     }
                   ]
                 },
-                "x": "40",
-                "y": "40",
-                "col_id": "4",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "20",
@@ -182,9 +222,9 @@
                 "heading": "Parent Category Name",
                 "descr": "Name of the selected parent category, filled from Parent Category",
                 "protect": "1",
-                "x": "50",
-                "y": "50",
-                "col_id": "5",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
                 "db_name": "parent_category_name",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
@@ -209,20 +249,27 @@
                 "group_name": "Companies Act Depreciation",
                 "col_type": "NUMBER",
                 "heading": "Useful Life (Years)",
-                "descr": "Default useful life in years under the Companies Act, Schedule II",
-                "mandatory": true,
+                "descr": "Default useful life in years under the Companies Act, Schedule II. Mandatory for Fixed Asset categories; optional for Other Asset categories.",
+                "mandatory": false,
                 "validations": [
                   {
                     "type": "expression",
                     "name": "Useful life positive",
                     "error_code": "CA_LIFE_MIN",
                     "message": "Companies Act useful life must be greater than 0.",
-                    "expression": "{form.companies_act_useful_life_years} > 0"
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or {form.companies_act_useful_life_years} > 0"
+                  },
+                  {
+                    "type": "expression",
+                    "name": "Useful life required",
+                    "error_code": "CA_LIFE_REQUIRED",
+                    "message": "Companies Act useful life is required for Fixed Asset categories.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_useful_life_years})"
                   }
                 ],
-                "x": "60",
-                "y": "60",
-                "col_id": "6",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "5,2",
@@ -245,8 +292,8 @@
                 "group_name": "Companies Act Depreciation",
                 "col_type": "VARCHAR",
                 "heading": "Default Method",
-                "descr": "Default depreciation method under the Companies Act",
-                "mandatory": true,
+                "descr": "Default depreciation method under the Companies Act. Required for Fixed Asset categories; not applicable (leave blank) for Other Asset categories.",
+                "mandatory": false,
                 "edit_mask": {
                   "mask": "ddlb",
                   "values": [
@@ -260,13 +307,13 @@
                     }
                   ]
                 },
-                "x": "70",
-                "y": "70",
-                "col_id": "7",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "3",
-                "width": 72,
+                "width": 50,
                 "key": false,
                 "hidden": "",
                 "format": "",
@@ -274,7 +321,15 @@
                 "default_value": "",
                 "expression": "",
                 "protect": "",
-                "validations": "",
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Default method required for Fixed Asset",
+                    "error_code": "CA_METHOD_REQUIRED",
+                    "message": "Companies Act default method is required for a Fixed Asset category.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_default_method})"
+                  }
+                ],
                 "lookup": ""
               }
             },
@@ -285,8 +340,8 @@
                 "group_name": "Companies Act Depreciation",
                 "col_type": "NUMBER",
                 "heading": "Residual Value %",
-                "descr": "Default residual value percentage under the Companies Act",
-                "mandatory": true,
+                "descr": "Default residual value percentage under the Companies Act. Mandatory for Fixed Asset categories; optional for Other Asset categories.",
+                "mandatory": false,
                 "validations": [
                   {
                     "type": "builtin",
@@ -304,11 +359,18 @@
                         "value": "100"
                       }
                     }
+                  },
+                  {
+                    "type": "expression",
+                    "name": "Residual value % required",
+                    "error_code": "CA_RESID_REQUIRED",
+                    "message": "Companies Act residual value % is required for Fixed Asset categories.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_residual_value_pct})"
                   }
                 ],
-                "x": "80",
-                "y": "80",
-                "col_id": "8",
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "5,2",
@@ -335,9 +397,9 @@
                 "mandatory": false,
                 "lookup": "FAM_DEP_RATE_IT_MASTER(BLOCK_DESCRIPTION, BLOCK_CODE)",
                 "must_exist_in": "FAM_DEP_RATE_IT_MASTER",
-                "x": "90",
-                "y": "90",
-                "col_id": "9",
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "20",
@@ -350,7 +412,15 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": [
+                  {
+                    "type": "expression",
+                    "name": "Income tax block code required for Fixed Asset",
+                    "error_code": "IT_BLOCK_REQUIRED",
+                    "message": "Income Tax Block Code is required for a Fixed Asset category.",
+                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.income_tax_block_code})"
+                  }
+                ]
               }
             },
             {
@@ -363,9 +433,9 @@
                 "heading": "Block Description",
                 "descr": "Description of the selected Income Tax block, shown from the Income Tax Block Master",
                 "protect": "1",
-                "x": "100",
-                "y": "100",
-                "col_id": "10",
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
                 "table_display_name": "Income Tax depreciation block master (lookup for default block description)",
                 "db_size": "200",
                 "width": 500,
@@ -392,9 +462,9 @@
                 "default_value": "auto_generate()",
                 "protect": "1",
                 "hidden": 1,
-                "x": "110",
-                "y": "110",
-                "col_id": "11",
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "",
@@ -419,9 +489,9 @@
                 "descr": "Date/time the record was created",
                 "default_value": ":audit_add_date",
                 "protect": "1",
-                "x": "110",
-                "y": "120",
-                "col_id": "12",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "",
@@ -447,9 +517,9 @@
                 "descr": "User who created the record",
                 "default_value": ":audit_add_user",
                 "protect": "1",
-                "x": "120",
-                "y": "130",
-                "col_id": "13",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "10",
@@ -476,9 +546,9 @@
                 "default_value": ":audit_add_terminal",
                 "protect": "1",
                 "hidden": 1,
-                "x": "140",
-                "y": "140",
-                "col_id": "14",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "15",
@@ -503,9 +573,9 @@
                 "descr": "Date/time the record was last changed",
                 "default_value": ":audit_chg_date",
                 "protect": "1",
-                "x": "130",
-                "y": "150",
-                "col_id": "15",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "",
@@ -531,9 +601,9 @@
                 "descr": "User who last changed the record",
                 "default_value": ":audit_chg_user",
                 "protect": "1",
-                "x": "140",
-                "y": "160",
-                "col_id": "16",
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "10",
@@ -560,9 +630,9 @@
                 "default_value": ":audit_chg_terminal",
                 "protect": "1",
                 "hidden": 1,
-                "x": "170",
-                "y": "170",
-                "col_id": "17",
+                "x": "180",
+                "y": "180",
+                "col_id": "18",
                 "table_name": "FAM_ASSET_CATEGORY_MASTER",
                 "table_display_name": "Asset category master (main table)",
                 "db_size": "15",

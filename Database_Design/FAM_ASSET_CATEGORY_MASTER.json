@@ -41,12 +41,31 @@
       ]
     },
     {
+      "column_name": "ASSET_TYPE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Scopes which register screen (Asset Register for Fixed Assets, Other Asset Register for non-depreciable items) this category is offered on. Fixed Assets carry Companies Act / Income Tax depreciation defaults; Other Assets never do.",
+      "sequence": 4,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "FIXED_ASSET",
+          "label": "Fixed Asset"
+        },
+        {
+          "value": "OTHER_ASSET",
+          "label": "Other Asset"
+        }
+      ]
+    },
+    {
       "column_name": "PARENT_CATEGORY_CODE",
       "data_type": "VARCHAR",
       "size": "20",
       "key": false,
       "description": "Optional parent category for hierarchical classification",
-      "sequence": 4,
+      "sequence": 5,
       "lookup": {
         "table": "FAM_ASSET_CATEGORY_MASTER",
         "display_column": "CATEGORY_NAME",
@@ -59,25 +78,23 @@
       "size": "100",
       "key": false,
       "description": "Name of the selected parent category, filled from Parent Category",
-      "sequence": 5
+      "sequence": 6
     },
     {
       "column_name": "COMPANIES_ACT_USEFUL_LIFE_YEARS",
       "data_type": "NUMBER",
       "size": "5,2",
       "key": false,
-      "description": "Default useful life in years under the Companies Act, Schedule II",
-      "sequence": 6,
-      "mandatory": true
+      "description": "Default useful life in years under the Companies Act, Schedule II. Mandatory for Fixed Asset categories; optional for Other Asset categories.",
+      "sequence": 7
     },
     {
       "column_name": "COMPANIES_ACT_DEFAULT_METHOD",
       "data_type": "VARCHAR",
       "size": "3",
       "key": false,
-      "description": "Default depreciation method under the Companies Act",
-      "sequence": 7,
-      "mandatory": true,
+      "description": "Default depreciation method under the Companies Act. Required for Fixed Asset categories; not applicable (leave blank) for Other Asset categories.",
+      "sequence": 8,
       "allowed_values": [
         {
           "value": "SLM",
@@ -94,9 +111,8 @@
       "data_type": "NUMBER",
       "size": "5,2",
       "key": false,
-      "description": "Default residual value percentage under the Companies Act",
-      "sequence": 8,
-      "mandatory": true
+      "description": "Default residual value percentage under the Companies Act. Mandatory for Fixed Asset categories; optional for Other Asset categories.",
+      "sequence": 9
     },
     {
       "column_name": "INCOME_TAX_BLOCK_CODE",
@@ -104,7 +120,7 @@
       "size": "20",
       "key": false,
       "description": "Default Income Tax block-of-assets code applied to assets in this category",
-      "sequence": 9,
+      "sequence": 10,
       "lookup": {
         "table": "FAM_DEP_RATE_IT_MASTER",
         "display_column": "BLOCK_DESCRIPTION",
@@ -117,7 +133,7 @@
       "size": "",
       "key": false,
       "description": "Internal surrogate identifier",
-      "sequence": 10
+      "sequence": 11
     },
     {
       "column_name": "ADD_DATE",
@@ -125,7 +141,7 @@
       "size": "",
       "key": false,
       "description": "Date/time the record was created",
-      "sequence": 11
+      "sequence": 12
     },
     {
       "column_name": "ADD_USER",
@@ -133,7 +149,7 @@
       "size": "10",
       "key": false,
       "description": "User who created the record",
-      "sequence": 12
+      "sequence": 13
     },
     {
       "column_name": "ADD_TERM",
@@ -141,7 +157,7 @@
       "size": "15",
       "key": false,
       "description": "Terminal/IP from which the record was created",
-      "sequence": 13
+      "sequence": 14
     },
     {
       "column_name": "CHG_DATE",
@@ -149,7 +165,7 @@
       "size": "",
       "key": false,
       "description": "Date/time the record was last changed",
-      "sequence": 14
+      "sequence": 15
     },
     {
       "column_name": "CHG_USER",
@@ -157,7 +173,7 @@
       "size": "10",
       "key": false,
       "description": "User who last changed the record",
-      "sequence": 15
+      "sequence": 16
     },
     {
       "column_name": "CHG_TERM",
@@ -165,7 +181,7 @@
       "size": "15",
       "key": false,
       "description": "Terminal/IP from which the record was last changed",
-      "sequence": 16
+      "sequence": 17
     }
   ]
 }

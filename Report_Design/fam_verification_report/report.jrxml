@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="fam_verification_report" pageWidth="842" pageHeight="595" orientation="Landscape"
+              columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <parameter name="VERIFICATION_CYCLE_NO" class="java.lang.String"/>
+    <parameter name="BRANCH_CODE" class="java.lang.String"/>
+    <parameter name="LOCATION_CODE" class="java.lang.String"/>
+    <parameter name="FROM_DATE" class="java.sql.Date"/>
+    <parameter name="TO_DATE" class="java.sql.Date"/>
+
+    <queryString>
+        <![CDATA[
+SELECT h.verification_cycle_no,
+       h.branch_code,
+       h.branch_name,
+       h.location_code,
+       h.location_name,
+       h.verification_date,
+       h.verifier_employee_name,
+       l.asset_code,
+       ar.asset_name,
+       l.expected_location_code,
+       l.expected_location_name,
+       l.physical_status_found,
+       l.remarks,
+       l.verified_date
+FROM fam_physical_verification h
+JOIN fam_physical_verification_line l ON l.verification_cycle_no = h.verification_cycle_no
+JOIN fam_asset_register ar ON ar.asset_code = l.asset_code
+WHERE ($P{VERIFICATION_CYCLE_NO} IS NULL OR h.verification_cycle_no = $P{VERIFICATION_CYCLE_NO})
+  AND ($P{BRANCH_CODE} IS NULL OR h.branch_code = $P{BRANCH_CODE})
+  AND ($P{LOCATION_CODE} IS NULL OR h.location_code = $P{LOCATION_CODE})
+  AND ($P{FROM_DATE} IS NULL OR h.verification_date >= $P{FROM_DATE})
+  AND ($P{TO_DATE} IS NULL OR h.verification_date <= $P{TO_DATE})
+ORDER BY h.location_code, h.verification_cycle_no, l.line_no
+        ]]>
+    </queryString>
+
+    <field name="verification_cycle_no" class="java.lang.String"/>
+    <field name="branch_code" class="java.lang.String"/>
+    <field name="branch_name" class="java.lang.String"/>
+    <field name="location_code" class="java.lang.String"/>
+    <field name="location_name" class="java.lang.String"/>
+    <field name="verification_date" class="java.sql.Date"/>
+    <field name="verifier_employee_name" class="java.lang.String"/>
+    <field name="asset_code" class="java.lang.String"/>
+    <field name="asset_name" class="java.lang.String"/>
+    <field name="expected_location_code" class="java.lang.String"/>
+    <field name="expected_location_name" class="java.lang.String"/>
+    <field name="physical_status_found" class="java.lang.String"/>
+    <field name="remarks" class="java.lang.String"/>
+    <field name="verified_date" class="java.sql.Date"/>
+
+    <variable name="FOUND_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="LOCATION_GROUP" calculation="Sum">
+        <variableExpression><![CDATA[$F{physical_status_found} != null && $F{physical_status_found}.equals("FOUND") ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="NOT_FOUND_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="LOCATION_GROUP" calculation="Sum">
+        <variableExpression><![CDATA[$F{physical_status_found} != null && $F{physical_status_found}.equals("NOT_FOUND") ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="DAMAGED_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="LOCATION_GROUP" calculation="Sum">
+        <variableExpression><![CDATA[$F{physical_status_found} != null && $F{physical_status_found}.equals("DAMAGED") ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="EXTRA_COUNT" class="java.lang.Integer" resetType="Group" resetGroup="LOCATION_GROUP" calculation="Sum">
+        <variableExpression><![CDATA[$F{physical_status_found} != null && $F{physical_status_found}.equals("EXTRA_UNREGISTERED") ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="LOCATION_TOTAL" class="java.lang.Integer" resetType="Group" resetGroup="LOCATION_GROUP" calculation="Count">
+        <variableExpression><![CDATA[$F{asset_code}]]></variableExpression>
+    </variable>
+    <variable name="GRAND_TOTAL" class="java.lang.Integer" resetType="Report" calculation="Count">
+        <variableExpression><![CDATA[$F{asset_code}]]></variableExpression>
+    </variable>
+
+    <group name="LOCATION_GROUP">
+        <groupExpression><![CDATA[$F{location_code}]]></groupExpression>
+        <groupHeader>
+            <band height="46">
+                <rectangle>
+                    <reportElement x="0" y="0" width="802" height="20" backcolor="#E6E6E6"/>
+                </rectangle>
+                <textField>
+                    <reportElement x="4" y="0" width="798" height="20"/>
+                    <textElement verticalAlignment="Middle"/>
+                    <textFieldExpression><![CDATA["Location: " + $F{location_name} + " (" + $F{location_code} + ")   Branch: " + $F{branch_name} + "   Cycle No: " + $F{verification_cycle_no} + "   Verifier: " + $F{verifier_employee_name}]]></textFieldExpression>
+                </textField>
+                <rectangle>
+                    <reportElement x="0" y="24" width="802" height="18" backcolor="#CCCCCC"/>
+                </rectangle>
+                <staticText>
+                    <reportElement x="0" y="24" width="80" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Asset Code]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="80" y="24" width="200" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Asset Name]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="280" y="24" width="110" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Expected Location]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="390" y="24" width="90" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Status]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="480" y="24" width="222" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Remarks]]></text>
+                </staticText>
+                <staticText>
+                    <reportElement x="702" y="24" width="100" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true"/></textElement>
+                    <text><![CDATA[Verified Date]]></text>
+                </staticText>
+            </band>
+        </groupHeader>
+        <groupFooter>
+            <band height="26">
+                <line>
+                    <reportElement x="0" y="0" width="802" height="1"/>
+                </line>
+                <textField>
+                    <reportElement x="4" y="4" width="798" height="18"/>
+                    <textElement verticalAlignment="Middle"><font isBold="true" isItalic="true"/></textElement>
+                    <textFieldExpression><![CDATA["Found: " + $V{FOUND_COUNT} + "    Not Found: " + $V{NOT_FOUND_COUNT} + "    Damaged: " + $V{DAMAGED_COUNT} + "    Extra - Unregistered: " + $V{EXTRA_COUNT} + "    Location Total Verified: " + $V{LOCATION_TOTAL}]]></textFieldExpression>
+                </textField>
+            </band>
+        </groupFooter>
+    </group>
+
+    <title>
+        <band height="40">
+            <staticText>
+                <reportElement x="0" y="0" width="802" height="26"/>
+                <textElement textAlignment="Center"><font size="16" isBold="true"/></textElement>
+                <text><![CDATA[Physical Verification Report]]></text>
+            </staticText>
+            <textField pattern="dd-MMM-yyyy HH:mm">
+                <reportElement x="0" y="26" width="802" height="12"/>
+                <textElement textAlignment="Center"><font size="8" isItalic="true"/></textElement>
+                <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <detail>
+        <band height="18">
+            <textField>
+                <reportElement x="0" y="0" width="80" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{asset_code}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="80" y="0" width="200" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{asset_name}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="280" y="0" width="110" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{expected_location_code}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="390" y="0" width="90" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{physical_status_found}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="480" y="0" width="222" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+            </textField>
+            <textField pattern="dd-MMM-yyyy">
+                <reportElement x="702" y="0" width="100" height="18"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{verified_date}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <summary>
+        <band height="110">
+            <textField>
+                <reportElement x="0" y="0" width="802" height="20"/>
+                <textElement><font size="12" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA["Grand Total Verified Count: " + $V{GRAND_TOTAL}]]></textFieldExpression>
+            </textField>
+
+            <line>
+                <reportElement x="0" y="70" width="300" height="1"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="74" width="300" height="16"/>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <text><![CDATA[Verifier - Signature & Date]]></text>
+            </staticText>
+
+            <line>
+                <reportElement x="450" y="70" width="300" height="1"/>
+            </line>
+            <staticText>
+                <reportElement x="450" y="74" width="300" height="16"/>
+                <textElement textAlignment="Center"><font size="9"/></textElement>
+                <text><![CDATA[Approver - Signature & Date]]></text>
+            </staticText>
+        </band>
+    </summary>
+
+</jasperReport>

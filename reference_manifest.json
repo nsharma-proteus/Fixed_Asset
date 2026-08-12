@@ -1,9 +1,15 @@
 {
   "project_name": "Fixed Asset Management",
   "project_description": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
-  "generated_at": "2026-08-04T04:50:18.700757+00:00",
+  "generated_at": "2026-08-12T11:22:06.134734+00:00",
   "owner_user_id": "",
   "navigation_summary": [
+    {
+      "obj_name": "fam_home",
+      "obj_type": "S",
+      "title": "Home",
+      "description": "Landing page with quick access to the Asset Register, dashboards and every functional area"
+    },
     {
       "obj_name": "fam_asset_category_master",
       "obj_type": "T",
@@ -113,6 +119,12 @@
       "description": "Grid of warranty and AMC coverage approaching expiry"
     },
     {
+      "obj_name": "fam_asset_movement_history",
+      "obj_type": "V",
+      "title": "Asset Movement History",
+      "description": "Asset-wise physical movement/transfer trail across branch, location, department and custodian"
+    },
+    {
       "obj_name": "fam_management_dashboard",
       "obj_type": "D",
       "title": "Management Dashboard",
@@ -123,6 +135,30 @@
       "obj_type": "D",
       "title": "Asset Depreciation Reconciliation (CA vs IT)",
       "description": "Per-asset period-wise depreciation detail for reconciliation"
+    },
+    {
+      "obj_name": "fam_gen_dep_it_asset_ledger",
+      "obj_type": "G",
+      "title": "Income Tax Depreciation - Asset Ledger (Form 3CD)",
+      "description": "Asset-level Income Tax depreciation ledger for Tax Audit Form 3CD Clause 18 disclosure"
+    },
+    {
+      "obj_name": "fam_asset_verification_coverage",
+      "obj_type": "V",
+      "title": "Asset Verification Coverage by Category",
+      "description": ""
+    },
+    {
+      "obj_name": "fam_assets_not_under_amc",
+      "obj_type": "V",
+      "title": "Assets Not Under AMC",
+      "description": ""
+    },
+    {
+      "obj_name": "fam_amc_coverage_expiry",
+      "obj_type": "V",
+      "title": "AMC Coverage & Expiry",
+      "description": ""
     }
   ],
   "tables": [
@@ -176,6 +212,7 @@
       "other_columns": [
         "CATEGORY_NAME VARCHAR",
         "STATUS VARCHAR",
+        "ASSET_TYPE VARCHAR",
         "PARENT_CATEGORY_CODE VARCHAR",
         "parent_category_name VARCHAR",
         "COMPANIES_ACT_USEFUL_LIFE_YEARS NUMBER",

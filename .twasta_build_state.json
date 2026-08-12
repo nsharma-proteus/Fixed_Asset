@@ -88,6 +88,14 @@
       "verify_ok": true,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "66caf8c420accf02"
+    },
+    "R:fam_verification_report": {
+      "obj_type": "R",
+      "obj_name": "fam_verification_report",
+      "verified_at": 1786457631.354294,
+      "verify_ok": true,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "d406cd0b90188ab4"
     }
   }
 }
