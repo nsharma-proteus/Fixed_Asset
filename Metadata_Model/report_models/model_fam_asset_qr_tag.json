@@ -43,6 +43,19 @@
         "lookup_sql": "SELECT DISTINCT location_code, location_name FROM fam_location_master WHERE status = 'A' ORDER BY location_name",
         "lookup_sql_data_col": "location_code", "lookup_title": "Locations",
         "options": [], "item_change": null
+      },
+      {
+        "id": "Criteria_3",
+        "field": "ASSET_CODE",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Asset Code",
+        "value": "%", "chipValue": [],
+        "JASPER_PARAM": "ASSET_CODE",
+        "lookup": "FAM_ASSET_REGISTER(ASSET_NAME, ASSET_CODE)",
+        "lookup_sql": "SELECT asset_code, asset_name FROM fam_asset_register ORDER BY asset_code",
+        "lookup_sql_data_col": "asset_code", "lookup_title": "Assets",
+        "options": [], "item_change": null
       }
     ]}}
   }

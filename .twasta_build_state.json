@@ -100,10 +100,10 @@
     "R:fam_asset_qr_tag": {
       "obj_type": "R",
       "obj_name": "fam_asset_qr_tag",
-      "verified_at": 1787145066.7660778,
+      "verified_at": 1787296744.2383847,
       "verify_ok": false,
       "verify_summary": "verified by the dock's post-turn BI gate",
-      "verify_fingerprint": "b790a2b35ce59497"
+      "verify_fingerprint": "b6b368af1ae8177e"
     }
   }
 }

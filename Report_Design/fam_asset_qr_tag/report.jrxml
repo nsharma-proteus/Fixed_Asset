@@ -8,8 +8,11 @@
 
     <parameter name="ASSET_TYPE" class="java.lang.String"/>
     <parameter name="LOCATION_CODE" class="java.lang.String"/>
-    <!-- Not a screen criterion. Bound only by the Asset Register row action
-         "Generate QR/Barcode Tag", which prints a single label for one asset. -->
+    <!-- Optional screen criterion, default '%' (all). Its real job is to give the
+         Asset Register row action "Generate QR/Barcode Tag" something to bind to:
+         a JRXML parameter with no matching criterion binds NULL, so without the
+         criterion the action's asset code is discarded and every asset at the
+         selected location prints instead of the one chosen. -->
     <parameter name="ASSET_CODE" class="java.lang.String"/>
 
     <!-- One label per asset. Every display string is assembled in SQL so the
@@ -35,7 +38,8 @@ LEFT JOIN fam_location_master l ON l.branch_code = a.branch_code
 WHERE ($P{ASSET_TYPE} IS NULL OR $P{ASSET_TYPE} = '%' OR $P{ASSET_TYPE} = ''
        OR a.asset_type = $P{ASSET_TYPE})
   AND ($P{LOCATION_CODE} IS NULL OR a.location_code = $P{LOCATION_CODE})
-  AND ($P{ASSET_CODE} IS NULL OR a.asset_code = $P{ASSET_CODE})
+  AND ($P{ASSET_CODE} IS NULL OR $P{ASSET_CODE} = '%' OR $P{ASSET_CODE} = ''
+       OR a.asset_code = $P{ASSET_CODE})
 ORDER BY a.asset_code
         ]]>
     </queryString>

@@ -1,0 +1,20 @@
+{
+  "id": "0a3f8295-b964-430b-bfcc-0af839669a73",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "can you check if i have local changes?",
+  "kind": "modify",
+  "status": "completed",
+  "description": "can you check if i have local changes?",
+  "created_at": 1787293634.519184,
+  "updated_at": 1787293646.053599,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "can you check if i have local changes?",
+  "resume_ref": {
+    "session_id": "5f4cb1f4-aa31-4b0e-9f4d-8948b7c40dcc",
+    "claude_session_id": "283eff42-4646-48c8-adc5-ebd550e7d586"
+  },
+  "depends_on": [],
+  "result_summary": "I'll check the git status of the project.No design changes \u2014 your working tree is clean as far as the application is concerned.\n\nWhat's uncommitted:\n- `.claude/.twasta_session` (modified) \u2014 internal session file, 1 line\n- `.twasta_plans/0a3f8295-....json` (untracked) \u2014 internal plan scratch\n- `.twasta_writer_lock` (untracked) \u2014 internal lock file\n\nAll three are platform housekeeping, not project design. No changes to `application.json`, `requirement_doc.md`, or anything under `Metadata_Model/` \u2014 consistent with the last exchange where I reverted the QR tag report back to `\"value\": \"%\"`."
+}
