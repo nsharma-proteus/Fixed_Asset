@@ -9,7 +9,8 @@
       "size": "20",
       "key": true,
       "description": "Parent verification cycle",
-      "sequence": 1
+      "sequence": 1,
+      "mandatory": true
     },
     {
       "column_name": "LINE_NO",
@@ -76,12 +77,20 @@
       "sequence": 6
     },
     {
+      "column_name": "ASSET_PHOTO_URL",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Photo evidence of the asset's physical condition/location, captured during verification",
+      "sequence": 7
+    },
+    {
       "column_name": "EXPECTED_LOCATION_CODE",
       "data_type": "VARCHAR",
       "size": "20",
       "key": false,
       "description": "Location the asset was expected to be found at",
-      "sequence": 7,
+      "sequence": 9,
       "lookup": {
         "table": "FAM_LOCATION_MASTER",
         "display_column": "LOCATION_NAME",
@@ -89,20 +98,12 @@
       }
     },
     {
-      "column_name": "expected_location_name",
-      "data_type": "VARCHAR",
-      "size": "100",
-      "key": false,
-      "description": "Expected location name (display only)",
-      "sequence": 8
-    },
-    {
       "column_name": "EXPECTED_EMPLOYEE_CODE",
       "data_type": "VARCHAR",
       "size": "20",
       "key": false,
       "description": "Employee the asset was expected to be assigned to",
-      "sequence": 9,
+      "sequence": 11,
       "lookup": {
         "table": "FAM_EMPLOYEE_MASTER",
         "display_column": "EMPLOYEE_NAME",
@@ -110,60 +111,92 @@
       }
     },
     {
-      "column_name": "expected_employee_name",
-      "data_type": "VARCHAR",
-      "size": "100",
-      "key": false,
-      "description": "Expected custodian name (display only)",
-      "sequence": 10
-    },
-    {
       "column_name": "ADD_DATE",
       "data_type": "DATETIME",
       "size": "",
       "key": false,
-      "description": "",
-      "sequence": 11
+      "description": "Audit stamp - line creation date.",
+      "sequence": 13
     },
     {
       "column_name": "ADD_USER",
       "data_type": "VARCHAR",
       "size": "10",
       "key": false,
-      "description": "",
-      "sequence": 12
+      "description": "Audit stamp - creating user.",
+      "sequence": 14
     },
     {
       "column_name": "ADD_TERM",
       "data_type": "VARCHAR",
       "size": "15",
       "key": false,
-      "description": "",
-      "sequence": 13
+      "description": "Audit stamp - creating terminal.",
+      "sequence": 15
     },
     {
       "column_name": "CHG_DATE",
       "data_type": "DATETIME",
       "size": "",
       "key": false,
-      "description": "",
-      "sequence": 14
+      "description": "Audit stamp - last change date.",
+      "sequence": 16
     },
     {
       "column_name": "CHG_USER",
       "data_type": "VARCHAR",
       "size": "10",
       "key": false,
-      "description": "",
-      "sequence": 15
+      "description": "Audit stamp - last changing user.",
+      "sequence": 17
     },
     {
       "column_name": "CHG_TERM",
       "data_type": "VARCHAR",
       "size": "15",
       "key": false,
-      "description": "",
-      "sequence": 16
+      "description": "Audit stamp - last changing terminal.",
+      "sequence": 18
+    },
+    {
+      "column_name": "EXPECTED_LOCATION_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected location name stored on the line at planning time. Read only.",
+      "sequence": 9
+    },
+    {
+      "column_name": "EXPECTED_EMPLOYEE_NAME",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected custodian name stored on the line at planning time. Read only.",
+      "sequence": 11
+    },
+    {
+      "column_name": "SCAN_QR_IMAGE_URL",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Pick or capture the asset's QR/barcode tag image from the device; the asset code is decoded from it",
+      "sequence": 8
+    },
+    {
+      "column_name": "expected_location_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected location name (display only)",
+      "sequence": 10
+    },
+    {
+      "column_name": "expected_employee_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Expected custodian name (display only)",
+      "sequence": 12
     }
   ]
 }

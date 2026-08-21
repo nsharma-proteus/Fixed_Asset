@@ -96,6 +96,14 @@
       "verify_ok": true,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "d406cd0b90188ab4"
+    },
+    "R:fam_asset_qr_tag": {
+      "obj_type": "R",
+      "obj_name": "fam_asset_qr_tag",
+      "verified_at": 1787145066.7660778,
+      "verify_ok": false,
+      "verify_summary": "verified by the dock's post-turn BI gate",
+      "verify_fingerprint": "b790a2b35ce59497"
     }
   }
 }

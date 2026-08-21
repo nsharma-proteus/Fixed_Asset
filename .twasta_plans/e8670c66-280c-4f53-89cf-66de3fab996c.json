@@ -1,0 +1,20 @@
+{
+  "id": "e8670c66-280c-4f53-89cf-66de3fab996c",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Ass",
+  "kind": "modify",
+  "status": "completed",
+  "description": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Ass",
+  "created_at": 1787145323.7458076,
+  "updated_at": 1787145520.4221053,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Asset Type\" field.\n[follow-up] Leave it as it is",
+  "resume_ref": {
+    "session_id": "88d7ecb7-1f31-44a5-a6df-048de630abc6",
+    "claude_session_id": "31695097-6918-4296-a462-e7686835d63b"
+  },
+  "depends_on": [],
+  "result_summary": "No changes made \u2014 the model is back to its original state (`\"value\": \"%\"` on the Asset Type criterion in `Metadata_Model/report_models/model_fam_asset_qr_tag.json`), so the \"(any)\" option stays and Asset Type remains optional.\n\nOne thing worth flagging: `requirement_doc.md` line 179 currently claims the Asset Type dropdown has no \"(Any)\" entry and opens with nothing selected, which doesn't match how the report actually behaves. Say the word and I'll correct that FRS line to describe the real behaviour."
+}

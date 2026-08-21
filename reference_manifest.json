@@ -1,7 +1,7 @@
 {
   "project_name": "Fixed Asset Management",
   "project_description": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
-  "generated_at": "2026-08-12T11:22:06.134734+00:00",
+  "generated_at": "2026-08-19T11:26:57.766508+00:00",
   "owner_user_id": "",
   "navigation_summary": [
     {
@@ -92,7 +92,13 @@
       "obj_name": "fam_physical_verification",
       "obj_type": "T",
       "title": "Conduct Physical Verification",
-      "description": "Plan and execute periodic asset verification cycles"
+      "description": "Plan a physical verification list: select branch, location and asset category, pull in assets not verified in the last X"
+    },
+    {
+      "obj_name": "fam_verification_execution",
+      "obj_type": "T",
+      "title": "Execute Physical Verification",
+      "description": "Execute an assigned verification list \u2014 scan or key an asset id, validate it belongs to the list, and record its physica"
     },
     {
       "obj_name": "fam_warranty_details",
@@ -159,6 +165,12 @@
       "obj_type": "V",
       "title": "AMC Coverage & Expiry",
       "description": ""
+    },
+    {
+      "obj_name": "fam_asset_qr_tag",
+      "obj_type": "R",
+      "title": "Asset QR Code Tag",
+      "description": "Printable QR code label for a single asset"
     }
   ],
   "tables": [
@@ -284,8 +296,12 @@
       ],
       "other_columns": [
         "ASSET_NAME VARCHAR",
+        "PARENT_ASSET_CODE VARCHAR",
+        "ASSET_TYPE VARCHAR",
         "CATEGORY_CODE VARCHAR",
         "STATUS VARCHAR",
+        "DISPOSAL_DATE DATE",
+        "LAST_VERIFIED_DATE DATE",
         "SERIAL_NO VARCHAR",
         "MAKE VARCHAR",
         "MODEL VARCHAR",
@@ -307,7 +323,13 @@
         "COMPANIES_ACT_METHOD VARCHAR",
         "COMPANIES_ACT_RESIDUAL_VALUE_PCT NUMBER",
         "COMPANIES_ACT_RESIDUAL_VALUE NUMBER",
+        "OPENING_WDV NUMBER",
+        "OPENING_ACCUMULATED_DEPRECIATION NUMBER",
+        "OPENING_WDV_AS_ON_DATE DATE",
+        "TOTAL_ACCUMULATED_DEPRECIATION NUMBER",
         "INCOME_TAX_BLOCK_CODE VARCHAR",
+        "INCOME_TAX_OPENING_WDV NUMBER",
+        "INCOME_TAX_OPENING_WDV_AS_ON_DATE DATE",
         "WARRANTY_START_DATE DATE",
         "WARRANTY_END_DATE DATE",
         "AMC_APPLICABLE VARCHAR",
@@ -486,10 +508,15 @@
       ],
       "other_columns": [
         "VERIFICATION_DATE DATE",
+        "SCAN_ASSET_CODE VARCHAR",
         "BRANCH_CODE VARCHAR",
+        "SCAN_ASSET_CODE_IN VARCHAR",
         "branch_name VARCHAR",
         "LOCATION_CODE VARCHAR",
         "location_name VARCHAR",
+        "CATEGORY_CODE VARCHAR",
+        "category_name VARCHAR",
+        "NOT_VERIFIED_SINCE_MONTHS NUMBER",
         "VERIFIER_EMPLOYEE_CODE VARCHAR",
         "verifier_employee_name VARCHAR",
         "STATUS VARCHAR",
@@ -513,9 +540,13 @@
         "PHYSICAL_STATUS_FOUND VARCHAR",
         "VERIFIED_DATE DATE",
         "REMARKS VARCHAR",
+        "ASSET_PHOTO_URL VARCHAR",
+        "SCAN_QR_IMAGE_URL VARCHAR",
         "EXPECTED_LOCATION_CODE VARCHAR",
+        "EXPECTED_LOCATION_NAME VARCHAR",
         "expected_location_name VARCHAR",
         "EXPECTED_EMPLOYEE_CODE VARCHAR",
+        "EXPECTED_EMPLOYEE_NAME VARCHAR",
         "expected_employee_name VARCHAR",
         "ADD_DATE DATETIME",
         "ADD_USER VARCHAR",

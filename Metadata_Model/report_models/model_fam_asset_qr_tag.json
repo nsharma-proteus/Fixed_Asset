@@ -1,0 +1,49 @@
+{
+  "OBJ_NAME": "fam_asset_qr_tag",
+  "OBJ_TYPE": "R",
+  "TITLE": "Asset QR Code Tag",
+  "REPORT": {
+    "MAIN_JRXML": "report.jrxml",
+    "JRXML_FILES": ["report.jrxml"],
+    "DEFAULT_OUTPUT_FORMAT": "pdf",
+    "OUTPUT_FORMATS": ["pdf", "html"],
+    "PARAMETERS": [
+      {"name": "ASSET_TYPE", "java_class": "java.lang.String"},
+      {"name": "LOCATION_CODE", "java_class": "java.lang.String"},
+      {"name": "ASSET_CODE", "java_class": "java.lang.String"}
+    ]
+  },
+  "SQLMODEL": {
+    "DATABASE_DETAIL": {"CONNECTION_ID": ""},
+    "CRITERIA": {"query": {"condition": "and", "rules": [
+      {
+        "id": "Criteria_1",
+        "field": "ASSET_TYPE",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Asset Type",
+        "value": "%", "chipValue": [],
+        "JASPER_PARAM": "ASSET_TYPE",
+        "lookup": "", "lookup_sql": "", "lookup_sql_data_col": "", "lookup_title": "",
+        "options": [
+          {"data": "FIXED_ASSET", "display": "Fixed Asset"},
+          {"data": "OTHER_ASSET", "display": "Other Asset"}
+        ],
+        "item_change": null
+      },
+      {
+        "id": "Criteria_2",
+        "field": "LOCATION_CODE",
+        "COLTYPE": "string", "currentFieldType": "string",
+        "operator": "=", "queryOption": "P", "prevOption": "P",
+        "promptLabel": "Location Name",
+        "value": "", "chipValue": [],
+        "JASPER_PARAM": "LOCATION_CODE",
+        "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
+        "lookup_sql": "SELECT DISTINCT location_code, location_name FROM fam_location_master WHERE status = 'A' ORDER BY location_name",
+        "lookup_sql_data_col": "location_code", "lookup_title": "Locations",
+        "options": [], "item_change": null
+      }
+    ]}}
+  }
+}

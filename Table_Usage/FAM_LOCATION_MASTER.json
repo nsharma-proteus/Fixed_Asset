@@ -30,12 +30,26 @@
       "form_no": "1",
       "usage_type": "R",
       "referred_columns": [
-        "LOCATION_NAME",
-        "LOCATION_CODE"
+        "LOCATION_CODE",
+        "LOCATION_NAME"
       ],
       "join_info": {
         "column": "LOCATION_CODE",
         "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "LOCATION_CODE"
+      }
+    },
+    {
+      "object_name": "fam_verification_execution",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "LOCATION_CODE",
+        "LOCATION_NAME"
+      ],
+      "join_info": {
+        "column": "LOCATION_CODE",
+        "join_table": "FAM_PHYSICAL_VERIFICATION",
         "join_column": "LOCATION_CODE"
       }
     }

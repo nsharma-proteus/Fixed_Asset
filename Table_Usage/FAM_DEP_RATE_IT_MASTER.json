@@ -20,20 +20,6 @@
       ]
     },
     {
-      "object_name": "fam_asset_register",
-      "form_no": "1",
-      "usage_type": "R",
-      "referred_columns": [
-        "BLOCK_DESCRIPTION",
-        "BLOCK_CODE"
-      ],
-      "join_info": {
-        "column": "BLOCK_CODE",
-        "join_table": "FAM_ASSET_REGISTER",
-        "join_column": "INCOME_TAX_BLOCK_CODE"
-      }
-    },
-    {
       "object_name": "fam_asset_category_master",
       "form_no": "1",
       "usage_type": "M",
@@ -44,6 +30,20 @@
       "join_info": {
         "column": "BLOCK_CODE",
         "join_table": "FAM_ASSET_CATEGORY_MASTER",
+        "join_column": "INCOME_TAX_BLOCK_CODE"
+      }
+    },
+    {
+      "object_name": "fam_asset_register",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "BLOCK_CODE",
+        "BLOCK_DESCRIPTION"
+      ],
+      "join_info": {
+        "column": "BLOCK_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
         "join_column": "INCOME_TAX_BLOCK_CODE"
       }
     }

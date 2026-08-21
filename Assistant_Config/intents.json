@@ -1,0 +1,45 @@
+{
+  "intents": [
+    {
+      "intent_id": "PV_SCAN_ASSET",
+      "description": "Record a fixed asset as physically verified from its QR/barcode tag or its asset code",
+      "detail": "Used by field verifiers doing a physical asset verification. Scanning the asset's printed QR tag (payload 'FAM|<ASSET_CODE>') or giving the asset code proposes the 'Scan Asset By Code' action on the Verification Execution object, which finds the single OPEN verification cycle (Planned or In Progress) that already lists the asset and stamps that line as FOUND with today's date. The cycle is resolved server-side - never ask the user for a verification cycle number. The asset list is fixed at planning time: an asset not on an open cycle is refused. Re-scanning an asset that is already recorded just reports its current status and changes nothing.",
+      "enabled": true,
+      "phrases": [
+        "mark asset {asset_code} as verified",
+        "verify asset {asset_code}",
+        "physical verification for asset {asset_code}",
+        "asset {asset_code} found",
+        "record {asset_code} as physically verified",
+        "verified {asset_code}"
+      ],
+      "parameters": [
+        {
+          "name": "asset_code",
+          "description": "the asset code printed on the asset's QR tag (the part after 'FAM|'), e.g. FA0001",
+          "type": "text",
+          "required": true,
+          "source": "user",
+          "default": ""
+        }
+      ],
+      "fulfillment": {
+        "method": "action",
+        "obj_name": "fam_verification_execution",
+        "action": "Scan Asset By Code",
+        "value_map": {
+          "SCAN_ASSET_CODE_IN": "{asset_code}"
+        }
+      },
+      "access": {
+        "allow_roles": [],
+        "deny_roles": []
+      },
+      "scan": {
+        "enabled": true,
+        "pattern": "^\\s*(?:[Ff][Aa][Mm]\\|)?(?P<asset_code>[A-Za-z0-9][A-Za-z0-9._/-]{0,19})\\s*$",
+        "target_parameter": "asset_code"
+      }
+    }
+  ]
+}

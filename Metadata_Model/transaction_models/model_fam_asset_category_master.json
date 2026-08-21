@@ -257,14 +257,14 @@
                     "name": "Useful life positive",
                     "error_code": "CA_LIFE_MIN",
                     "message": "Companies Act useful life must be greater than 0.",
-                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or {form.companies_act_useful_life_years} > 0"
+                    "expression": "{form.asset_type} != \"FIXED_ASSET\" or {form.companies_act_useful_life_years} > 0"
                   },
                   {
                     "type": "expression",
                     "name": "Useful life required",
                     "error_code": "CA_LIFE_REQUIRED",
                     "message": "Companies Act useful life is required for Fixed Asset categories.",
-                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_useful_life_years})"
+                    "expression": "{form.asset_type} != \"FIXED_ASSET\" or not_empty({form.companies_act_useful_life_years})"
                   }
                 ],
                 "x": "70",
@@ -327,7 +327,7 @@
                     "name": "Default method required for Fixed Asset",
                     "error_code": "CA_METHOD_REQUIRED",
                     "message": "Companies Act default method is required for a Fixed Asset category.",
-                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_default_method})"
+                    "expression": "{form.asset_type} != \"FIXED_ASSET\" or not_empty({form.companies_act_default_method})"
                   }
                 ],
                 "lookup": ""
@@ -365,7 +365,7 @@
                     "name": "Residual value % required",
                     "error_code": "CA_RESID_REQUIRED",
                     "message": "Companies Act residual value % is required for Fixed Asset categories.",
-                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.companies_act_residual_value_pct})"
+                    "expression": "{form.asset_type} != \"FIXED_ASSET\" or not_empty({form.companies_act_residual_value_pct})"
                   }
                 ],
                 "x": "90",
@@ -418,7 +418,7 @@
                     "name": "Income tax block code required for Fixed Asset",
                     "error_code": "IT_BLOCK_REQUIRED",
                     "message": "Income Tax Block Code is required for a Fixed Asset category.",
-                    "expression": "{form.asset_type} == \"OTHER_ASSET\" or not_empty({form.income_tax_block_code})"
+                    "expression": "{form.asset_type} != \"FIXED_ASSET\" or not_empty({form.income_tax_block_code})"
                   }
                 ]
               }

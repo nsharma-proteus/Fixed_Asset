@@ -53,6 +53,20 @@
         "join_table": "FAM_ASSET_REGISTER",
         "join_column": "ASSIGNED_EMPLOYEE_CODE"
       }
+    },
+    {
+      "object_name": "fam_verification_execution",
+      "form_no": "1",
+      "usage_type": "R",
+      "referred_columns": [
+        "EMPLOYEE_CODE",
+        "EMPLOYEE_NAME"
+      ],
+      "join_info": {
+        "column": "EMPLOYEE_CODE",
+        "join_table": "FAM_PHYSICAL_VERIFICATION",
+        "join_column": "VERIFIER_EMPLOYEE_CODE"
+      }
     }
   ]
 }

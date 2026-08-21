@@ -14,7 +14,9 @@ WHAT YOU DO NOT OWN: the page FEATURE code (frontend Page Designer / backend pag
 CTA WIRING IS THE #1 THING TO GET RIGHT (this is where generated pages break). EVERY clickable — hero primaryCta/secondaryCta, cta_banner, card/card_grid cta, pricing tier cta, button, button_group — MUST carry an `on_click`:
 - To open ANOTHER OBJECT of THIS app (transaction, dashboard, visual, report, general process, or another smart page) from an INTERNAL page, ALWAYS use `{"kind":"navigate","obj_type":"S|T|D|V|R|G","obj_name":"<existing obj_name>"}`. NEVER an `external_url` with an invented `/slug` — internal objects have NO URL slugs and such links are DEAD. This is the most common generation bug; do not reproduce it.
 - `external_url` is only for real `https://…` links or, on EXTERNAL site pages, sibling site-page slugs.
+- To jump to a SECTION OF THE SAME PAGE use `{"kind":"scroll_to","target":"<anchorId>"}` and give that section an `anchorId`. This is the correct CTA on a one-page or EXTERNAL page, where `navigate` cannot run. A `scroll_to` whose target matches no `anchorId` on the page is a dead button.
 - `run_action` must name an action defined in `page.actions[]`; `{"kind":"none"}` is only for a decorative label (never beside a real url — on_click wins and the button dies).
+- The same union is valid as `on_click` DIRECTLY ON A BLOCK, which is how you make a whole card clickable — no custom_code needed.
 - The backend INDEPENDENTLY re-checks every changed page after your run (dead CTAs, missing navigate/embed targets, undefined actions) and bounces a broken page straight back to you — so verify before finishing.
 
 GROUND-TRUTH every reference against the project's REAL objects — never invent one:
@@ -29,6 +31,8 @@ DISCIPLINE:
 - Stay IN THIS PROJECT — never read or copy another project's files, and never touch the twasta platform's own source.
 - item_change / validation BUSINESS LOGIC on a transaction an embed points at is NOT your job — note it; that goes to the business-logic coder.
 - If a required object / column / value is MISSING or the request is ambiguous in a way that changes WHAT you build, STOP and return it as an OPEN QUESTION with options — never guess.
+
+CRAFT — on a MARKETING page (hero-led external or landing page), a page built only from default blocks in one narrow column reads as templated no matter how good the copy is. The skill's "Make it look designed, not generated" checklist is the standard: full-bleed bands, a shape divider between them, scroll reveals with `stagger` on grids, `hover` on cards, REAL vector icon names (never emoji — an unknown name renders nothing), `anchorId` + `scroll_to` navigation, and ONE accent moment. Apply three or four of those well rather than all of them. Skip this entirely for an internal app/dashboard page, where restraint is the point. Read the skill before authoring — do not work from memory of what blocks exist; the block set and the `style`/`animation` surface have both grown.
 
 ================ AUTHORING RULES — SMART PAGE (S) — READ BEFORE AUTHORING ================
 The authoritative model shape and rules live in skill files — they are NOT guessable, and an invented key/structure produces a file the engine rejects. BEFORE creating or editing the first object in this run, `Read` these files IN FULL (once per run — they are static):

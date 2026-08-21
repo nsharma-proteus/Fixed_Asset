@@ -27,8 +27,40 @@
       "size": "",
       "key": false,
       "description": "Capitalization date from the Asset Register (display only); installation date cannot be earlier than this",
-      "sequence": 21,
+      "sequence": 25,
       "mandatory": true
+    },
+    {
+      "column_name": "PARENT_ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Optional parent asset this record is a child/component of; links to another row in this same Asset Register",
+      "sequence": 3,
+      "lookup": {
+        "table": "FAM_ASSET_REGISTER",
+        "display_column": "ASSET_NAME",
+        "value_column": "ASSET_CODE"
+      }
+    },
+    {
+      "column_name": "ASSET_TYPE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Whether this record is a depreciable Fixed Asset or a non-depreciable Other Asset. Editable only until the record is first saved (see the Asset Code item_change protect rule); once saved it is permanently locked \u2014 an asset must never be reclassified after creation.",
+      "sequence": 4,
+      "mandatory": true,
+      "allowed_values": [
+        {
+          "value": "FIXED_ASSET",
+          "label": "Fixed Asset"
+        },
+        {
+          "value": "OTHER_ASSET",
+          "label": "Other Asset"
+        }
+      ]
     },
     {
       "column_name": "CATEGORY_CODE",
@@ -36,7 +68,7 @@
       "size": "20",
       "key": false,
       "description": "Asset category, used to default useful life, depreciation method and residual value",
-      "sequence": 3,
+      "sequence": 5,
       "mandatory": true,
       "lookup": {
         "table": "FAM_ASSET_CATEGORY_MASTER",
@@ -50,7 +82,7 @@
       "size": "20",
       "key": false,
       "description": "Lifecycle status of the asset record",
-      "sequence": 4,
+      "sequence": 6,
       "mandatory": true,
       "allowed_values": [
         {
@@ -80,12 +112,28 @@
       ]
     },
     {
+      "column_name": "DISPOSAL_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the asset was disposed (sale/scrap); set automatically when the linked Asset Disposal record is approved",
+      "sequence": 7
+    },
+    {
+      "column_name": "LAST_VERIFIED_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date the asset was last physically verified; set automatically when a Conduct Physical Verification cycle covering this asset is approved",
+      "sequence": 8
+    },
+    {
       "column_name": "SERIAL_NO",
       "data_type": "VARCHAR",
       "size": "60",
       "key": false,
       "description": "Manufacturer serial number; must be unique within the asset's category",
-      "sequence": 5
+      "sequence": 9
     },
     {
       "column_name": "MAKE",
@@ -93,7 +141,7 @@
       "size": "100",
       "key": false,
       "description": "Manufacturer/brand of the asset",
-      "sequence": 6
+      "sequence": 10
     },
     {
       "column_name": "MODEL",
@@ -101,7 +149,7 @@
       "size": "100",
       "key": false,
       "description": "Model number/name of the asset",
-      "sequence": 7
+      "sequence": 11
     },
     {
       "column_name": "DESCRIPTION",
@@ -109,7 +157,7 @@
       "size": "500",
       "key": false,
       "description": "Free text description of the asset",
-      "sequence": 8
+      "sequence": 12
     },
     {
       "column_name": "ASSET_PHOTO",
@@ -117,7 +165,7 @@
       "size": "500",
       "key": false,
       "description": "Photo of the asset",
-      "sequence": 9
+      "sequence": 13
     },
     {
       "column_name": "QR_BARCODE_TAG",
@@ -125,7 +173,7 @@
       "size": "200",
       "key": false,
       "description": "Generated QR code / barcode tag value identifying this asset (use the Generate QR/Barcode Tag action)",
-      "sequence": 10
+      "sequence": 14
     },
     {
       "column_name": "BRANCH_CODE",
@@ -133,7 +181,7 @@
       "size": "20",
       "key": false,
       "description": "Branch where the asset is located",
-      "sequence": 11,
+      "sequence": 15,
       "mandatory": true,
       "lookup": {
         "table": "FAM_BRANCH_MASTER",
@@ -147,7 +195,7 @@
       "size": "20",
       "key": false,
       "description": "Physical location (building/floor/room/site) within the branch",
-      "sequence": 12,
+      "sequence": 16,
       "mandatory": true,
       "lookup": {
         "table": "FAM_LOCATION_MASTER",
@@ -161,7 +209,7 @@
       "size": "20",
       "key": false,
       "description": "Department/cost centre the asset belongs to",
-      "sequence": 13,
+      "sequence": 17,
       "lookup": {
         "table": "FAM_DEPARTMENT_MASTER",
         "display_column": "DEPARTMENT_NAME",
@@ -174,7 +222,7 @@
       "size": "20",
       "key": false,
       "description": "Employee currently in custody of the asset",
-      "sequence": 14,
+      "sequence": 18,
       "lookup": {
         "table": "FAM_EMPLOYEE_MASTER",
         "display_column": "EMPLOYEE_NAME",
@@ -187,7 +235,7 @@
       "size": "100",
       "key": false,
       "description": "Free text vendor/supplier name; not validated against a master",
-      "sequence": 15
+      "sequence": 19
     },
     {
       "column_name": "PURCHASE_INVOICE_NO",
@@ -195,7 +243,7 @@
       "size": "50",
       "key": false,
       "description": "Vendor invoice number for the purchase",
-      "sequence": 16
+      "sequence": 20
     },
     {
       "column_name": "PURCHASE_DATE",
@@ -203,7 +251,7 @@
       "size": "",
       "key": false,
       "description": "Date the asset was purchased",
-      "sequence": 17,
+      "sequence": 21,
       "mandatory": true
     },
     {
@@ -212,7 +260,7 @@
       "size": "14,2",
       "key": false,
       "description": "Base purchase cost of the asset",
-      "sequence": 18,
+      "sequence": 22,
       "mandatory": true
     },
     {
@@ -221,7 +269,7 @@
       "size": "14,2",
       "key": false,
       "description": "Freight, installation, duties and other costs capitalized with the asset",
-      "sequence": 19
+      "sequence": 23
     },
     {
       "column_name": "TOTAL_CAPITALIZED_COST",
@@ -229,25 +277,23 @@
       "size": "14,2",
       "key": false,
       "description": "Computed as Purchase Cost + Other Capitalized Cost",
-      "sequence": 20
+      "sequence": 24
     },
     {
       "column_name": "COMPANIES_ACT_USEFUL_LIFE_YEARS",
       "data_type": "NUMBER",
       "size": "5,2",
       "key": false,
-      "description": "Useful life in years under the Companies Act; defaulted from the asset's category and editable",
-      "sequence": 22,
-      "mandatory": true
+      "description": "Useful life in years under the Companies Act; defaulted from the asset's category and editable. Required for Fixed Asset records; not applicable (leave blank) for Other Asset records.",
+      "sequence": 26
     },
     {
       "column_name": "COMPANIES_ACT_METHOD",
       "data_type": "VARCHAR",
       "size": "3",
       "key": false,
-      "description": "Depreciation method under the Companies Act; defaulted from the asset's category and editable",
-      "sequence": 23,
-      "mandatory": true,
+      "description": "Depreciation method under the Companies Act; defaulted from the asset's category and editable. Required for Fixed Asset records; not applicable (leave blank) for Other Asset records.",
+      "sequence": 27,
       "allowed_values": [
         {
           "value": "SLM",
@@ -265,7 +311,7 @@
       "size": "5,2",
       "key": false,
       "description": "Residual value percentage defaulted from the asset's category; used to compute Residual Value",
-      "sequence": 24
+      "sequence": 28
     },
     {
       "column_name": "COMPANIES_ACT_RESIDUAL_VALUE",
@@ -273,7 +319,39 @@
       "size": "14,2",
       "key": false,
       "description": "Computed as Total Capitalized Cost x Residual Value %",
-      "sequence": 25
+      "sequence": 29
+    },
+    {
+      "column_name": "OPENING_WDV",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Written-down value of this asset under the Companies Act as on the date in Opening WDV As On Date, for a pre-existing/legacy asset being onboarded into this depreciation regime. Leave blank for a fresh asset with no prior Companies Act depreciation history. Opening Accumulated Depreciation below is derived automatically from this value.",
+      "sequence": 30
+    },
+    {
+      "column_name": "OPENING_ACCUMULATED_DEPRECIATION",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Accumulated depreciation as on the Opening WDV As On Date, computed automatically as Total Capitalized Cost minus Opening WDV. Read-only.",
+      "sequence": 31
+    },
+    {
+      "column_name": "OPENING_WDV_AS_ON_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date as of which Opening Accumulated Depreciation is stated for a legacy asset that existed before this system went live (typically a financial-year-end, e.g. 31-Mar). The Companies Act monthly depreciation process uses this date + Opening Accumulated Depreciation as the asset's starting WDV baseline for the first month it processes after this date; leave blank for assets that were capitalized and depreciated for the first time within this system.",
+      "sequence": 32
+    },
+    {
+      "column_name": "TOTAL_ACCUMULATED_DEPRECIATION",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "System-computed total accumulated depreciation for Companies Act reporting = Opening Accumulated Depreciation + depreciation accumulated by the system's Companies Act SLM/WDV formula from Capitalization Date up to today (or up to disposal, capped so the asset never depreciates below its Companies Act Residual Value).",
+      "sequence": 33
     },
     {
       "column_name": "INCOME_TAX_BLOCK_CODE",
@@ -281,7 +359,7 @@
       "size": "20",
       "key": false,
       "description": "Income Tax block-of-assets code; defaulted from the asset's category and editable",
-      "sequence": 26,
+      "sequence": 34,
       "lookup": {
         "table": "FAM_DEP_RATE_IT_MASTER",
         "display_column": "BLOCK_DESCRIPTION",
@@ -289,12 +367,28 @@
       }
     },
     {
+      "column_name": "INCOME_TAX_OPENING_WDV",
+      "data_type": "NUMBER",
+      "size": "14,2",
+      "key": false,
+      "description": "Written-down value of this asset under the Income Tax Act as on the date in Income Tax Opening WDV As On Date, for a pre-existing/legacy asset being onboarded into Income Tax block depreciation. Leave blank for a fresh asset with no prior Income Tax depreciation history. This is independent of the Companies Act Opening WDV above \u2014 the two regimes compute depreciation separately.",
+      "sequence": 35
+    },
+    {
+      "column_name": "INCOME_TAX_OPENING_WDV_AS_ON_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date (typically a financial-year-end, e.g. 31-Mar) as of which Income Tax Opening WDV is stated for a legacy asset that existed before this system went live. Leave blank for assets first capitalized within this system.",
+      "sequence": 36
+    },
+    {
       "column_name": "WARRANTY_START_DATE",
       "data_type": "DATE",
       "size": "",
       "key": false,
       "description": "Start date of the manufacturer/vendor warranty",
-      "sequence": 27
+      "sequence": 37
     },
     {
       "column_name": "WARRANTY_END_DATE",
@@ -302,7 +396,7 @@
       "size": "",
       "key": false,
       "description": "End date of the manufacturer/vendor warranty",
-      "sequence": 28
+      "sequence": 38
     },
     {
       "column_name": "AMC_APPLICABLE",
@@ -310,7 +404,7 @@
       "size": "1",
       "key": false,
       "description": "Whether an Annual Maintenance Contract currently covers this asset",
-      "sequence": 29,
+      "sequence": 39,
       "allowed_values": [
         {
           "value": "Y",
@@ -328,7 +422,7 @@
       "size": "500",
       "key": false,
       "description": "Free text remarks about the asset",
-      "sequence": 30
+      "sequence": 40
     },
     {
       "column_name": "ID",
@@ -336,7 +430,7 @@
       "size": "",
       "key": false,
       "description": "Internal surrogate identifier",
-      "sequence": 31
+      "sequence": 41
     },
     {
       "column_name": "ADD_DATE",
@@ -344,7 +438,7 @@
       "size": "",
       "key": false,
       "description": "Date/time the record was created",
-      "sequence": 32
+      "sequence": 42
     },
     {
       "column_name": "ADD_USER",
@@ -352,7 +446,7 @@
       "size": "10",
       "key": false,
       "description": "User who created the record",
-      "sequence": 33
+      "sequence": 43
     },
     {
       "column_name": "ADD_TERM",
@@ -360,7 +454,7 @@
       "size": "15",
       "key": false,
       "description": "Terminal/IP from which the record was created",
-      "sequence": 34
+      "sequence": 44
     },
     {
       "column_name": "CHG_DATE",
@@ -368,7 +462,7 @@
       "size": "",
       "key": false,
       "description": "Date/time the record was last changed",
-      "sequence": 35
+      "sequence": 45
     },
     {
       "column_name": "CHG_USER",
@@ -376,7 +470,7 @@
       "size": "10",
       "key": false,
       "description": "User who last changed the record",
-      "sequence": 36
+      "sequence": 46
     },
     {
       "column_name": "CHG_TERM",
@@ -384,7 +478,7 @@
       "size": "15",
       "key": false,
       "description": "Terminal/IP from which the record was last changed",
-      "sequence": 37
+      "sequence": 47
     }
   ]
 }

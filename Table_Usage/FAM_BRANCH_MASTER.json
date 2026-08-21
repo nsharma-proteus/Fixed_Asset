@@ -66,6 +66,20 @@
     {
       "object_name": "fam_asset_register",
       "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "BRANCH_NAME",
+        "BRANCH_CODE"
+      ],
+      "join_info": {
+        "column": "BRANCH_CODE",
+        "join_table": "FAM_ASSET_REGISTER",
+        "join_column": "BRANCH_CODE"
+      }
+    },
+    {
+      "object_name": "fam_verification_execution",
+      "form_no": "1",
       "usage_type": "R",
       "referred_columns": [
         "BRANCH_CODE",
@@ -73,7 +87,7 @@
       ],
       "join_info": {
         "column": "BRANCH_CODE",
-        "join_table": "FAM_ASSET_REGISTER",
+        "join_table": "FAM_PHYSICAL_VERIFICATION",
         "join_column": "BRANCH_CODE"
       }
     }

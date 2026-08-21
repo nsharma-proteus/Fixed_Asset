@@ -44,8 +44,8 @@
       "form_no": "1",
       "usage_type": "R",
       "referred_columns": [
-        "DEPARTMENT_NAME",
-        "DEPARTMENT_CODE"
+        "DEPARTMENT_CODE",
+        "DEPARTMENT_NAME"
       ],
       "join_info": {
         "column": "DEPARTMENT_CODE",

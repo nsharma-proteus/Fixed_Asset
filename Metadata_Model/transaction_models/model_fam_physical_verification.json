@@ -12,7 +12,7 @@
       {
         "sql_model": {
           "form_title": "Verification Cycle",
-          "form_descr": "Plan and execute periodic physical asset verification cycles",
+          "form_descr": "Plan a verification list: pick the assets to verify and assign the list to an employee",
           "form_no": "1",
           "main_table": "FAM_PHYSICAL_VERIFICATION",
           "columns": [
@@ -156,8 +156,8 @@
                 "col_type": "VARCHAR",
                 "group_name": "Basic",
                 "heading": "Location",
-                "descr": "Location within the branch to be verified",
-                "mandatory": true,
+                "descr": "Location within the branch to be verified; leave blank to include all locations in the branch",
+                "mandatory": false,
                 "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
                 "lookup_filter": "BRANCH_CODE = {form.branch_code} AND STATUS = 'A'",
                 "validations": [
@@ -239,6 +239,130 @@
             },
             {
               "column": {
+                "name": "category_code",
+                "db_name": "CATEGORY_CODE",
+                "col_type": "VARCHAR",
+                "group_name": "Selection Criteria",
+                "heading": "Asset Category",
+                "descr": "Optional asset category filter used when loading assets into this list",
+                "mandatory": false,
+                "lookup": "FAM_ASSET_CATEGORY_MASTER(CATEGORY_NAME, CATEGORY_CODE)",
+                "lookup_filter": "STATUS = 'A'",
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Asset category exists",
+                    "message": "Asset category not found",
+                    "builtin": {
+                      "kind": "must_exist_in_master",
+                      "table": "FAM_ASSET_CATEGORY_MASTER",
+                      "match_column": "CATEGORY_CODE"
+                    }
+                  }
+                ],
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_ASSET_CATEGORY_MASTER",
+                  "match_table_col": "CATEGORY_CODE",
+                  "fill": [
+                    {
+                      "form_col": "category_name",
+                      "table_col": "CATEGORY_NAME"
+                    }
+                  ]
+                },
+                "x": "80",
+                "y": "80",
+                "col_id": "7",
+                "table_name": "FAM_PHYSICAL_VERIFICATION",
+                "table_display_name": "Physical verification cycle header",
+                "db_size": "20",
+                "width": 200,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": ""
+              }
+            },
+            {
+              "column": {
+                "name": "category_name",
+                "col_type": "VARCHAR",
+                "group_name": "Selection Criteria",
+                "heading": "Category Name",
+                "descr": "Asset category name (display only)",
+                "protect": "1",
+                "x": "90",
+                "y": "90",
+                "col_id": "8",
+                "db_name": "category_name",
+                "table_name": "FAM_PHYSICAL_VERIFICATION",
+                "table_display_name": "Physical verification cycle header",
+                "db_size": "100",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "not_verified_since_months",
+                "db_name": "NOT_VERIFIED_SINCE_MONTHS",
+                "col_type": "NUMBER",
+                "group_name": "Selection Criteria",
+                "heading": "Not Verified In Last (Months)",
+                "descr": "Only load assets whose last physical verification is older than this many months; blank or 0 loads all assets",
+                "mandatory": false,
+                "default_value": "12",
+                "validations": [
+                  {
+                    "type": "builtin",
+                    "name": "Months in range",
+                    "message": "Enter a number of months between 0 and 120",
+                    "builtin": {
+                      "kind": "value_in_range",
+                      "min": {
+                        "source": "const",
+                        "value": "0"
+                      },
+                      "max": {
+                        "source": "const",
+                        "value": "120"
+                      }
+                    }
+                  }
+                ],
+                "x": "100",
+                "y": "100",
+                "col_id": "9",
+                "table_name": "FAM_PHYSICAL_VERIFICATION",
+                "table_display_name": "Physical verification cycle header",
+                "db_size": "3",
+                "width": 50,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
                 "name": "verifier_employee_code",
                 "db_name": "VERIFIER_EMPLOYEE_CODE",
                 "col_type": "VARCHAR",
@@ -260,9 +384,9 @@
                     }
                   ]
                 },
-                "x": "80",
-                "y": "80",
-                "col_id": "7",
+                "x": "110",
+                "y": "110",
+                "col_id": "10",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "20",
@@ -286,9 +410,9 @@
                 "heading": "Verifier Name",
                 "descr": "Verifier name (display only)",
                 "protect": "1",
-                "x": "90",
-                "y": "90",
-                "col_id": "8",
+                "x": "120",
+                "y": "120",
+                "col_id": "11",
                 "db_name": "verifier_employee_name",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
@@ -319,6 +443,12 @@
                 "mandatory": true,
                 "item_change": {
                   "mode": "rule",
+                  "fill": [
+                    {
+                      "form_col": "status",
+                      "expr": "{form.status}"
+                    }
+                  ],
                   "protect": [
                     {
                       "form_col": "verification_date",
@@ -334,6 +464,14 @@
                     },
                     {
                       "form_col": "verifier_employee_code",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "category_code",
+                      "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
+                    },
+                    {
+                      "form_col": "not_verified_since_months",
                       "when": "not (in_list({form.status}, \"PLANNED,IN_PROGRESS\"))"
                     }
                   ]
@@ -391,7 +529,7 @@
                 },
                 "x": "70",
                 "y": "70",
-                "col_id": "9",
+                "col_id": "12",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "20",
@@ -414,9 +552,9 @@
                 "heading": "Added On",
                 "default_value": ":audit_add_date",
                 "protect": "1",
-                "x": "100",
-                "y": "100",
-                "col_id": "10",
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "",
@@ -442,9 +580,9 @@
                 "heading": "Added By",
                 "default_value": ":audit_add_user",
                 "protect": "1",
-                "x": "110",
-                "y": "110",
-                "col_id": "11",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "10",
@@ -470,9 +608,9 @@
                 "heading": "Added From",
                 "default_value": ":audit_add_terminal",
                 "protect": "1",
-                "x": "120",
-                "y": "120",
-                "col_id": "12",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "15",
@@ -498,9 +636,9 @@
                 "heading": "Changed On",
                 "default_value": ":audit_chg_date",
                 "protect": "1",
-                "x": "130",
-                "y": "130",
-                "col_id": "13",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "",
@@ -526,9 +664,9 @@
                 "heading": "Changed By",
                 "default_value": ":audit_chg_user",
                 "protect": "1",
-                "x": "140",
-                "y": "140",
-                "col_id": "14",
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "10",
@@ -554,9 +692,9 @@
                 "heading": "Changed From",
                 "default_value": ":audit_chg_terminal",
                 "protect": "1",
-                "x": "150",
-                "y": "150",
-                "col_id": "15",
+                "x": "180",
+                "y": "180",
+                "col_id": "18",
                 "table_name": "FAM_PHYSICAL_VERIFICATION",
                 "table_display_name": "Physical verification cycle header",
                 "db_size": "15",
@@ -592,8 +730,8 @@
               "scope": "row",
               "business_logic": {
                 "method": "load_capitalized_assets_for_verification",
-                "description": "Load capitalized assets for the selected branch/location into a pick grid",
-                "spec": "Query FAM_ASSET_REGISTER for assets that are Capitalized and currently located at the header's BRANCH_CODE/LOCATION_CODE (dependency: FAM_ASSET_REGISTER does not yet carry STATUS/BRANCH_CODE/LOCATION_CODE columns needed to filter this way -- revisit once those columns exist, e.g. via the Asset Register object; until then, offer all assets and let the user deselect), excluding ASSET_CODE values already present as lines on this VERIFICATION_CYCLE_NO. Return each candidate as a row with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE for the user to multi-select in the grid; selected rows are appended as new verification lines.",
+                "description": "Load assets matching the branch, location, category and last-verified-age criteria into a pick grid",
+                "spec": "Read BRANCH_CODE, LOCATION_CODE, CATEGORY_CODE, NOT_VERIFIED_SINCE_MONTHS and VERIFICATION_CYCLE_NO directly from this header form's own payload (this action runs on the header form, form 1, so all of these are top-level payload values -- no lookup needed). Query FAM_ASSET_REGISTER for assets whose BRANCH_CODE = the payload BRANCH_CODE; treat LOCATION_CODE as an OPTIONAL filter -- when it is blank/null (meaning 'All Locations'), match any location within the branch, otherwise restrict to that LOCATION_CODE. Restrict to CATEGORY_CODE = the payload CATEGORY_CODE when supplied, and restrict to capitalized/active assets (use the real STATUS / CAPITALIZATION_DATE columns as defined in Database_Design/FAM_ASSET_REGISTER.json). Exclude any ASSET_CODE already present as a line for this VERIFICATION_CYCLE_NO in FAM_PHYSICAL_VERIFICATION_LINE. When NOT_VERIFIED_SINCE_MONTHS is supplied and greater than 0, also exclude any asset whose most recent FAM_PHYSICAL_VERIFICATION_LINE.VERIFIED_DATE (max over all cycles for that ASSET_CODE) is later than today minus that many months; assets that have never been verified are always included. Return each candidate as a row with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE, EXPECTED_EMPLOYEE_CODE and the asset last-verified date for the user to multi-select; selected rows are appended as new verification lines on this form.",
                 "language": "plpgsql"
               },
               "validations": [
@@ -601,7 +739,7 @@
                   "type": "expression",
                   "name": "Cycle open for loading",
                   "message": "Assets can only be loaded while the cycle is Planned or In Progress.",
-                  "expression": "in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
+                  "expression": "is_empty({form.status}) or in_list({form.status}, \"PLANNED,IN_PROGRESS\")"
                 }
               ]
             },
@@ -717,6 +855,12 @@
                 "protect": "1",
                 "item_change": {
                   "mode": "rule",
+                  "fill": [
+                    {
+                      "form_col": "verification_cycle_no",
+                      "expr": "{form.verification_cycle_no}"
+                    }
+                  ],
                   "protect": [
                     {
                       "form_col": "asset_code",
@@ -748,8 +892,8 @@
                     }
                   ]
                 },
-                "x": "100",
-                "y": "100",
+                "x": "120",
+                "y": "120",
                 "col_id": "1",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
@@ -776,8 +920,8 @@
                 "key": true,
                 "default_value": "auto_generate_line_no()",
                 "protect": "1",
-                "x": "110",
-                "y": "110",
+                "x": "130",
+                "y": "130",
                 "col_id": "2",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
@@ -1030,13 +1174,46 @@
                 "display": {
                   "type": "image"
                 },
-                "x": "55",
-                "y": "55",
-                "col_id": "18",
+                "x": "60",
+                "y": "60",
+                "col_id": "8",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "500",
-                "width": 150,
+                "width": 500,
+                "key": false,
+                "hidden": "",
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "protect": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "scan_qr_image_url",
+                "db_name": "SCAN_QR_IMAGE_URL",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Scan QR Tag",
+                "descr": "Pick or capture the asset's QR/barcode tag image from the device; the asset code is decoded from it",
+                "mandatory": false,
+                "edit_mask": {
+                  "mask": "image"
+                },
+                "display": {
+                  "type": "image"
+                },
+                "x": "70",
+                "y": "70",
+                "col_id": "9",
+                "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
+                "table_display_name": "Physical verification line items",
+                "db_size": "500",
+                "width": 500,
                 "key": false,
                 "hidden": "",
                 "format": "",
@@ -1090,9 +1267,9 @@
                     }
                   ]
                 },
-                "x": "60",
-                "y": "60",
-                "col_id": "8",
+                "x": "80",
+                "y": "80",
+                "col_id": "10",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "20",
@@ -1116,9 +1293,9 @@
                 "heading": "Expected Location Name",
                 "descr": "Expected location name (display only)",
                 "protect": "1",
-                "x": "70",
-                "y": "70",
-                "col_id": "9",
+                "x": "90",
+                "y": "90",
+                "col_id": "11",
                 "db_name": "expected_location_name",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
@@ -1157,9 +1334,9 @@
                     }
                   ]
                 },
-                "x": "80",
-                "y": "80",
-                "col_id": "10",
+                "x": "100",
+                "y": "100",
+                "col_id": "12",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "20",
@@ -1184,9 +1361,9 @@
                 "heading": "Expected Custodian Name",
                 "descr": "Expected custodian name (display only)",
                 "protect": "1",
-                "x": "90",
-                "y": "90",
-                "col_id": "11",
+                "x": "110",
+                "y": "110",
+                "col_id": "13",
                 "db_name": "expected_employee_name",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
@@ -1213,9 +1390,9 @@
                 "heading": "Added On",
                 "default_value": ":audit_add_date",
                 "protect": "1",
-                "x": "120",
-                "y": "120",
-                "col_id": "12",
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "",
@@ -1241,9 +1418,9 @@
                 "heading": "Added By",
                 "default_value": ":audit_add_user",
                 "protect": "1",
-                "x": "130",
-                "y": "130",
-                "col_id": "13",
+                "x": "150",
+                "y": "150",
+                "col_id": "15",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "10",
@@ -1269,9 +1446,9 @@
                 "heading": "Added From",
                 "default_value": ":audit_add_terminal",
                 "protect": "1",
-                "x": "140",
-                "y": "140",
-                "col_id": "14",
+                "x": "160",
+                "y": "160",
+                "col_id": "16",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "15",
@@ -1297,9 +1474,9 @@
                 "heading": "Changed On",
                 "default_value": ":audit_chg_date",
                 "protect": "1",
-                "x": "150",
-                "y": "150",
-                "col_id": "15",
+                "x": "170",
+                "y": "170",
+                "col_id": "17",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "",
@@ -1325,9 +1502,9 @@
                 "heading": "Changed By",
                 "default_value": ":audit_chg_user",
                 "protect": "1",
-                "x": "160",
-                "y": "160",
-                "col_id": "16",
+                "x": "180",
+                "y": "180",
+                "col_id": "18",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "10",
@@ -1353,9 +1530,9 @@
                 "heading": "Changed From",
                 "default_value": ":audit_chg_terminal",
                 "protect": "1",
-                "x": "170",
-                "y": "170",
-                "col_id": "17",
+                "x": "190",
+                "y": "190",
+                "col_id": "19",
                 "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
                 "table_display_name": "Physical verification line items",
                 "db_size": "15",
@@ -1426,8 +1603,8 @@
               "scope": "row",
               "business_logic": {
                 "method": "scan_confirm_asset_line",
-                "description": "Confirm an asset by scanning its QR/barcode",
-                "spec": "Stamp VERIFIED_DATE with today's date and set PHYSICAL_STATUS_FOUND = 'FOUND' for this line (unless already marked Damaged or Extra-Unregistered, which are left as-is). Return {\"updates\": {\"physical_status_found\": ..., \"verified_date\": ...}}.",
+                "description": "Pick or scan the asset's QR tag image (or key the code) and confirm the line",
+                "spec": "Read the optional SCAN_QR_IMAGE_URL from this row's payload. When it holds an image, decode the QR/barcode contained in that image to obtain the asset code and normalise the decoded payload: trim it, upper-case it, and if the payload is a URL or an 'ASSET_CODE=<code>' string extract just the code portion; use that normalised value as the asset code for this row. When SCAN_QR_IMAGE_URL is empty, fall back to the ASSET_CODE already keyed on the row, preserving today's behaviour exactly. Then verify the resolved asset code exists in FAM_ASSET_REGISTER and that a line for it belongs to this VERIFICATION_CYCLE_NO, returning an error if either check fails. On success return an item_change updates payload of the form {\"updates\": {\"asset_code\": ..., \"asset_name\": ..., \"expected_location_code\": ..., \"expected_employee_code\": ..., \"verified_date\": ..., \"physical_status_found\": \"FOUND\", \"scan_qr_image_url\": \"\"}} where ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE and EXPECTED_EMPLOYEE_CODE are read from the FAM_ASSET_REGISTER columns ASSET_CODE, ASSET_NAME, LOCATION_CODE and ASSIGNED_EMPLOYEE_CODE respectively, VERIFIED_DATE is the current date, PHYSICAL_STATUS_FOUND is 'FOUND', and SCAN_QR_IMAGE_URL is cleared.",
                 "language": "plpgsql"
               },
               "validations": [

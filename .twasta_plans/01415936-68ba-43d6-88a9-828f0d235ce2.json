@@ -1,0 +1,20 @@
+{
+  "id": "01415936-68ba-43d6-88a9-828f0d235ce2",
+  "project": "Fixed_Asset",
+  "backend": "claude",
+  "title": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Ass",
+  "kind": "modify",
+  "status": "paused",
+  "description": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Ass",
+  "created_at": 1787145283.4625652,
+  "updated_at": 1787145296.1390774,
+  "todos": [],
+  "phases": [],
+  "originating_prompt": "In \"Asset QR Code Tag\" report page, remove \"(any)\" dropdown option from the \"Asset Type\" field.",
+  "resume_ref": {
+    "session_id": "314b9ff4-500c-456e-b912-0eb10aad5689",
+    "claude_session_id": "11271f85-5ed5-4b90-9c3f-8e1a66bf2af1"
+  },
+  "depends_on": [],
+  "result_summary": ""
+}

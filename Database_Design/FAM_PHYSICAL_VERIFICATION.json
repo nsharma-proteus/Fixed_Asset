@@ -10,7 +10,12 @@
       "key": true,
       "description": "Auto-generated verification cycle number",
       "sequence": 1,
-      "mandatory": true
+      "mandatory": true,
+      "lookup": {
+        "table": "FAM_PHYSICAL_VERIFICATION",
+        "display_column": "VERIFICATION_CYCLE_NO",
+        "value_column": "VERIFICATION_CYCLE_NO"
+      }
     },
     {
       "column_name": "VERIFICATION_DATE",
@@ -36,14 +41,6 @@
       }
     },
     {
-      "column_name": "branch_name",
-      "data_type": "VARCHAR",
-      "size": "100",
-      "key": false,
-      "description": "Branch name (display only)",
-      "sequence": 4
-    },
-    {
       "column_name": "LOCATION_CODE",
       "data_type": "VARCHAR",
       "size": "20",
@@ -58,12 +55,25 @@
       }
     },
     {
-      "column_name": "location_name",
+      "column_name": "CATEGORY_CODE",
       "data_type": "VARCHAR",
-      "size": "100",
+      "size": "20",
       "key": false,
-      "description": "Location name (display only)",
-      "sequence": 6
+      "description": "Optional asset category filter used when loading assets into this list",
+      "sequence": 7,
+      "lookup": {
+        "table": "FAM_ASSET_CATEGORY_MASTER",
+        "display_column": "CATEGORY_NAME",
+        "value_column": "CATEGORY_CODE"
+      }
+    },
+    {
+      "column_name": "NOT_VERIFIED_SINCE_MONTHS",
+      "data_type": "NUMBER",
+      "size": "3",
+      "key": false,
+      "description": "Only load assets whose last physical verification is older than this many months; blank or 0 loads all assets",
+      "sequence": 9
     },
     {
       "column_name": "VERIFIER_EMPLOYEE_CODE",
@@ -71,7 +81,7 @@
       "size": "20",
       "key": false,
       "description": "Employee responsible for conducting this verification cycle",
-      "sequence": 7,
+      "sequence": 10,
       "mandatory": true,
       "lookup": {
         "table": "FAM_EMPLOYEE_MASTER",
@@ -80,20 +90,12 @@
       }
     },
     {
-      "column_name": "verifier_employee_name",
-      "data_type": "VARCHAR",
-      "size": "100",
-      "key": false,
-      "description": "Verifier name (display only)",
-      "sequence": 8
-    },
-    {
       "column_name": "STATUS",
       "data_type": "VARCHAR",
       "size": "20",
       "key": false,
       "description": "Cycle status. Assumption: CANCELLED is added alongside the FRS's Planned/In Progress/Pending Approval/Closed set so the Cancel action has a distinct target status.",
-      "sequence": 9,
+      "sequence": 12,
       "mandatory": true,
       "allowed_values": [
         {
@@ -123,48 +125,96 @@
       "data_type": "DATETIME",
       "size": "",
       "key": false,
-      "description": "",
-      "sequence": 10
+      "description": "Audit stamp - record creation date.",
+      "sequence": 13
     },
     {
       "column_name": "ADD_USER",
       "data_type": "VARCHAR",
       "size": "10",
       "key": false,
-      "description": "",
-      "sequence": 11
+      "description": "Audit stamp - creating user.",
+      "sequence": 14
     },
     {
       "column_name": "ADD_TERM",
       "data_type": "VARCHAR",
       "size": "15",
       "key": false,
-      "description": "",
-      "sequence": 12
+      "description": "Audit stamp - creating terminal.",
+      "sequence": 15
     },
     {
       "column_name": "CHG_DATE",
       "data_type": "DATETIME",
       "size": "",
       "key": false,
-      "description": "",
-      "sequence": 13
+      "description": "Audit stamp - last change date.",
+      "sequence": 16
     },
     {
       "column_name": "CHG_USER",
       "data_type": "VARCHAR",
       "size": "10",
       "key": false,
-      "description": "",
-      "sequence": 14
+      "description": "Audit stamp - last changing user.",
+      "sequence": 17
     },
     {
       "column_name": "CHG_TERM",
       "data_type": "VARCHAR",
       "size": "15",
       "key": false,
-      "description": "",
-      "sequence": 15
+      "description": "Audit stamp - last changing terminal.",
+      "sequence": 18
+    },
+    {
+      "column_name": "SCAN_ASSET_CODE",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Scan the asset QR/barcode with the device camera, or key the asset id manually. Press Scan Asset to stamp the matching line of this cycle as FOUND.",
+      "sequence": 2
+    },
+    {
+      "column_name": "SCAN_ASSET_CODE_IN",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset code received from a QR/barcode scan. Filled by the Assistant scan intent, not typed.",
+      "sequence": 3
+    },
+    {
+      "column_name": "branch_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Branch name (display only)",
+      "sequence": 4
+    },
+    {
+      "column_name": "location_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Location name (display only)",
+      "sequence": 6
+    },
+    {
+      "column_name": "category_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Asset category name (display only)",
+      "sequence": 8
+    },
+    {
+      "column_name": "verifier_employee_name",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Verifier name (display only)",
+      "sequence": 11
     }
   ]
 }

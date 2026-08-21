@@ -1,0 +1,324 @@
+{
+  "BUSINESS_AREA": {
+    "AREA_NAME": "fam_asset_management",
+    "DESCRIPTION": "Fixed Asset Management: ask about assets, their category/depreciation basis, branch/location/department/custody, warranty & AMC coverage, physical verification findings, and lifecycle events (installation, transfer, disposal).",
+    "AREA_TYPE": "A",
+    "MAIN_TABLE": "FAM_ASSET_REGISTER",
+    "TABLES": [
+      {
+        "TABLE_NAME": "FAM_ASSET_REGISTER",
+        "TABLE_DISPLAY_NAME": "Asset Register",
+        "ALIAS": "AR",
+        "DESCRIPTION": "One row per asset (Fixed Asset or Other Asset) — the master record: identity, category, org placement (branch/location/department), custodian employee, purchase cost, capitalization, Companies Act and Income Tax depreciation fields, warranty dates, AMC flag and lifecycle status. This is the anchor table for almost every question in this area.",
+        "COLUMNS": [
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "System-generated unique code identifying the asset." },
+          { "DBNAME": "ASSET_NAME", "DISPLAY_NAME": "Asset Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Name of the asset." },
+          { "DBNAME": "CAPITALIZATION_DATE", "DISPLAY_NAME": "Capitalization Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the asset was capitalized (put into use / brought onto the books). Depreciation for the asset starts from this date." },
+          { "DBNAME": "PARENT_ASSET_CODE", "DISPLAY_NAME": "Parent Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Optional parent asset this record is a component of (self-referencing to another Asset Register row)." },
+          { "DBNAME": "ASSET_TYPE", "DISPLAY_NAME": "Asset Type", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "FIXED_ASSET (depreciable) or OTHER_ASSET (non-depreciable). Locked permanently after the record is first saved." },
+          { "DBNAME": "CATEGORY_CODE", "DISPLAY_NAME": "Category Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset category — links to FAM_ASSET_CATEGORY_MASTER, which supplies default useful life / method / residual value." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Lifecycle status: DRAFT, PENDING_APPROVAL, CAPITALIZED (in active use), UNDER_TRANSFER, DISPOSED, UNDER_INVESTIGATION (e.g. flagged missing/damaged during a physical verification)." },
+          { "DBNAME": "DISPOSAL_DATE", "DISPLAY_NAME": "Disposal Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the asset was disposed (sale/scrap); set automatically when its Asset Disposal record is approved." },
+          { "DBNAME": "LAST_VERIFIED_DATE", "DISPLAY_NAME": "Last Verified Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the asset was last physically verified; set automatically when a physical verification cycle covering it is approved." },
+          { "DBNAME": "SERIAL_NO", "DISPLAY_NAME": "Serial No", "COLTYPE": "CHAR", "DBSIZE": 60, "DEFAULTFUNCTION": "", "DESCRIPTION": "Manufacturer serial number." },
+          { "DBNAME": "MAKE", "DISPLAY_NAME": "Make", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Manufacturer/brand of the asset." },
+          { "DBNAME": "MODEL", "DISPLAY_NAME": "Model", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Model number/name of the asset." },
+          { "DBNAME": "DESCRIPTION", "DISPLAY_NAME": "Description", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Free text description of the asset." },
+          { "DBNAME": "BRANCH_CODE", "DISPLAY_NAME": "Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Branch where the asset is located — links to FAM_BRANCH_MASTER." },
+          { "DBNAME": "LOCATION_CODE", "DISPLAY_NAME": "Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Physical location (building/floor/room/site) within the branch — links to FAM_LOCATION_MASTER (keyed by BRANCH_CODE + LOCATION_CODE)." },
+          { "DBNAME": "DEPARTMENT_CODE", "DISPLAY_NAME": "Department Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Department/cost centre the asset belongs to — links to FAM_DEPARTMENT_MASTER (keyed by BRANCH_CODE + DEPARTMENT_CODE)." },
+          { "DBNAME": "ASSIGNED_EMPLOYEE_CODE", "DISPLAY_NAME": "Assigned Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Employee currently in custody of the asset — links to FAM_EMPLOYEE_MASTER." },
+          { "DBNAME": "VENDOR_NAME", "DISPLAY_NAME": "Vendor Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Free text vendor/supplier name the asset was purchased from (not a master lookup)." },
+          { "DBNAME": "PURCHASE_INVOICE_NO", "DISPLAY_NAME": "Purchase Invoice No", "COLTYPE": "CHAR", "DBSIZE": 50, "DEFAULTFUNCTION": "", "DESCRIPTION": "Vendor invoice number for the purchase." },
+          { "DBNAME": "PURCHASE_DATE", "DISPLAY_NAME": "Purchase Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the asset was purchased." },
+          { "DBNAME": "PURCHASE_COST", "DISPLAY_NAME": "Purchase Cost", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Base purchase cost of the asset." },
+          { "DBNAME": "OTHER_CAPITALIZED_COST", "DISPLAY_NAME": "Other Capitalized Cost", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Freight, installation, duties and other costs capitalized with the asset." },
+          { "DBNAME": "TOTAL_CAPITALIZED_COST", "DISPLAY_NAME": "Total Capitalized Cost", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Purchase Cost + Other Capitalized Cost — the asset's gross book value." },
+          { "DBNAME": "COMPANIES_ACT_USEFUL_LIFE_YEARS", "DISPLAY_NAME": "Companies Act Useful Life (Years)", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Useful life in years under the Companies Act, defaulted from the category. Applies only to Fixed Assets." },
+          { "DBNAME": "COMPANIES_ACT_METHOD", "DISPLAY_NAME": "Companies Act Method", "COLTYPE": "CHAR", "DBSIZE": 3, "DEFAULTFUNCTION": "", "DESCRIPTION": "Depreciation method under the Companies Act: SLM (Straight Line) or WDV (Written Down Value). Applies only to Fixed Assets." },
+          { "DBNAME": "COMPANIES_ACT_RESIDUAL_VALUE_PCT", "DISPLAY_NAME": "Companies Act Residual Value %", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Residual value percentage used to compute Companies Act Residual Value." },
+          { "DBNAME": "COMPANIES_ACT_RESIDUAL_VALUE", "DISPLAY_NAME": "Companies Act Residual Value", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Total Capitalized Cost x Residual Value % — the floor value the asset never depreciates below under the Companies Act." },
+          { "DBNAME": "OPENING_WDV", "DISPLAY_NAME": "Opening WDV", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Written-down value under the Companies Act as on Opening WDV As On Date, for a legacy asset onboarded with prior depreciation history." },
+          { "DBNAME": "TOTAL_ACCUMULATED_DEPRECIATION", "DISPLAY_NAME": "Total Accumulated Depreciation (Companies Act)", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "System-computed total Companies Act accumulated depreciation from capitalization to date (or disposal), capped at the Companies Act residual value. Net book value under the Companies Act = Total Capitalized Cost - this value." },
+          { "DBNAME": "INCOME_TAX_BLOCK_CODE", "DISPLAY_NAME": "Income Tax Block Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Income Tax block-of-assets code — links to FAM_DEP_RATE_IT_MASTER. This is a SEPARATE depreciation basis from the Companies Act fields above; the two regimes are computed independently and must not be confused." },
+          { "DBNAME": "INCOME_TAX_OPENING_WDV", "DISPLAY_NAME": "Income Tax Opening WDV", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Written-down value under the Income Tax block as on Income Tax Opening WDV As On Date, for a legacy asset onboarded with prior depreciation history." },
+          { "DBNAME": "WARRANTY_START_DATE", "DISPLAY_NAME": "Warranty Start Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Start date of the manufacturer/vendor warranty recorded directly on the asset. Detailed multi-record warranty history lives in FAM_WARRANTY_DETAILS." },
+          { "DBNAME": "WARRANTY_END_DATE", "DISPLAY_NAME": "Warranty End Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "End date of the manufacturer/vendor warranty. A warranty is EXPIRED when this date is before the current date." },
+          { "DBNAME": "AMC_APPLICABLE", "DISPLAY_NAME": "AMC Applicable", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "Y/N flag — whether an Annual Maintenance Contract currently covers this asset. For contract detail/dates, join to FAM_AMC_CONTRACT_LINE / FAM_AMC_CONTRACTS." },
+          { "DBNAME": "REMARKS", "DISPLAY_NAME": "Remarks", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Free text remarks about the asset." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_ASSET_CATEGORY_MASTER",
+        "TABLE_DISPLAY_NAME": "Asset Category Master",
+        "ALIAS": "CAT",
+        "DESCRIPTION": "Asset category master — one row per category, carrying the default Companies Act useful life, method, residual %, and default Income Tax block for assets placed in that category.",
+        "COLUMNS": [
+          { "DBNAME": "CATEGORY_CODE", "DISPLAY_NAME": "Category Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Unique code identifying the category." },
+          { "DBNAME": "CATEGORY_NAME", "DISPLAY_NAME": "Category Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Descriptive name of the category (e.g. Furniture, Computers, Vehicles)." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "A = Active (usable on new assets), I = Inactive (blocked for new use)." },
+          { "DBNAME": "ASSET_TYPE", "DISPLAY_NAME": "Asset Type", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "FIXED_ASSET or OTHER_ASSET — which register this category is offered on." },
+          { "DBNAME": "PARENT_CATEGORY_CODE", "DISPLAY_NAME": "Parent Category Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Optional parent category for hierarchical classification (self-referencing)." },
+          { "DBNAME": "COMPANIES_ACT_USEFUL_LIFE_YEARS", "DISPLAY_NAME": "Companies Act Useful Life (Years)", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Default useful life in years under Companies Act Schedule II for this category." },
+          { "DBNAME": "COMPANIES_ACT_DEFAULT_METHOD", "DISPLAY_NAME": "Companies Act Default Method", "COLTYPE": "CHAR", "DBSIZE": 3, "DEFAULTFUNCTION": "", "DESCRIPTION": "Default depreciation method for the category: SLM or WDV." },
+          { "DBNAME": "COMPANIES_ACT_RESIDUAL_VALUE_PCT", "DISPLAY_NAME": "Companies Act Residual Value %", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Default residual value percentage for the category." },
+          { "DBNAME": "INCOME_TAX_BLOCK_CODE", "DISPLAY_NAME": "Income Tax Block Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Default Income Tax block-of-assets code applied to assets in this category." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_BRANCH_MASTER",
+        "TABLE_DISPLAY_NAME": "Branch Master",
+        "ALIAS": "BR",
+        "DESCRIPTION": "Branch/site master.",
+        "COLUMNS": [
+          { "DBNAME": "BRANCH_CODE", "DISPLAY_NAME": "Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Unique code identifying the branch." },
+          { "DBNAME": "BRANCH_NAME", "DISPLAY_NAME": "Branch Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Name of the branch." },
+          { "DBNAME": "CITY", "DISPLAY_NAME": "City", "COLTYPE": "CHAR", "DBSIZE": 60, "DEFAULTFUNCTION": "", "DESCRIPTION": "City in which the branch is located." },
+          { "DBNAME": "STATE", "DISPLAY_NAME": "State", "COLTYPE": "CHAR", "DBSIZE": 60, "DEFAULTFUNCTION": "", "DESCRIPTION": "State in which the branch is located." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "A = Active, I = Inactive." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_LOCATION_MASTER",
+        "TABLE_DISPLAY_NAME": "Location Master",
+        "ALIAS": "LOC",
+        "DESCRIPTION": "Physical location master (building/floor/room/site) within a branch. Keyed by BRANCH_CODE + LOCATION_CODE.",
+        "COLUMNS": [
+          { "DBNAME": "BRANCH_CODE", "DISPLAY_NAME": "Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Branch this location belongs to." },
+          { "DBNAME": "LOCATION_CODE", "DISPLAY_NAME": "Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Unique location code within the branch." },
+          { "DBNAME": "LOCATION_NAME", "DISPLAY_NAME": "Location Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Name of the location." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "A = Active, I = Inactive." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_DEPARTMENT_MASTER",
+        "TABLE_DISPLAY_NAME": "Department Master",
+        "ALIAS": "DEPT",
+        "DESCRIPTION": "Department/cost centre master within a branch. Keyed by BRANCH_CODE + DEPARTMENT_CODE.",
+        "COLUMNS": [
+          { "DBNAME": "BRANCH_CODE", "DISPLAY_NAME": "Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Branch this department belongs to." },
+          { "DBNAME": "DEPARTMENT_CODE", "DISPLAY_NAME": "Department Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Unique department code within the branch." },
+          { "DBNAME": "DEPARTMENT_NAME", "DISPLAY_NAME": "Department Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Name of the department/cost centre." },
+          { "DBNAME": "COST_CENTRE_CODE", "DISPLAY_NAME": "Cost Centre Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Cost centre code associated with this department." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "A = Active, I = Inactive." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_EMPLOYEE_MASTER",
+        "TABLE_DISPLAY_NAME": "Employee Master",
+        "ALIAS": "EMP",
+        "DESCRIPTION": "Employee master — used as the asset custodian, verifier, and installer reference.",
+        "COLUMNS": [
+          { "DBNAME": "EMPLOYEE_CODE", "DISPLAY_NAME": "Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Unique code identifying the employee." },
+          { "DBNAME": "EMPLOYEE_NAME", "DISPLAY_NAME": "Employee Name", "COLTYPE": "CHAR", "DBSIZE": 100, "DEFAULTFUNCTION": "", "DESCRIPTION": "Full name of the employee." },
+          { "DBNAME": "DESIGNATION", "DISPLAY_NAME": "Designation", "COLTYPE": "CHAR", "DBSIZE": 60, "DEFAULTFUNCTION": "", "DESCRIPTION": "Job designation/title of the employee." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "A = Active, I = Inactive, T = Transferred." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_DEP_RATE_CA_MASTER",
+        "TABLE_DISPLAY_NAME": "Companies Act Depreciation Rate Master",
+        "ALIAS": "CARATE",
+        "DESCRIPTION": "One rate record per category: the official Companies Act Schedule II useful life, method (SLM/WDV) and residual value % norm, effective from a given date.",
+        "COLUMNS": [
+          { "DBNAME": "CATEGORY_CODE", "DISPLAY_NAME": "Category Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Category this rate norm applies to." },
+          { "DBNAME": "USEFUL_LIFE_YEARS", "DISPLAY_NAME": "Useful Life (Years)", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Useful life in years as per Schedule II." },
+          { "DBNAME": "METHOD", "DISPLAY_NAME": "Method", "COLTYPE": "CHAR", "DBSIZE": 3, "DEFAULTFUNCTION": "", "DESCRIPTION": "SLM or WDV." },
+          { "DBNAME": "RESIDUAL_VALUE_PCT", "DISPLAY_NAME": "Residual Value %", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Residual value as % of original cost." },
+          { "DBNAME": "EFFECTIVE_FROM_DATE", "DISPLAY_NAME": "Effective From Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date from which this rate norm is effective." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_DEP_RATE_IT_MASTER",
+        "TABLE_DISPLAY_NAME": "Income Tax Block Rate Master",
+        "ALIAS": "ITRATE",
+        "DESCRIPTION": "One rate record per Income Tax block-of-assets: the WDV depreciation rate %, effective from a given date.",
+        "COLUMNS": [
+          { "DBNAME": "BLOCK_CODE", "DISPLAY_NAME": "Block Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Income Tax block-of-assets code." },
+          { "DBNAME": "BLOCK_DESCRIPTION", "DISPLAY_NAME": "Block Description", "COLTYPE": "CHAR", "DBSIZE": 200, "DEFAULTFUNCTION": "", "DESCRIPTION": "Description of the block of assets." },
+          { "DBNAME": "RATE_PCT", "DISPLAY_NAME": "Rate %", "COLTYPE": "NUMBER", "DBSIZE": "(5,2)", "DEFAULTFUNCTION": "AVG", "DESCRIPTION": "Depreciation rate as % of the block's Written Down Value." },
+          { "DBNAME": "EFFECTIVE_FROM_DATE", "DISPLAY_NAME": "Effective From Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date from which this block rate is effective." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_PHYSICAL_VERIFICATION",
+        "TABLE_DISPLAY_NAME": "Physical Verification Cycle",
+        "ALIAS": "PV",
+        "DESCRIPTION": "Header of a physical verification cycle — a planned/conducted stock-check run scoped to a branch, location and optional category, run by a verifier employee.",
+        "COLUMNS": [
+          { "DBNAME": "VERIFICATION_CYCLE_NO", "DISPLAY_NAME": "Verification Cycle No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Auto-generated verification cycle number." },
+          { "DBNAME": "VERIFICATION_DATE", "DISPLAY_NAME": "Verification Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the verification cycle is planned/conducted." },
+          { "DBNAME": "BRANCH_CODE", "DISPLAY_NAME": "Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Branch where the verification is conducted." },
+          { "DBNAME": "LOCATION_CODE", "DISPLAY_NAME": "Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Location within the branch being verified." },
+          { "DBNAME": "CATEGORY_CODE", "DISPLAY_NAME": "Category Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Optional asset category filter used when loading assets into this cycle." },
+          { "DBNAME": "VERIFIER_EMPLOYEE_CODE", "DISPLAY_NAME": "Verifier Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Employee responsible for conducting this verification cycle." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Cycle status: PLANNED, IN_PROGRESS, PENDING_APPROVAL, CLOSED, CANCELLED." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_PHYSICAL_VERIFICATION_LINE",
+        "TABLE_DISPLAY_NAME": "Physical Verification Line",
+        "ALIAS": "PVL",
+        "DESCRIPTION": "Per-asset finding within a physical verification cycle — whether the asset was found, its condition, and expected vs actual location/custodian (a discrepancy is any line where the found location/employee differs from expected, or PHYSICAL_STATUS_FOUND is NOT_FOUND / DAMAGED / EXTRA_UNREGISTERED).",
+        "COLUMNS": [
+          { "DBNAME": "VERIFICATION_CYCLE_NO", "DISPLAY_NAME": "Verification Cycle No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Parent verification cycle." },
+          { "DBNAME": "LINE_NO", "DISPLAY_NAME": "Line No", "COLTYPE": "NUMBER", "DBSIZE": "(5,0)", "DEFAULTFUNCTION": "", "DESCRIPTION": "Line sequence number within the cycle." },
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset being verified on this line." },
+          { "DBNAME": "PHYSICAL_STATUS_FOUND", "DISPLAY_NAME": "Physical Status Found", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Outcome of the physical check: FOUND, NOT_FOUND, DAMAGED, EXTRA_UNREGISTERED. Anything other than FOUND is a discrepancy worth flagging." },
+          { "DBNAME": "VERIFIED_DATE", "DISPLAY_NAME": "Verified Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date this asset was physically verified." },
+          { "DBNAME": "REMARKS", "DISPLAY_NAME": "Remarks", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Notes on the finding (damage description, reason not found, etc.)." },
+          { "DBNAME": "EXPECTED_LOCATION_CODE", "DISPLAY_NAME": "Expected Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Location the asset was expected to be found at." },
+          { "DBNAME": "EXPECTED_EMPLOYEE_CODE", "DISPLAY_NAME": "Expected Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Employee the asset was expected to be assigned to." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_WARRANTY_DETAILS",
+        "TABLE_DISPLAY_NAME": "Warranty Details",
+        "ALIAS": "WAR",
+        "DESCRIPTION": "Detailed warranty coverage history for an asset (an asset can have multiple warranty records over time, e.g. original + extended warranty), each with its own vendor, start/end date and terms.",
+        "COLUMNS": [
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset covered by this warranty." },
+          { "DBNAME": "WARRANTY_PROVIDER_VENDOR_CODE", "DISPLAY_NAME": "Warranty Provider Vendor", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Vendor providing the warranty (free text — no Vendor Master exists yet in this project)." },
+          { "DBNAME": "WARRANTY_START_DATE", "DISPLAY_NAME": "Warranty Start Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the warranty coverage begins." },
+          { "DBNAME": "WARRANTY_END_DATE", "DISPLAY_NAME": "Warranty End Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the warranty coverage ends. Expired when this date is before the current date." },
+          { "DBNAME": "WARRANTY_TERMS", "DISPLAY_NAME": "Warranty Terms", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Coverage terms and conditions of the warranty." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_AMC_CONTRACTS",
+        "TABLE_DISPLAY_NAME": "AMC Contracts",
+        "ALIAS": "AMC",
+        "DESCRIPTION": "Annual Maintenance Contract header — vendor, coverage period, cost and lifecycle status; may renew a previous contract.",
+        "COLUMNS": [
+          { "DBNAME": "AMC_CONTRACT_NO", "DISPLAY_NAME": "AMC Contract No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Auto-generated AMC contract number." },
+          { "DBNAME": "AMC_VENDOR_CODE", "DISPLAY_NAME": "AMC Vendor", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Vendor providing the AMC coverage (free text — no Vendor Master exists yet)." },
+          { "DBNAME": "START_DATE", "DISPLAY_NAME": "Start Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the AMC coverage begins." },
+          { "DBNAME": "END_DATE", "DISPLAY_NAME": "End Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the AMC coverage ends. Expired when this date is before the current date." },
+          { "DBNAME": "CONTRACT_COST", "DISPLAY_NAME": "Contract Cost", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Total cost of the AMC contract." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Contract lifecycle status: DRAFT, PENDING_APPROVAL, ACTIVE, EXPIRED, RENEWED, CANCELLED." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_AMC_CONTRACT_LINE",
+        "TABLE_DISPLAY_NAME": "AMC Contract Line",
+        "ALIAS": "AMCL",
+        "DESCRIPTION": "Per-asset coverage line under an AMC contract — which assets are covered by a given contract.",
+        "COLUMNS": [
+          { "DBNAME": "AMC_CONTRACT_NO", "DISPLAY_NAME": "AMC Contract No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Parent AMC contract." },
+          { "DBNAME": "LINE_NO", "DISPLAY_NAME": "Line No", "COLTYPE": "NUMBER", "DBSIZE": "(5,0)", "DEFAULTFUNCTION": "", "DESCRIPTION": "Line sequence number within the contract." },
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset covered under this AMC contract." },
+          { "DBNAME": "COVERAGE_REMARKS", "DISPLAY_NAME": "Coverage Remarks", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Notes on the scope/terms of coverage for this asset." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_ASSET_INSTALLATION",
+        "TABLE_DISPLAY_NAME": "Asset Installation",
+        "ALIAS": "INST",
+        "DESCRIPTION": "Installation/commissioning record for a capitalized asset — who installed it, when, and whether the physical location was confirmed.",
+        "COLUMNS": [
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset being installed/commissioned." },
+          { "DBNAME": "INSTALLATION_DATE", "DISPLAY_NAME": "Installation Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the asset was physically installed/commissioned." },
+          { "DBNAME": "INSTALLED_BY", "DISPLAY_NAME": "Installed By", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Employee who carried out the installation." },
+          { "DBNAME": "INSTALLATION_LOCATION_CONFIRMED", "DISPLAY_NAME": "Location Confirmed", "COLTYPE": "CHAR", "DBSIZE": 1, "DEFAULTFUNCTION": "", "DESCRIPTION": "Y/N — whether the physical installation location matches the asset's assigned location." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "PENDING, CONFIRMED, or CANCELLED." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_ASSET_TRANSFER",
+        "TABLE_DISPLAY_NAME": "Asset Transfer",
+        "ALIAS": "TRF",
+        "DESCRIPTION": "Asset transfer record — moving an asset's branch/location/department/custodian from one org placement to another.",
+        "COLUMNS": [
+          { "DBNAME": "TRANSFER_NO", "DISPLAY_NAME": "Transfer No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Auto-generated transfer number." },
+          { "DBNAME": "TRANSFER_DATE", "DISPLAY_NAME": "Transfer Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the transfer is recorded." },
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset being transferred." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "DRAFT, PENDING_APPROVAL, APPROVED, CANCELLED." },
+          { "DBNAME": "FROM_BRANCH_CODE", "DISPLAY_NAME": "From Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset's branch before the transfer." },
+          { "DBNAME": "FROM_LOCATION_CODE", "DISPLAY_NAME": "From Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset's location before the transfer." },
+          { "DBNAME": "FROM_EMPLOYEE_CODE", "DISPLAY_NAME": "From Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset's custodian before the transfer." },
+          { "DBNAME": "TO_BRANCH_CODE", "DISPLAY_NAME": "To Branch Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Branch the asset is being moved to." },
+          { "DBNAME": "TO_LOCATION_CODE", "DISPLAY_NAME": "To Location Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Location the asset is being moved to." },
+          { "DBNAME": "TO_EMPLOYEE_CODE", "DISPLAY_NAME": "To Employee Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Employee the asset custody is being moved to." },
+          { "DBNAME": "TRANSFER_REASON", "DISPLAY_NAME": "Transfer Reason", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Reason/justification for the transfer." }
+        ]
+      },
+      {
+        "TABLE_NAME": "FAM_ASSET_DISPOSAL",
+        "TABLE_DISPLAY_NAME": "Asset Disposal",
+        "ALIAS": "DISP",
+        "DESCRIPTION": "Asset disposal record — sale or scrap of an asset, with net book value at disposal and resulting profit/loss.",
+        "COLUMNS": [
+          { "DBNAME": "DISPOSAL_NO", "DISPLAY_NAME": "Disposal No", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Auto-generated disposal number." },
+          { "DBNAME": "DISPOSAL_DATE", "DISPLAY_NAME": "Disposal Date", "COLTYPE": "DATE", "DBSIZE": 0, "DEFAULTFUNCTION": "", "DESCRIPTION": "Date the disposal is recorded." },
+          { "DBNAME": "ASSET_CODE", "DISPLAY_NAME": "Asset Code", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "Asset being disposed." },
+          { "DBNAME": "STATUS", "DISPLAY_NAME": "Status", "COLTYPE": "CHAR", "DBSIZE": 20, "DEFAULTFUNCTION": "", "DESCRIPTION": "DRAFT, PENDING_APPROVAL, APPROVED, CANCELLED." },
+          { "DBNAME": "DISPOSAL_TYPE", "DISPLAY_NAME": "Disposal Type", "COLTYPE": "CHAR", "DBSIZE": 10, "DEFAULTFUNCTION": "", "DESCRIPTION": "SALE or SCRAP." },
+          { "DBNAME": "SALE_VALUE", "DISPLAY_NAME": "Sale Value", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Sale proceeds (mandatory for Sale, zero for Scrap)." },
+          { "DBNAME": "NET_BOOK_VALUE_AS_ON_DISPOSAL", "DISPLAY_NAME": "Net Book Value at Disposal", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Computed net book value of the asset as on the disposal date." },
+          { "DBNAME": "PROFIT_LOSS_ON_DISPOSAL", "DISPLAY_NAME": "Profit/Loss on Disposal", "COLTYPE": "NUMBER", "DBSIZE": "(14,2)", "DEFAULTFUNCTION": "SUM", "DESCRIPTION": "Sale Value minus Net Book Value at Disposal." },
+          { "DBNAME": "DISPOSAL_REASON", "DISPLAY_NAME": "Disposal Reason", "COLTYPE": "CHAR", "DBSIZE": 500, "DEFAULTFUNCTION": "", "DESCRIPTION": "Reason/justification for the disposal." }
+        ]
+      }
+    ],
+    "JOINS": [
+      { "JOIN_ID": "J001", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_ASSET_CATEGORY_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.CATEGORY_CODE = FAM_ASSET_CATEGORY_MASTER.CATEGORY_CODE",
+        "DESCRIPTION": "Each asset belongs to a category, which supplies default depreciation norms." },
+      { "JOIN_ID": "J002", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_BRANCH_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.BRANCH_CODE = FAM_BRANCH_MASTER.BRANCH_CODE",
+        "DESCRIPTION": "Each asset is located at a branch." },
+      { "JOIN_ID": "J003", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_LOCATION_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.BRANCH_CODE = FAM_LOCATION_MASTER.BRANCH_CODE AND FAM_ASSET_REGISTER.LOCATION_CODE = FAM_LOCATION_MASTER.LOCATION_CODE",
+        "DESCRIPTION": "Each asset sits at a physical location within its branch (Location is keyed by branch + location code)." },
+      { "JOIN_ID": "J004", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_DEPARTMENT_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.BRANCH_CODE = FAM_DEPARTMENT_MASTER.BRANCH_CODE AND FAM_ASSET_REGISTER.DEPARTMENT_CODE = FAM_DEPARTMENT_MASTER.DEPARTMENT_CODE",
+        "DESCRIPTION": "Each asset belongs to a department/cost centre within its branch (Department is keyed by branch + department code)." },
+      { "JOIN_ID": "J005", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_EMPLOYEE_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSIGNED_EMPLOYEE_CODE = FAM_EMPLOYEE_MASTER.EMPLOYEE_CODE",
+        "DESCRIPTION": "Each asset may be assigned to a custodian employee." },
+      { "JOIN_ID": "J006", "LEFT_TABLE": "FAM_ASSET_CATEGORY_MASTER", "RIGHT_TABLE": "FAM_DEP_RATE_CA_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_CATEGORY_MASTER.CATEGORY_CODE = FAM_DEP_RATE_CA_MASTER.CATEGORY_CODE",
+        "DESCRIPTION": "A category's official Companies Act rate norm." },
+      { "JOIN_ID": "J007", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_DEP_RATE_IT_MASTER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.INCOME_TAX_BLOCK_CODE = FAM_DEP_RATE_IT_MASTER.BLOCK_CODE",
+        "DESCRIPTION": "An asset's Income Tax block-of-assets rate." },
+      { "JOIN_ID": "J008", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_WARRANTY_DETAILS",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_WARRANTY_DETAILS.ASSET_CODE",
+        "DESCRIPTION": "Detailed warranty history records for an asset (an asset can have several)." },
+      { "JOIN_ID": "J009", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_AMC_CONTRACT_LINE",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_AMC_CONTRACT_LINE.ASSET_CODE",
+        "DESCRIPTION": "AMC coverage lines for an asset." },
+      { "JOIN_ID": "J010", "LEFT_TABLE": "FAM_AMC_CONTRACT_LINE", "RIGHT_TABLE": "FAM_AMC_CONTRACTS",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_AMC_CONTRACT_LINE.AMC_CONTRACT_NO = FAM_AMC_CONTRACTS.AMC_CONTRACT_NO",
+        "DESCRIPTION": "Each AMC coverage line belongs to an AMC contract header (vendor, period, cost, status)." },
+      { "JOIN_ID": "J011", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_PHYSICAL_VERIFICATION_LINE",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_PHYSICAL_VERIFICATION_LINE.ASSET_CODE",
+        "DESCRIPTION": "Physical verification findings for an asset across all verification cycles it has been checked in." },
+      { "JOIN_ID": "J012", "LEFT_TABLE": "FAM_PHYSICAL_VERIFICATION_LINE", "RIGHT_TABLE": "FAM_PHYSICAL_VERIFICATION",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_PHYSICAL_VERIFICATION_LINE.VERIFICATION_CYCLE_NO = FAM_PHYSICAL_VERIFICATION.VERIFICATION_CYCLE_NO",
+        "DESCRIPTION": "Each verification line belongs to a verification cycle header (branch, location, date, verifier, status)." },
+      { "JOIN_ID": "J013", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_ASSET_INSTALLATION",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_ASSET_INSTALLATION.ASSET_CODE",
+        "DESCRIPTION": "Installation/commissioning record(s) for an asset." },
+      { "JOIN_ID": "J014", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_ASSET_TRANSFER",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_ASSET_TRANSFER.ASSET_CODE",
+        "DESCRIPTION": "Transfer history for an asset (movements between branch/location/department/custodian)." },
+      { "JOIN_ID": "J015", "LEFT_TABLE": "FAM_ASSET_REGISTER", "RIGHT_TABLE": "FAM_ASSET_DISPOSAL",
+        "JOIN_TYPE": "LEFT", "JOIN_CONDITION": "FAM_ASSET_REGISTER.ASSET_CODE = FAM_ASSET_DISPOSAL.ASSET_CODE",
+        "DESCRIPTION": "Disposal record for an asset, if it has been sold or scrapped." }
+    ],
+    "JOINS_DESCRIPTION": "FAM_ASSET_REGISTER is the anchor: it joins to FAM_ASSET_CATEGORY_MASTER on CATEGORY_CODE, to FAM_BRANCH_MASTER on BRANCH_CODE, to FAM_LOCATION_MASTER on BRANCH_CODE+LOCATION_CODE (location is keyed within its branch), to FAM_DEPARTMENT_MASTER on BRANCH_CODE+DEPARTMENT_CODE (department is keyed within its branch), and to FAM_EMPLOYEE_MASTER on ASSIGNED_EMPLOYEE_CODE for the current custodian. Depreciation rate norms hang off the category (FAM_ASSET_CATEGORY_MASTER -> FAM_DEP_RATE_CA_MASTER by CATEGORY_CODE) and off the asset's Income Tax block (FAM_ASSET_REGISTER -> FAM_DEP_RATE_IT_MASTER by INCOME_TAX_BLOCK_CODE) — these are two SEPARATE depreciation bases, never mix Companies Act and Income Tax figures in the same computation. Warranty, AMC and lifecycle-event tables (FAM_WARRANTY_DETAILS, FAM_AMC_CONTRACT_LINE -> FAM_AMC_CONTRACTS, FAM_ASSET_INSTALLATION, FAM_ASSET_TRANSFER, FAM_ASSET_DISPOSAL) all hang off FAM_ASSET_REGISTER by ASSET_CODE (one-to-many). Physical verification is two-level: FAM_PHYSICAL_VERIFICATION_LINE carries the per-asset finding and joins to FAM_ASSET_REGISTER by ASSET_CODE, and each line belongs to a FAM_PHYSICAL_VERIFICATION cycle header (join by VERIFICATION_CYCLE_NO) which carries the cycle's branch/location/date/verifier/status.",
+    "JOIN_MODE": "structured",
+    "AI_INSTRUCTIONS": "STATUS on FAM_ASSET_REGISTER: DRAFT and PENDING_APPROVAL are not-yet-live records; CAPITALIZED means the asset is in active use and depreciating; UNDER_TRANSFER means a transfer is in progress; DISPOSED means it has been sold/scrapped (see FAM_ASSET_DISPOSAL for detail); UNDER_INVESTIGATION typically follows a physical verification finding of NOT_FOUND or DAMAGED. Unless the user asks otherwise, 'active assets' or 'current assets' means STATUS = 'CAPITALIZED'. 'Capitalized' means the asset's cost has been recognized on the books as of CAPITALIZATION_DATE — depreciation starts from that date. Companies Act depreciation fields (COMPANIES_ACT_*, TOTAL_ACCUMULATED_DEPRECIATION, OPENING_WDV) and Income Tax fields (INCOME_TAX_*) are two INDEPENDENT depreciation bases computed with different methods/rates — never sum or compare them directly, and always state which basis a depreciation/net-book-value answer uses. Net book value under the Companies Act = TOTAL_CAPITALIZED_COST - TOTAL_ACCUMULATED_DEPRECIATION (never below COMPANIES_ACT_RESIDUAL_VALUE). AMC_APPLICABLE = 'Y' means an Annual Maintenance Contract currently covers the asset; to check the contract's actual dates/status join to FAM_AMC_CONTRACT_LINE -> FAM_AMC_CONTRACTS. Warranty/AMC 'expiring' or 'expired' means comparing END_DATE (or WARRANTY_END_DATE) against the current date (:current_date) — 'expiring this month' means END_DATE falls within the current calendar month and is not already in the past. A physical verification 'discrepancy' means a FAM_PHYSICAL_VERIFICATION_LINE row where PHYSICAL_STATUS_FOUND is not 'FOUND' (i.e. NOT_FOUND, DAMAGED or EXTRA_UNREGISTERED), or where the found location/employee differs from EXPECTED_LOCATION_CODE/EXPECTED_EMPLOYEE_CODE. When a question mentions 'category X' by name, match on CATEGORY_NAME (case-insensitive), not CATEGORY_CODE, unless a code is explicitly given; the same applies to branch/location/department names vs codes. Amounts (PURCHASE_COST, TOTAL_CAPITALIZED_COST, depreciation, contract cost, sale/disposal values) are plain numeric currency figures with no currency conversion needed. VENDOR_NAME, WARRANTY_PROVIDER_VENDOR_CODE, AMC_VENDOR_CODE and BUYER_OR_SCRAP_VENDOR_CODE are free text (no Vendor Master exists yet in this project), so match them with case-insensitive partial matching, not exact lookup joins.",
+    "EXAMPLE_QUESTIONS": [
+      "How many assets are pending approval?",
+      "Which assets have their warranty expiring this month?",
+      "Show assets not covered by an AMC contract",
+      "What is the depreciation method and useful life for the Computers category?",
+      "List assets flagged with a discrepancy in the latest physical verification cycle",
+      "What is the total purchase cost of capitalized assets by branch?"
+    ],
+    "ACCESS": { "ALLOW_ROLES": ["member"], "DENY_ROLES": [] },
+    "VISIBILITY": "published"
+  }
+}

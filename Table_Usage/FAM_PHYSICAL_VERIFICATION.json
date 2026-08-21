@@ -2,25 +2,69 @@
   "table_name": "FAM_PHYSICAL_VERIFICATION",
   "objects": [
     {
+      "object_name": "fam_verification_execution",
+      "form_no": "1",
+      "usage_type": "M",
+      "referred_columns": [
+        "VERIFIER_EMPLOYEE_CODE",
+        "CHG_TERM",
+        "CATEGORY_CODE",
+        "VERIFICATION_DATE",
+        "SCAN_ASSET_CODE",
+        "SCAN_ASSET_CODE_IN",
+        "LOCATION_CODE",
+        "ADD_TERM",
+        "NOT_VERIFIED_SINCE_MONTHS",
+        "ADD_DATE",
+        "CHG_USER",
+        "STATUS",
+        "BRANCH_CODE",
+        "ADD_USER",
+        "VERIFICATION_CYCLE_NO",
+        "CHG_DATE"
+      ],
+      "join_info": {
+        "column": "VERIFIER_EMPLOYEE_CODE",
+        "join_table": "FAM_EMPLOYEE_MASTER",
+        "join_column": "EMPLOYEE_CODE"
+      }
+    },
+    {
+      "object_name": "fam_verification_execution",
+      "form_no": "2",
+      "usage_type": "R",
+      "referred_columns": [
+        "VERIFICATION_CYCLE_NO"
+      ],
+      "join_info": {
+        "column": "VERIFICATION_CYCLE_NO",
+        "join_table": "FAM_PHYSICAL_VERIFICATION_LINE",
+        "join_column": "VERIFICATION_CYCLE_NO"
+      }
+    },
+    {
       "object_name": "fam_physical_verification",
       "form_no": "1",
       "usage_type": "M",
       "referred_columns": [
         "VERIFIER_EMPLOYEE_CODE",
-        "CHG_USER",
-        "LOCATION_CODE",
-        "BRANCH_CODE",
-        "VERIFICATION_CYCLE_NO",
-        "location_name",
-        "CHG_DATE",
-        "ADD_USER",
         "branch_name",
-        "STATUS",
-        "ADD_DATE",
         "CHG_TERM",
+        "CATEGORY_CODE",
+        "LOCATION_CODE",
+        "VERIFICATION_DATE",
+        "location_name",
+        "category_name",
         "ADD_TERM",
+        "NOT_VERIFIED_SINCE_MONTHS",
+        "ADD_DATE",
+        "CHG_USER",
+        "STATUS",
+        "BRANCH_CODE",
         "verifier_employee_name",
-        "VERIFICATION_DATE"
+        "ADD_USER",
+        "VERIFICATION_CYCLE_NO",
+        "CHG_DATE"
       ]
     }
   ]

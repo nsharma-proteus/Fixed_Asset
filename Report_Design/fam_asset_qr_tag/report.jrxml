@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="fam_asset_qr_tag" pageWidth="595" pageHeight="420" orientation="Landscape"
+              columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+    <parameter name="ASSET_TYPE" class="java.lang.String"/>
+    <parameter name="LOCATION_CODE" class="java.lang.String"/>
+    <!-- Not a screen criterion. Bound only by the Asset Register row action
+         "Generate QR/Barcode Tag", which prints a single label for one asset. -->
+    <parameter name="ASSET_CODE" class="java.lang.String"/>
+
+    <!-- One label per asset. Every display string is assembled in SQL so the
+         JRXML expressions stay plain $F{} references (no null-guard ternaries,
+         which behave differently between the two Jasper engines). -->
+    <queryString>
+        <![CDATA[
+SELECT a.asset_code,
+       a.asset_name,
+       a.status,
+       COALESCE(NULLIF(a.qr_barcode_tag, ''), 'FAM|' || a.asset_code) AS qr_payload,
+       'Category: ' || COALESCE(NULLIF(c.category_name, ''), a.category_code) AS category_display,
+       COALESCE(NULLIF(b.branch_name, ''), a.branch_code) || ' - ' ||
+       COALESCE(NULLIF(l.location_name, ''), a.location_code) AS branch_location,
+       'S/N: ' || COALESCE(NULLIF(a.serial_no, ''), '-') AS serial_display,
+       COALESCE(NULLIF(a.make, ''), '-') || ' / ' ||
+       COALESCE(NULLIF(a.model, ''), '-') AS make_model
+FROM fam_asset_register a
+LEFT JOIN fam_asset_category_master c ON c.category_code = a.category_code
+LEFT JOIN fam_branch_master b ON b.branch_code = a.branch_code
+LEFT JOIN fam_location_master l ON l.branch_code = a.branch_code
+                               AND l.location_code = a.location_code
+WHERE ($P{ASSET_TYPE} IS NULL OR $P{ASSET_TYPE} = '%' OR $P{ASSET_TYPE} = ''
+       OR a.asset_type = $P{ASSET_TYPE})
+  AND ($P{LOCATION_CODE} IS NULL OR a.location_code = $P{LOCATION_CODE})
+  AND ($P{ASSET_CODE} IS NULL OR a.asset_code = $P{ASSET_CODE})
+ORDER BY a.asset_code
+        ]]>
+    </queryString>
+
+    <field name="asset_code" class="java.lang.String"/>
+    <field name="asset_name" class="java.lang.String"/>
+    <field name="status" class="java.lang.String"/>
+    <field name="qr_payload" class="java.lang.String"/>
+    <field name="category_display" class="java.lang.String"/>
+    <field name="branch_location" class="java.lang.String"/>
+    <field name="serial_display" class="java.lang.String"/>
+    <field name="make_model" class="java.lang.String"/>
+
+    <detail>
+        <band height="380" splitType="Prevent">
+
+            <!-- Tag outline -->
+            <rectangle>
+                <reportElement mode="Transparent" x="0" y="0" width="555" height="372" forecolor="#666666"/>
+                <graphicElement>
+                    <pen lineWidth="1.0" lineStyle="Solid"/>
+                </graphicElement>
+            </rectangle>
+
+            <!-- QR block (left) -->
+            <componentElement>
+                <reportElement x="22" y="26" width="236" height="236"/>
+                <jr:QRCode errorCorrectionLevel="M">
+                    <jr:codeExpression><![CDATA[$F{qr_payload}]]></jr:codeExpression>
+                </jr:QRCode>
+            </componentElement>
+            <textField isBlankWhenNull="true">
+                <reportElement x="12" y="272" width="256" height="20"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Courier New" size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{qr_payload}]]></textFieldExpression>
+            </textField>
+
+            <!-- Divider -->
+            <line>
+                <reportElement x="284" y="24" width="1" height="326" forecolor="#BBBBBB"/>
+                <graphicElement>
+                    <pen lineWidth="0.75" lineStyle="Solid"/>
+                </graphicElement>
+            </line>
+
+            <!-- Detail block (right) -->
+            <staticText>
+                <reportElement x="306" y="24" width="228" height="16" forecolor="#666666"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="10" isBold="true"/>
+                </textElement>
+                <text><![CDATA[FIXED ASSET MANAGEMENT]]></text>
+            </staticText>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="306" y="48" width="228" height="42"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="30" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{asset_code}]]></textFieldExpression>
+            </textField>
+
+            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                <reportElement x="306" y="96" width="228" height="44"/>
+                <textElement>
+                    <font size="15" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{asset_name}]]></textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="306" y="148" width="228" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{category_display}]]></textFieldExpression>
+            </textField>
+
+            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                <reportElement x="306" y="172" width="228" height="38"/>
+                <textElement>
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{branch_location}]]></textFieldExpression>
+            </textField>
+
+            <textField isBlankWhenNull="true">
+                <reportElement x="306" y="216" width="228" height="20"/>
+                <textElement verticalAlignment="Middle">
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{serial_display}]]></textFieldExpression>
+            </textField>
+
+            <textField isStretchWithOverflow="true" isBlankWhenNull="true">
+                <reportElement x="306" y="240" width="228" height="38"/>
+                <textElement>
+                    <font size="11"/>
+                </textElement>
+                <textFieldExpression><![CDATA[$F{make_model}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+
+</jasperReport>

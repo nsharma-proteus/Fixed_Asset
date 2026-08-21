@@ -1,43 +1,52 @@
 {
-  "object_name": "fam_physical_verification",
+  "object_name": "fam_verification_execution",
   "tables": {
     "FAM_PHYSICAL_VERIFICATION": [
       "VERIFIER_EMPLOYEE_CODE",
-      "branch_name",
       "CHG_TERM",
       "CATEGORY_CODE",
-      "LOCATION_CODE",
       "VERIFICATION_DATE",
-      "location_name",
-      "category_name",
+      "SCAN_ASSET_CODE",
+      "SCAN_ASSET_CODE_IN",
+      "LOCATION_CODE",
       "ADD_TERM",
       "NOT_VERIFIED_SINCE_MONTHS",
       "ADD_DATE",
       "CHG_USER",
       "STATUS",
       "BRANCH_CODE",
-      "verifier_employee_name",
       "ADD_USER",
       "VERIFICATION_CYCLE_NO",
       "CHG_DATE"
     ],
+    "FAM_BRANCH_MASTER": [
+      "BRANCH_CODE",
+      "BRANCH_NAME"
+    ],
+    "FAM_LOCATION_MASTER": [
+      "LOCATION_CODE",
+      "LOCATION_NAME"
+    ],
+    "FAM_EMPLOYEE_MASTER": [
+      "EMPLOYEE_CODE",
+      "EMPLOYEE_NAME"
+    ],
     "FAM_PHYSICAL_VERIFICATION_LINE": [
       "LINE_NO",
-      "expected_location_name",
       "CHG_TERM",
-      "ASSET_PHOTO_URL",
+      "EXPECTED_LOCATION_NAME",
+      "EXPECTED_EMPLOYEE_NAME",
       "VERIFIED_DATE",
+      "ASSET_PHOTO_URL",
       "VERIFICATION_CYCLE_NO",
-      "SCAN_QR_IMAGE_URL",
+      "ADD_TERM",
       "ASSET_CODE",
       "ADD_DATE",
-      "ADD_TERM",
       "EXPECTED_EMPLOYEE_CODE",
       "CHG_USER",
       "EXPECTED_LOCATION_CODE",
       "ADD_USER",
       "PHYSICAL_STATUS_FOUND",
-      "expected_employee_name",
       "CHG_DATE",
       "REMARKS"
     ],
