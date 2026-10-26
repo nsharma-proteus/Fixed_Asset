@@ -85,23 +85,13 @@
                 "lookup_filter": "STATUS = 'A'",
                 "must_exist_in": "FAM_BRANCH_MASTER",
                 "item_change": {
-                  "mode": "rule",
-                  "source_table": "FAM_BRANCH_MASTER",
-                  "match_table_col": "BRANCH_CODE",
-                  "fill": [
-                    {
-                      "form_col": "branch_name",
-                      "table_col": "BRANCH_NAME"
-                    },
-                    {
-                      "form_col": "location_code",
-                      "expr": "\"\""
-                    },
-                    {
-                      "form_col": "location_name",
-                      "expr": "\"\""
-                    }
-                  ]
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "refresh_lines_on_branch",
+                    "description": "Keep the field's fill and list the assets due for verification in Verification Lines",
+                    "spec": "Keep this field's former fill (branch: name + clear location; location: name; category: name; months: none), then, only on a NEW cycle, replace Verification Lines with every CAPITALIZED asset of the branch (and location / category when set) whose LAST_VERIFIED_DATE is empty or older than NOT_VERIFIED_SINCE_MONTHS months (0 = all). An existing cycle's lines are never touched.",
+                    "language": "python"
+                  }
                 },
                 "x": "30",
                 "y": "30",
@@ -181,16 +171,13 @@
                   }
                 ],
                 "item_change": {
-                  "mode": "rule",
-                  "match_mode": "advanced",
-                  "source_table": "FAM_LOCATION_MASTER",
-                  "where_sql": "BRANCH_CODE = {form.branch_code} AND LOCATION_CODE = {form.location_code}",
-                  "fill": [
-                    {
-                      "form_col": "location_name",
-                      "table_col": "LOCATION_NAME"
-                    }
-                  ]
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "refresh_lines_on_location",
+                    "description": "Keep the field's fill and list the assets due for verification in Verification Lines",
+                    "spec": "Keep this field's former fill (branch: name + clear location; location: name; category: name; months: none), then, only on a NEW cycle, replace Verification Lines with every CAPITALIZED asset of the branch (and location / category when set) whose LAST_VERIFIED_DATE is empty or older than NOT_VERIFIED_SINCE_MONTHS months (0 = all). An existing cycle's lines are never touched.",
+                    "language": "python"
+                  }
                 },
                 "x": "50",
                 "y": "50",
@@ -261,15 +248,13 @@
                   }
                 ],
                 "item_change": {
-                  "mode": "rule",
-                  "source_table": "FAM_ASSET_CATEGORY_MASTER",
-                  "match_table_col": "CATEGORY_CODE",
-                  "fill": [
-                    {
-                      "form_col": "category_name",
-                      "table_col": "CATEGORY_NAME"
-                    }
-                  ]
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "refresh_lines_on_category",
+                    "description": "Keep the field's fill and list the assets due for verification in Verification Lines",
+                    "spec": "Keep this field's former fill (branch: name + clear location; location: name; category: name; months: none), then, only on a NEW cycle, replace Verification Lines with every CAPITALIZED asset of the branch (and location / category when set) whose LAST_VERIFIED_DATE is empty or older than NOT_VERIFIED_SINCE_MONTHS months (0 = all). An existing cycle's lines are never touched.",
+                    "language": "python"
+                  }
                 },
                 "x": "80",
                 "y": "80",
@@ -358,7 +343,16 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "lookup": ""
+                "lookup": "",
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "refresh_lines_on_months",
+                    "description": "Keep the field's fill and list the assets due for verification in Verification Lines",
+                    "spec": "Keep this field's former fill (branch: name + clear location; location: name; category: name; months: none), then, only on a NEW cycle, replace Verification Lines with every CAPITALIZED asset of the branch (and location / category when set) whose LAST_VERIFIED_DATE is empty or older than NOT_VERIFIED_SINCE_MONTHS months (0 = all). An existing cycle's lines are never touched.",
+                    "language": "python"
+                  }
+                }
               }
             },
             {

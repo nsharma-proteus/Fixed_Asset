@@ -1,0 +1,146 @@
+{
+  "table_name": "FAM_ASSET_INSTALL_TRF_HIST",
+  "table_description": "Asset Transfer history of the asset, captured when its installation record is entered (read-only snapshot)",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": true,
+      "description": "Installation record this history line belongs to",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "LINE_NO",
+      "data_type": "NUMBER",
+      "size": "5",
+      "key": true,
+      "description": "",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "TRANSFER_NO",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Asset Transfer number",
+      "sequence": 3,
+      "mandatory": true
+    },
+    {
+      "column_name": "TRANSFER_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Date of the transfer",
+      "sequence": 4
+    },
+    {
+      "column_name": "TRANSFER_STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Status of the transfer when it was fetched",
+      "sequence": 5
+    },
+    {
+      "column_name": "FROM_BRANCH",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Branch the asset moved from",
+      "sequence": 6
+    },
+    {
+      "column_name": "FROM_LOCATION",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Location the asset moved from",
+      "sequence": 7
+    },
+    {
+      "column_name": "TO_BRANCH",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Branch the asset moved to",
+      "sequence": 8
+    },
+    {
+      "column_name": "TO_LOCATION",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Location the asset moved to",
+      "sequence": 9
+    },
+    {
+      "column_name": "TO_EMPLOYEE",
+      "data_type": "VARCHAR",
+      "size": "100",
+      "key": false,
+      "description": "Employee the asset was assigned to",
+      "sequence": 10
+    },
+    {
+      "column_name": "TRANSFER_REASON",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Reason recorded on the transfer",
+      "sequence": 11
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 12
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 13
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 14
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 15
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 16
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 17
+    }
+  ]
+}

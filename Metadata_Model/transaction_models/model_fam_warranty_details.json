@@ -75,7 +75,16 @@
                 "default_value": "",
                 "expression": "",
                 "edit_mask": "",
-                "protect": ""
+                "protect": "",
+                "item_change": {
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "load_warranty_history",
+                    "description": "Fill the Warranty History group with the selected asset's earlier warranty records",
+                    "spec": "When ASSET_CODE changes, read every other FAM_WARRANTY_DETAILS row for that asset (excluding the record being edited, newest end date first) and replace the rows of form 2 (Warranty History) with one read-only line per warranty: id, provider, start date, end date, status (Active / Expired / Upcoming as of today) and terms. No earlier warranties, or the code cleared, empties the group (the screen hides it). Changes nothing else on the form.",
+                    "language": "python"
+                  }
+                }
               }
             },
             {
@@ -443,7 +452,454 @@
               ]
             }
           },
-          "validations": []
+          "validations": [
+            {
+              "type": "business_logic",
+              "name": "No overlapping warranty period",
+              "error_code": "WARRANTY_PERIOD_OVERLAP",
+              "message": "Warranty for the selected dates are already available",
+              "business_logic": {
+                "method": "check_warranty_period_overlap",
+                "description": "Refuse a new warranty whose period overlaps an existing warranty of the same asset",
+                "spec": "On a NEW warranty (_action='add') only: if another FAM_WARRANTY_DETAILS row of the same ASSET_CODE has a period overlapping WARRANTY_START_DATE..WARRANTY_END_DATE (same dates, within an existing period, or any shared day: existing start <= new end AND existing end >= new start), return the error 'Warranty for the selected dates are already available' and block the save. Edits are not checked.",
+                "language": "python"
+              }
+            }
+          ],
+          "group_settings": {
+            "Warranty History": {
+              "order": 15,
+              "open": true
+            }
+          }
+        }
+      },
+      {
+        "sql_model": {
+          "form_title": "Warranty History",
+          "form_descr": "Earlier warranty records of the selected asset, filled automatically when the Asset Code is chosen (read-only)",
+          "form_no": "2",
+          "parent_form_no": "1",
+          "main_table": "FAM_WARRANTY_HIST_SNAP",
+          "parent_key_col": "ID",
+          "lines_locked": true,
+          "display_in_group": "Warranty History",
+          "joins": {
+            "join_predicates": {
+              "joins": [
+                {
+                  "table": "FAM_WARRANTY_HIST_SNAP",
+                  "main_table": true,
+                  "table_descr": "Warranty history of the asset (snapshot)"
+                },
+                {
+                  "table": "FAM_WARRANTY_DETAILS",
+                  "main_table": false,
+                  "table_descr": "Warranty details (parent)",
+                  "column": "ID",
+                  "join_table": "FAM_WARRANTY_HIST_SNAP",
+                  "join_column": "ID",
+                  "join_type": "left"
+                }
+              ]
+            }
+          },
+          "columns": [
+            {
+              "column": {
+                "name": "id",
+                "db_name": "ID",
+                "col_type": "NUMBER",
+                "group_name": "Warranty History",
+                "heading": "Warranty ID",
+                "descr": "",
+                "key": true,
+                "mandatory": true,
+                "protect": "",
+                "hidden": 1,
+                "x": "10",
+                "y": "10",
+                "col_id": "1",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "line_no",
+                "db_name": "LINE_NO",
+                "col_type": "NUMBER",
+                "group_name": "Warranty History",
+                "heading": "Line No",
+                "descr": "",
+                "key": true,
+                "mandatory": true,
+                "protect": "1",
+                "hidden": 1,
+                "x": "20",
+                "y": "20",
+                "col_id": "2",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "5",
+                "width": 50,
+                "format": "",
+                "default_function": "",
+                "default_value": "auto_generate_line_no()",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "hist_warranty_id",
+                "db_name": "HIST_WARRANTY_ID",
+                "col_type": "NUMBER",
+                "group_name": "Warranty History",
+                "heading": "Warranty ID",
+                "descr": "Earlier warranty record of the same asset",
+                "key": false,
+                "mandatory": true,
+                "protect": "1",
+                "hidden": 1,
+                "x": "30",
+                "y": "30",
+                "col_id": "3",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "provider",
+                "db_name": "PROVIDER",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Provider",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": "",
+                "x": "40",
+                "y": "40",
+                "col_id": "4",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "20",
+                "width": 140,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "start_date",
+                "db_name": "START_DATE",
+                "col_type": "DATE",
+                "group_name": "Warranty History",
+                "heading": "Start Date",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": "",
+                "x": "50",
+                "y": "50",
+                "col_id": "5",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "end_date",
+                "db_name": "END_DATE",
+                "col_type": "DATE",
+                "group_name": "Warranty History",
+                "heading": "End Date",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": "",
+                "x": "60",
+                "y": "60",
+                "col_id": "6",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "warranty_status",
+                "db_name": "WARRANTY_STATUS",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Status",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": "",
+                "x": "70",
+                "y": "70",
+                "col_id": "7",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "20",
+                "width": 100,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "terms",
+                "db_name": "TERMS",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Terms",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": "",
+                "x": "80",
+                "y": "80",
+                "col_id": "8",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "500",
+                "width": 320,
+                "format": "",
+                "default_function": "",
+                "default_value": "",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_date",
+                "db_name": "ADD_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Warranty History",
+                "heading": "Added On",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "90",
+                "y": "90",
+                "col_id": "9",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_add_date",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_user",
+                "db_name": "ADD_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Added By",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "100",
+                "y": "100",
+                "col_id": "10",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "10",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_add_user",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "add_term",
+                "db_name": "ADD_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Added From",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "110",
+                "y": "110",
+                "col_id": "11",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "15",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_add_terminal",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_date",
+                "db_name": "CHG_DATE",
+                "col_type": "DATETIME",
+                "group_name": "Warranty History",
+                "heading": "Changed On",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "120",
+                "y": "120",
+                "col_id": "12",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_chg_date",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_user",
+                "db_name": "CHG_USER",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Changed By",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "130",
+                "y": "130",
+                "col_id": "13",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "10",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_chg_user",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "chg_term",
+                "db_name": "CHG_TERM",
+                "col_type": "VARCHAR",
+                "group_name": "Warranty History",
+                "heading": "Changed From",
+                "descr": "",
+                "key": false,
+                "mandatory": false,
+                "protect": "1",
+                "hidden": 1,
+                "x": "140",
+                "y": "140",
+                "col_id": "14",
+                "table_name": "FAM_WARRANTY_HIST_SNAP",
+                "table_display_name": "Warranty history of the asset (snapshot)",
+                "db_size": "15",
+                "width": 120,
+                "format": "",
+                "default_function": "",
+                "default_value": ":audit_chg_terminal",
+                "expression": "",
+                "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            }
+          ],
+          "validations": [],
+          "actions": []
         }
       }
     ],

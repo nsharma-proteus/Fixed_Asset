@@ -1,0 +1,122 @@
+{
+  "table_name": "FAM_WARRANTY_HIST_SNAP",
+  "table_description": "Warranty history of the asset, captured when a warranty record is entered (read-only snapshot)",
+  "project": "Fixed_Asset",
+  "columns": [
+    {
+      "column_name": "ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": true,
+      "description": "Warranty record this history line belongs to",
+      "sequence": 1,
+      "mandatory": true
+    },
+    {
+      "column_name": "LINE_NO",
+      "data_type": "NUMBER",
+      "size": "5",
+      "key": true,
+      "description": "",
+      "sequence": 2,
+      "mandatory": true
+    },
+    {
+      "column_name": "HIST_WARRANTY_ID",
+      "data_type": "NUMBER",
+      "size": "",
+      "key": false,
+      "description": "Earlier warranty record of the same asset",
+      "sequence": 3,
+      "mandatory": true
+    },
+    {
+      "column_name": "PROVIDER",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Warranty provider (vendor code)",
+      "sequence": 4
+    },
+    {
+      "column_name": "START_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Warranty start date",
+      "sequence": 5
+    },
+    {
+      "column_name": "END_DATE",
+      "data_type": "DATE",
+      "size": "",
+      "key": false,
+      "description": "Warranty end date",
+      "sequence": 6
+    },
+    {
+      "column_name": "WARRANTY_STATUS",
+      "data_type": "VARCHAR",
+      "size": "20",
+      "key": false,
+      "description": "Active / Expired / Upcoming when fetched",
+      "sequence": 7
+    },
+    {
+      "column_name": "TERMS",
+      "data_type": "VARCHAR",
+      "size": "500",
+      "key": false,
+      "description": "Warranty terms",
+      "sequence": 8
+    },
+    {
+      "column_name": "ADD_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 9
+    },
+    {
+      "column_name": "ADD_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 10
+    },
+    {
+      "column_name": "ADD_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 11
+    },
+    {
+      "column_name": "CHG_DATE",
+      "data_type": "DATETIME",
+      "size": "",
+      "key": false,
+      "description": "",
+      "sequence": 12
+    },
+    {
+      "column_name": "CHG_USER",
+      "data_type": "VARCHAR",
+      "size": "10",
+      "key": false,
+      "description": "",
+      "sequence": 13
+    },
+    {
+      "column_name": "CHG_TERM",
+      "data_type": "VARCHAR",
+      "size": "15",
+      "key": false,
+      "description": "",
+      "sequence": 14
+    }
+  ]
+}
