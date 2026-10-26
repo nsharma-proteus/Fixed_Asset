@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_AMC_COVERAGE_EXPIRY-RENDER",
+  "title": "AMC Coverage & Expiry: renders without an error",
+  "object": "fam_amc_coverage_expiry",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-16.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_coverage_expiry"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_amc_coverage_expiry",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "bbfbd9d538a55340"
+}

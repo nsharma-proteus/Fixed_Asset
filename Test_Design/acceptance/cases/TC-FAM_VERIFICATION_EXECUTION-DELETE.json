@@ -1,0 +1,50 @@
+{
+  "id": "TC-FAM_VERIFICATION_EXECUTION-DELETE",
+  "title": "Execute Physical Verification: a record can be deleted",
+  "object": "fam_verification_execution",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-6.2"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_verification_execution",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_verification_execution"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "delete"
+    },
+    {
+      "do": "click_action",
+      "name": "confirm"
+    },
+    {
+      "expect": "no_record",
+      "obj": "fam_verification_execution",
+      "record": "rec"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "5dae8df449f6304d"
+}

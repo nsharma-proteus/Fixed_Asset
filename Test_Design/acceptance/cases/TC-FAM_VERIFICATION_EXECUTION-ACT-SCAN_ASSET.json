@@ -1,0 +1,41 @@
+{
+  "id": "TC-FAM_VERIFICATION_EXECUTION-ACT-SCAN_ASSET",
+  "title": "Execute Physical Verification: action 'Scan Asset' runs",
+  "object": "fam_verification_execution",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-6.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_verification_execution"
+    },
+    {
+      "do": "click_action",
+      "name": "Scan Asset",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "bf3a814d108038c8"
+}

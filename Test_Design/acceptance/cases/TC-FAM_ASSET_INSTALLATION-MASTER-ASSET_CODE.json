@@ -1,0 +1,54 @@
+{
+  "id": "TC-FAM_ASSET_INSTALLATION-MASTER-ASSET_CODE",
+  "title": "Asset Installation: Asset Code not in its master list is refused",
+  "object": "fam_asset_installation",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_installation"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "installation_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "installed_by",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installation_location_confirmed",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "39f112681fe1a196"
+}

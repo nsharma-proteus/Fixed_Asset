@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_ASSET_VERIFICATION_COVERAGE-RENDER",
+  "title": "Asset Verification Coverage by Category: renders without an error",
+  "object": "fam_asset_verification_coverage",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-13.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_verification_coverage"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_asset_verification_coverage",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "6565bc645c454e72"
+}

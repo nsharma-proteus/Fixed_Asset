@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-SMOKE",
+  "title": "Asset Sale / Scrap: the screen opens and lists records",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "261797a1c2d69904"
+}

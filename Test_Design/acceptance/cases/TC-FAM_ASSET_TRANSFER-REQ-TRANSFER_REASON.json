@@ -1,0 +1,56 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-REQ-TRANSFER_REASON",
+  "title": "Asset Transfer: cannot save without Transfer Reason",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "8"
+    },
+    {
+      "do": "fill",
+      "field": "to_branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "to_location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "transfer_reason",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "6fa421365300a863"
+}

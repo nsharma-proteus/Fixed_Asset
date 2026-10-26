@@ -1,0 +1,56 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-REQ-TO_BRANCH_CODE",
+  "title": "Asset Transfer: cannot save without To Branch",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "8"
+    },
+    {
+      "do": "fill",
+      "field": "to_location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "transfer_reason",
+      "value": "Relocating equipment for department reorganization"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "to_branch_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "0ededfd64c2602a3"
+}

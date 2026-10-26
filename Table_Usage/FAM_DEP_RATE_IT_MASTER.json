@@ -38,8 +38,8 @@
       "form_no": "1",
       "usage_type": "R",
       "referred_columns": [
-        "BLOCK_CODE",
-        "BLOCK_DESCRIPTION"
+        "BLOCK_DESCRIPTION",
+        "BLOCK_CODE"
       ],
       "join_info": {
         "column": "BLOCK_CODE",

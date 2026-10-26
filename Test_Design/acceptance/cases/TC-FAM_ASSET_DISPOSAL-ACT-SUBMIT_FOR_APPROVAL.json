@@ -1,0 +1,55 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-ACT-SUBMIT_FOR_APPROVAL",
+  "title": "Asset Sale / Scrap: action 'Submit for Approval' runs",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_asset_disposal",
+      "values": {
+        "disposal_type": "SCRAP",
+        "disposal_reason": "End of useful life, unit no longer functional"
+      },
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Submit for Approval"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "d9b9b3501db31e07"
+}

@@ -37,7 +37,7 @@
         "COLTYPE": "string", "currentFieldType": "string",
         "operator": "=", "queryOption": "P", "prevOption": "P",
         "promptLabel": "Location Name",
-        "value": "", "chipValue": [],
+        "value": "%", "chipValue": [],
         "JASPER_PARAM": "LOCATION_CODE",
         "lookup": "FAM_LOCATION_MASTER(LOCATION_NAME, LOCATION_CODE)",
         "lookup_sql": "SELECT DISTINCT location_code, location_name FROM fam_location_master WHERE status = 'A' ORDER BY location_name",

@@ -1,0 +1,30 @@
+{
+  "id": "TC-FAM_GEN_DEP_COMPANIES_ACT-OPEN",
+  "title": "Generate Depreciation - Companies Act: opens cleanly",
+  "object": "fam_gen_dep_companies_act",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-3.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_gen_dep_companies_act"
+    },
+    {
+      "do": "screenshot",
+      "label": "opened"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "0e6507320d0927db"
+}

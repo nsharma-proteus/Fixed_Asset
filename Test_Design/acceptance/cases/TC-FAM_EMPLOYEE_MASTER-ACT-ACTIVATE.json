@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_EMPLOYEE_MASTER-ACT-ACTIVATE",
+  "title": "Employee Master: action 'Activate' runs",
+  "object": "fam_employee_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.4"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_employee_master",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_employee_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Activate",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change. Its rules could not be satisfied from the model alone ({form.status} != \"A\") — the precondition record needs the agent.",
+  "seed_hash": "d08aab3f6320629b"
+}

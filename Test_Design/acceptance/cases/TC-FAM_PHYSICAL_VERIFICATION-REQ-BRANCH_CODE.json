@@ -1,0 +1,49 @@
+{
+  "id": "TC-FAM_PHYSICAL_VERIFICATION-REQ-BRANCH_CODE",
+  "title": "Conduct Physical Verification: cannot save without Branch",
+  "object": "fam_physical_verification",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_physical_verification"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "verifier_employee_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "branch_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "63dcb71830a3e46c"
+}

@@ -1,0 +1,50 @@
+{
+  "id": "TC-FAM_ASSET_INSTALLATION-ACT-SUBMIT_FOR_APPROVAL",
+  "title": "Asset Installation: action 'Submit for Approval' runs",
+  "object": "fam_asset_installation",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_asset_installation",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_installation"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Submit for Approval",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "342c004ea4e6bb67"
+}

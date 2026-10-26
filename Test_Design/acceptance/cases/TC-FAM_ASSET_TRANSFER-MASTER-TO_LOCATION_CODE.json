@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-MASTER-TO_LOCATION_CODE",
+  "title": "Asset Transfer: To Location not in its master list is refused",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2",
+    "FRS-5.2.BR1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "8"
+    },
+    {
+      "do": "fill",
+      "field": "to_branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "transfer_reason",
+      "value": "Relocating equipment for department reorganization"
+    },
+    {
+      "do": "fill",
+      "field": "to_location_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "5a4e3f9da159af41"
+}

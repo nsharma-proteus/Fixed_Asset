@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_AMC_CONTRACTS-REQ-START_DATE",
+  "title": "AMC Contracts: cannot save without Start Date",
+  "object": "fam_amc_contracts",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.2",
+    "FRS-7.2.BR1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_contracts"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "amc_vendor_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "end_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "contract_cost",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "start_date",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "f7c5bd45728d392c"
+}

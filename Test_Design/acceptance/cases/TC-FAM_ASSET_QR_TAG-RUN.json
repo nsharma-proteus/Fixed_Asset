@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_ASSET_QR_TAG-RUN",
+  "title": "Asset QR Code Tag: runs and downloads",
+  "object": "fam_asset_qr_tag",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-12.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_qr_tag"
+    },
+    {
+      "do": "run_report",
+      "format": "pdf"
+    },
+    {
+      "expect": "download",
+      "kind": "pdf"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "32803c0ff49af7e8"
+}

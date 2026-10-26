@@ -1,0 +1,65 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-ADD",
+  "title": "Asset Sale / Scrap: a valid record can be added",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_type",
+      "value": "SCRAP"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_reason",
+      "value": "End of useful life, unit no longer functional"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_asset_disposal",
+      "where": {
+        "disposal_reason": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "b237b93545d42ee6"
+}

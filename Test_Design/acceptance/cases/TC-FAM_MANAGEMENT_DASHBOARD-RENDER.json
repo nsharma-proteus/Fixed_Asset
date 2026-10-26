@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_MANAGEMENT_DASHBOARD-RENDER",
+  "title": "Management Dashboard: renders without an error",
+  "object": "fam_management_dashboard",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-18.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_management_dashboard"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_management_dashboard",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "acc6aea93e1475cd"
+}

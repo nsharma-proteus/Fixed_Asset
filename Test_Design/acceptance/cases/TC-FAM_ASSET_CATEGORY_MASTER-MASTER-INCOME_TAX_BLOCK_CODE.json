@@ -1,0 +1,62 @@
+{
+  "id": "TC-FAM_ASSET_CATEGORY_MASTER-MASTER-INCOME_TAX_BLOCK_CODE",
+  "title": "Asset Category Master: Income Tax Block Code not in its master list is refused",
+  "object": "fam_asset_category_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-1.1",
+    "FRS-1.1.BR4"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_category_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "category_name",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "asset_type",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "income_tax_block_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "4a4ecdd29a87294a"
+}

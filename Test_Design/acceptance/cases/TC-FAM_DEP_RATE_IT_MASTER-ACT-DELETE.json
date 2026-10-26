@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_DEP_RATE_IT_MASTER-ACT-DELETE",
+  "title": "Depreciation Rate Master - Income Tax: action 'Delete' runs",
+  "object": "fam_dep_rate_it_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-4.1"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_dep_rate_it_master",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_dep_rate_it_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Delete",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "aa848e49c569278c"
+}

@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_ASSET_MOVEMENT_HISTORY-RENDER",
+  "title": "Asset Movement History: renders without an error",
+  "object": "fam_asset_movement_history",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-17.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_movement_history"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_asset_movement_history",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "cd9df839b7ec5a79"
+}

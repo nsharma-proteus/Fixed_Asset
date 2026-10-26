@@ -1,0 +1,54 @@
+{
+  "id": "TC-FAM_PHYSICAL_VERIFICATION-ACT-LOAD_ASSETS",
+  "title": "Conduct Physical Verification: action 'Load Assets' runs",
+  "object": "fam_physical_verification",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_physical_verification",
+      "values": {
+        "branch_code": "HO001",
+        "location_code": "SERVER-ROOM"
+      },
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_physical_verification"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Load Assets",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "146621504a7ea511"
+}

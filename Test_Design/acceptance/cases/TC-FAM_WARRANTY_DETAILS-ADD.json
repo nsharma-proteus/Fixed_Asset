@@ -1,0 +1,70 @@
+{
+  "id": "TC-FAM_WARRANTY_DETAILS-ADD",
+  "title": "Warranty Details: a valid record can be added",
+  "object": "fam_warranty_details",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_warranty_details"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_provider_vendor_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_start_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_end_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_warranty_details",
+      "where": {
+        "warranty_provider_vendor_code": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "18c0bb69293fe6e4"
+}

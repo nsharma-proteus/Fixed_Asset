@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_WARRANTY_DETAILS-REQ-ASSET_CODE",
+  "title": "Warranty Details: cannot save without Asset Code",
+  "object": "fam_warranty_details",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.1",
+    "FRS-7.1.BR2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_warranty_details"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_provider_vendor_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_start_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "warranty_end_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "asset_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "6e11e564ddd360ed"
+}

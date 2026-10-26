@@ -5,7 +5,7 @@
       {
         "sql_model": {
           "form_title": "Other Asset Register",
-          "form_descr": "Other Asset Register — track non-depreciable, non-statutory informational items (low-value equipment, consumables, etc.) with the same location, custody, supplier and value information as the Fixed Asset Register, but WITHOUT any depreciation or capitalization accounting. This screen writes to the same physical asset register as the Fixed Asset Register, scoped to ASSET_TYPE = 'OTHER_ASSET' only.",
+          "form_descr": "Other Asset Register \u2014 track non-depreciable, non-statutory informational items (low-value equipment, consumables, etc.) with the same location, custody, supplier and value information as the Fixed Asset Register, but WITHOUT any depreciation or capitalization accounting. This screen writes to the same physical asset register as the Fixed Asset Register, scoped to ASSET_TYPE = 'OTHER_ASSET' only.",
           "form_no": "1",
           "main_table": "FAM_ASSET_REGISTER",
           "row_security": {
@@ -20,7 +20,7 @@
                 "group_name": "Basic",
                 "col_type": "VARCHAR",
                 "heading": "Asset Code",
-                "descr": "System-generated unique code identifying the asset (same series as the Fixed Asset Register — one shared table)",
+                "descr": "System-generated unique code identifying the asset (same series as the Fixed Asset Register \u2014 one shared table)",
                 "key": true,
                 "mandatory": true,
                 "protect": "1",
@@ -76,7 +76,7 @@
                 "group_name": "Basic",
                 "col_type": "VARCHAR",
                 "heading": "Asset Type",
-                "descr": "Fixed to Other Asset on this screen and enforced by row security — this screen can never create or show a Fixed Asset (depreciable) record. Use the Asset Register screen for Fixed Assets.",
+                "descr": "Fixed to Other Asset on this screen and enforced by row security \u2014 this screen can never create or show a Fixed Asset (depreciable) record. Use the Asset Register screen for Fixed Assets.",
                 "default_value": "OTHER_ASSET",
                 "mandatory": true,
                 "protect": "1",
@@ -174,7 +174,7 @@
                 "group_name": "Basic",
                 "col_type": "VARCHAR",
                 "heading": "Status",
-                "descr": "Lifecycle status of the record. 'Capitalized' here simply means the record is confirmed/active in the register — it has no depreciation or capitalization accounting meaning for an Other Asset.",
+                "descr": "Lifecycle status of the record. 'Capitalized' here simply means the record is confirmed/active in the register \u2014 it has no depreciation or capitalization accounting meaning for an Other Asset.",
                 "default_value": "DRAFT",
                 "mandatory": true,
                 "protect": "1",
@@ -188,6 +188,10 @@
                     {
                       "data": "PENDING_APPROVAL",
                       "display": "Pending Approval"
+                    },
+                    {
+                      "data": "REJECTED",
+                      "display": "Rejected"
                     },
                     {
                       "data": "CAPITALIZED",
@@ -213,37 +217,43 @@
                     {
                       "when": "DRAFT",
                       "color": "grey",
-                      "icon": "●",
+                      "icon": "\u25cf",
                       "label": "Draft"
                     },
                     {
                       "when": "PENDING_APPROVAL",
                       "color": "amber",
-                      "icon": "◷",
+                      "icon": "\u25f7",
                       "label": "Pending Approval"
+                    },
+                    {
+                      "when": "REJECTED",
+                      "color": "red",
+                      "icon": "\u21a9",
+                      "label": "Rejected"
                     },
                     {
                       "when": "CAPITALIZED",
                       "color": "green",
-                      "icon": "✓",
+                      "icon": "\u2713",
                       "label": "Active"
                     },
                     {
                       "when": "UNDER_TRANSFER",
                       "color": "blue",
-                      "icon": "●",
+                      "icon": "\u25cf",
                       "label": "Under Transfer"
                     },
                     {
                       "when": "DISPOSED",
                       "color": "red",
-                      "icon": "✕",
+                      "icon": "\u2715",
                       "label": "Disposed"
                     },
                     {
                       "when": "UNDER_INVESTIGATION",
                       "color": "orange",
-                      "icon": "⚠",
+                      "icon": "\u26a0",
                       "label": "Under Investigation"
                     }
                   ],
@@ -852,7 +862,7 @@
                   "business_logic": {
                     "method": "recompute_total_accumulated_depreciation",
                     "description": "Recompute the total value (Purchase Cost + Other Capitalized Cost) shown on this record",
-                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form — those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
+                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form \u2014 those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
                   }
                 },
                 "x": "250",
@@ -887,7 +897,7 @@
                   "business_logic": {
                     "method": "recompute_total_accumulated_depreciation",
                     "description": "Recompute the total value (Purchase Cost + Other Capitalized Cost) shown on this record",
-                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form — those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
+                    "spec": "Same shared function as the Asset Register (fam_asset_register). On this screen every row is ASSET_TYPE = 'OTHER_ASSET' and carries no CAPITALIZATION_DATE / COMPANIES_ACT_USEFUL_LIFE_YEARS, so the function's existing guard (missing CAPITALIZATION_DATE / USEFUL_LIFE_YEARS) always applies: it must still compute and return total_capitalized_cost = PURCHASE_COST + OTHER_CAPITALIZED_COST (used here as the 'Total Value' of the item) and must NOT error or block the save when the Companies Act / Income Tax fields it also computes (companies_act_residual_value, opening_accumulated_depreciation, total_accumulated_depreciation) have no corresponding column on this form \u2014 those keys are simply ignored by the runtime for this object. Return {\"updates\": {\"total_capitalized_cost\": <computed>, ...}} exactly as on fam_asset_register."
                   }
                 },
                 "x": "260",
@@ -916,7 +926,7 @@
                 "group_name": "Purchase & Value",
                 "col_type": "NUMBER",
                 "heading": "Total Value",
-                "descr": "Computed as Purchase Cost + Other Costs — the total recorded value of this item (no capitalization/depreciation implication for an Other Asset)",
+                "descr": "Computed as Purchase Cost + Other Costs \u2014 the total recorded value of this item (no capitalization/depreciation implication for an Other Asset)",
                 "protect": "1",
                 "x": "270",
                 "y": "250",
@@ -1331,10 +1341,10 @@
               "validations": [
                 {
                   "type": "expression",
-                  "name": "Draft only",
+                  "name": "Must be Draft or Rejected",
                   "error_code": "DEL_NOT_DRAFT",
-                  "message": "Only Draft records can be deleted (current status {form.status}).",
-                  "expression": "{form.status} == \"DRAFT\""
+                  "message": "Only Draft or Rejected records can be deleted (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\" or {form.status} == \"REJECTED\""
                 }
               ]
             },
@@ -1345,15 +1355,15 @@
               "business_logic": {
                 "method": "submit_asset_for_approval",
                 "description": "Submit a draft record for approval",
-                "spec": "Confirm that ASSET_NAME, CATEGORY_CODE, BRANCH_CODE, LOCATION_CODE, PURCHASE_DATE and PURCHASE_COST are all populated for every asset regardless of ASSET_TYPE. Additionally, when ASSET_TYPE = 'FIXED_ASSET', CAPITALIZATION_DATE must also be populated (it is NOT required when ASSET_TYPE = 'OTHER_ASSET' — Other Assets are never capitalized/depreciated). If any required field is missing return {\"error\": \"...\"} naming the missing field(s). Otherwise set STATUS to 'PENDING_APPROVAL' and return {\"updates\": {\"status\": \"PENDING_APPROVAL\"}}. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE. Every row reachable from this screen has ASSET_TYPE = 'OTHER_ASSET', so in practice CAPITALIZATION_DATE is never required here."
+                "spec": "Confirm that ASSET_NAME, CATEGORY_CODE, BRANCH_CODE, LOCATION_CODE, PURCHASE_DATE and PURCHASE_COST are all populated for every asset regardless of ASSET_TYPE. Additionally, when ASSET_TYPE = 'FIXED_ASSET', CAPITALIZATION_DATE must also be populated (it is NOT required when ASSET_TYPE = 'OTHER_ASSET' \u2014 Other Assets are never capitalized/depreciated). If any required field is missing return {\"error\": \"...\"} naming the missing field(s). Otherwise set STATUS to 'PENDING_APPROVAL' and return {\"updates\": {\"status\": \"PENDING_APPROVAL\"}}. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE. Every row reachable from this screen has ASSET_TYPE = 'OTHER_ASSET', so in practice CAPITALIZATION_DATE is never required here."
               },
               "validations": [
                 {
                   "type": "expression",
-                  "name": "Must be Draft",
+                  "name": "Must be Draft or Rejected",
                   "error_code": "SUBMIT_NOT_DRAFT",
-                  "message": "Only Draft records can be submitted for approval (current status {form.status}).",
-                  "expression": "{form.status} == \"DRAFT\""
+                  "message": "Only Draft or Rejected records can be submitted for approval (current status {form.status}).",
+                  "expression": "{form.status} == \"DRAFT\" or {form.status} == \"REJECTED\""
                 }
               ]
             },
@@ -1364,7 +1374,7 @@
               "business_logic": {
                 "method": "approve_asset",
                 "description": "Approve/confirm the record",
-                "spec": "Set STATUS to 'CAPITALIZED' and lock the core fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE, OPENING_ACCUMULATED_DEPRECIATION) so they cannot be changed once approved, by returning them as protected cells. Return {\"updates\": {\"status\": \"CAPITALIZED\", \"purchase_cost\": {\"protect\": \"1\"}, \"capitalization_date\": {\"protect\": \"1\"}, \"category_code\": {\"protect\": \"1\"}, \"opening_accumulated_depreciation\": {\"protect\": \"1\"}}}. For an ASSET_TYPE = 'FIXED_ASSET' row, STATUS = 'CAPITALIZED' means the asset is now capitalized and becomes eligible for depreciation processing and visible in Locations & Assignment, Depreciation, Lifecycle and Verification activities. For an ASSET_TYPE = 'OTHER_ASSET' row (every row reachable from THIS screen), STATUS = 'CAPITALIZED' carries NO capitalization/depreciation meaning at all — it simply means the record is confirmed/active in the register (the same status code is reused for both types purely so Transfer/Verification's existing 'must be Capitalized/Active' checks keep working unmodified for Other Asset rows too). CAPITALIZATION_DATE and OPENING_ACCUMULATED_DEPRECIATION do not exist as columns on the fam_other_asset_register form; protecting them via a cell update on a column absent from the calling form is a no-op and must not error. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE."
+                "spec": "Set STATUS to 'CAPITALIZED' and lock the core fields (PURCHASE_COST, CAPITALIZATION_DATE, CATEGORY_CODE, OPENING_ACCUMULATED_DEPRECIATION) so they cannot be changed once approved, by returning them as protected cells. Return {\"updates\": {\"status\": \"CAPITALIZED\", \"purchase_cost\": {\"protect\": \"1\"}, \"capitalization_date\": {\"protect\": \"1\"}, \"category_code\": {\"protect\": \"1\"}, \"opening_accumulated_depreciation\": {\"protect\": \"1\"}}}. For an ASSET_TYPE = 'FIXED_ASSET' row, STATUS = 'CAPITALIZED' means the asset is now capitalized and becomes eligible for depreciation processing and visible in Locations & Assignment, Depreciation, Lifecycle and Verification activities. For an ASSET_TYPE = 'OTHER_ASSET' row (every row reachable from THIS screen), STATUS = 'CAPITALIZED' carries NO capitalization/depreciation meaning at all \u2014 it simply means the record is confirmed/active in the register (the same status code is reused for both types purely so Transfer/Verification's existing 'must be Capitalized/Active' checks keep working unmodified for Other Asset rows too). CAPITALIZATION_DATE and OPENING_ACCUMULATED_DEPRECIATION do not exist as columns on the fam_other_asset_register form; protecting them via a cell update on a column absent from the calling form is a no-op and must not error. This function is shared by both the fam_asset_register (Fixed Asset Register) and fam_other_asset_register (Other Asset Register) transaction screens, which both write FAM_ASSET_REGISTER rows distinguished only by ASSET_TYPE."
               },
               "validations": [
                 {
@@ -1382,8 +1392,8 @@
               "scope": "row",
               "business_logic": {
                 "method": "reject_asset",
-                "description": "Reject a submitted record back to Draft",
-                "spec": "Set STATUS back to 'DRAFT' so the record details can be corrected and resubmitted, and return {\"updates\": {\"status\": \"DRAFT\"}}. This function is shared by both the fam_asset_register and fam_other_asset_register transaction screens."
+                "description": "Reject a submitted asset (status Rejected)",
+                "spec": "Set STATUS to 'REJECTED' so the submitter can see the asset was turned down; it can then be corrected and resubmitted (Submit for Approval accepts Draft or Rejected) or deleted. Return {\"updates\": {\"status\": \"REJECTED\"}}. Shared by fam_asset_register and fam_other_asset_register."
               },
               "validations": [
                 {

@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-REQ-ASSET_CODE",
+  "title": "Asset Transfer: cannot save without Asset Code",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2",
+    "FRS-5.2.BR2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "to_branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "to_location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "transfer_reason",
+      "value": "Relocating equipment for department reorganization"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "asset_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "939a64b9e41f7335"
+}

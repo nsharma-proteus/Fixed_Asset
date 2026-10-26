@@ -1,0 +1,54 @@
+{
+  "id": "TC-FAM_ASSET_INSTALLATION-REQ-INSTALLATION_DATE",
+  "title": "Asset Installation: cannot save without Installation Date",
+  "object": "fam_asset_installation",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_installation"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installed_by",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installation_location_confirmed",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "installation_date",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "794fe8f0df36f464"
+}

@@ -1,0 +1,54 @@
+{
+  "id": "TC-FAM_ASSET_INSTALLATION-REQ-INSTALLED_BY",
+  "title": "Asset Installation: cannot save without Installed By",
+  "object": "fam_asset_installation",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_installation"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installation_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "installation_location_confirmed",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "installed_by",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "da36fb86e95f77e5"
+}

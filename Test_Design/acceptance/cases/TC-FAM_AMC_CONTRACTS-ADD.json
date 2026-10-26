@@ -1,0 +1,70 @@
+{
+  "id": "TC-FAM_AMC_CONTRACTS-ADD",
+  "title": "AMC Contracts: a valid record can be added",
+  "object": "fam_amc_contracts",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_contracts"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "amc_vendor_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "start_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "end_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "contract_cost",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_amc_contracts",
+      "where": {
+        "amc_vendor_code": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "32d844b4345774bb"
+}

@@ -1,0 +1,73 @@
+{
+  "id": "TC-FAM_ASSET_INSTALLATION-ADD",
+  "title": "Asset Installation: a valid record can be added",
+  "object": "fam_asset_installation",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_installation"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installation_date",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "installed_by",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "installation_location_confirmed",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "installation_certificate_attachment",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_asset_installation",
+      "where": {
+        "installation_certificate_attachment": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "08d6663c8dfd4dda"
+}

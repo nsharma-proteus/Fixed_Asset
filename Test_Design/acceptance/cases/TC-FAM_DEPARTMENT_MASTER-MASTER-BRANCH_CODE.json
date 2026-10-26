@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_DEPARTMENT_MASTER-MASTER-BRANCH_CODE",
+  "title": "Department Master: Branch Code not in its master list is refused",
+  "object": "fam_department_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.3",
+    "FRS-2.3.BR1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_department_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "department_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "department_name",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "8bf75acfb69e0d1d"
+}

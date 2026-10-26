@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_WARRANTY_AMC_EXPIRY-RENDER",
+  "title": "Warranty / AMC Expiry: renders without an error",
+  "object": "fam_warranty_amc_expiry",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-14.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_warranty_amc_expiry"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_warranty_amc_expiry",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "e3dec3465e85545e"
+}

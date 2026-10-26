@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_DEP_RATE_CA_MASTER-REQ-USEFUL_LIFE_YEARS",
+  "title": "Depreciation Rate Master - Companies Act: cannot save without Useful Life (Years)",
+  "object": "fam_dep_rate_ca_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-3.1",
+    "FRS-3.1.BR3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_dep_rate_ca_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "method",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "residual_value_pct",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "useful_life_years",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "d26c7208f40cad89"
+}

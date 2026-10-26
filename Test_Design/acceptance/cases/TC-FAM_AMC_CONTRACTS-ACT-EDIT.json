@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_AMC_CONTRACTS-ACT-EDIT",
+  "title": "AMC Contracts: action 'Edit' runs",
+  "object": "fam_amc_contracts",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.2"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_amc_contracts",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_contracts"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Edit",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "8f06186766708ab9"
+}

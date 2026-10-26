@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-MASTER-ASSET_CODE",
+  "title": "Asset Sale / Scrap: Asset Code not in its master list is refused",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3",
+    "FRS-5.3.BR1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_type",
+      "value": "SCRAP"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_reason",
+      "value": "End of useful life, unit no longer functional"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "5d5787caa7729451"
+}

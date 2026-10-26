@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_EMPLOYEE_MASTER-SMOKE",
+  "title": "Employee Master: the screen opens and lists records",
+  "object": "fam_employee_master",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.4"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_employee_master"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "79f4af74cd93761f"
+}

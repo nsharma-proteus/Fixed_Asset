@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_DEP_RATE_IT_MASTER-REQ-RATE_PCT",
+  "title": "Depreciation Rate Master - Income Tax: cannot save without Rate %",
+  "object": "fam_dep_rate_it_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-4.1",
+    "FRS-4.1.BR2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_dep_rate_it_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "block_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "block_description",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "rate_pct",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "ac86de8640e0d98f"
+}

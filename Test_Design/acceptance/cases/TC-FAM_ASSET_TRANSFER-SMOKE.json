@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-SMOKE",
+  "title": "Asset Transfer: the screen opens and lists records",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "02519e119097f83b"
+}

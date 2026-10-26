@@ -1,0 +1,70 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-ADD",
+  "title": "Asset Transfer: a valid record can be added",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "8"
+    },
+    {
+      "do": "fill",
+      "field": "to_branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "to_location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "transfer_reason",
+      "value": "Relocating equipment for department reorganization"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_asset_transfer",
+      "where": {
+        "transfer_reason": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "04943ffee5bcfd2d"
+}

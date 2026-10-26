@@ -1,0 +1,50 @@
+{
+  "id": "TC-FAM_EMPLOYEE_MASTER-DELETE",
+  "title": "Employee Master: a record can be deleted",
+  "object": "fam_employee_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.4"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_employee_master",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_employee_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "delete"
+    },
+    {
+      "do": "click_action",
+      "name": "confirm"
+    },
+    {
+      "expect": "no_record",
+      "obj": "fam_employee_master",
+      "record": "rec"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "64c7eee67dcf8d63"
+}

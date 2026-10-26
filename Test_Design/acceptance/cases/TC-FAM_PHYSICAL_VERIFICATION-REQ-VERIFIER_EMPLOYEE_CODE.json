@@ -1,0 +1,49 @@
+{
+  "id": "TC-FAM_PHYSICAL_VERIFICATION-REQ-VERIFIER_EMPLOYEE_CODE",
+  "title": "Conduct Physical Verification: cannot save without Verifier",
+  "object": "fam_physical_verification",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_physical_verification"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "verifier_employee_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "31baf784555e50b1"
+}

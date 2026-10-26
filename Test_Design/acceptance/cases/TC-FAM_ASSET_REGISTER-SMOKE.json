@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_ASSET_REGISTER-SMOKE",
+  "title": "Asset Register: the screen opens and lists records",
+  "object": "fam_asset_register",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-8.1",
+    "FRS-9.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_register"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "064aea07ce81c3c3"
+}

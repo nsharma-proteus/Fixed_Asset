@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_VERIFICATION_REPORT-RUN",
+  "title": "Verification Report: runs and downloads",
+  "object": "fam_verification_report",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-11.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_verification_report"
+    },
+    {
+      "do": "run_report",
+      "format": "pdf"
+    },
+    {
+      "expect": "download",
+      "kind": "pdf"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "34a393b67778ad86"
+}

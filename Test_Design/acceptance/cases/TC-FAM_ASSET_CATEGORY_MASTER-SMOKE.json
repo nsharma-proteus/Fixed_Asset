@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_ASSET_CATEGORY_MASTER-SMOKE",
+  "title": "Asset Category Master: the screen opens and lists records",
+  "object": "fam_asset_category_master",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-1.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_category_master"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "9130de84df57cbf4"
+}

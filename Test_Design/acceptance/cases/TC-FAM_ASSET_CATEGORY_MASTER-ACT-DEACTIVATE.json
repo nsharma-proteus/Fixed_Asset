@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_ASSET_CATEGORY_MASTER-ACT-DEACTIVATE",
+  "title": "Asset Category Master: action 'Deactivate' runs",
+  "object": "fam_asset_category_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-1.1"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_asset_category_master",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_category_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Deactivate",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "72b7dadd604824bf"
+}

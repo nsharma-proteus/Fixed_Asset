@@ -1,0 +1,28 @@
+{
+  "id": "TC-FAM_HOME-OPEN",
+  "title": "Home: opens cleanly",
+  "object": "fam_home",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_home"
+    },
+    {
+      "do": "screenshot",
+      "label": "opened"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "867ce378078fa455"
+}

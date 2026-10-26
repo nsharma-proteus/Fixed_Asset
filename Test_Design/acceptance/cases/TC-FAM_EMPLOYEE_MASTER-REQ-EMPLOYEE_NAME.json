@@ -1,0 +1,61 @@
+{
+  "id": "TC-FAM_EMPLOYEE_MASTER-REQ-EMPLOYEE_NAME",
+  "title": "Employee Master: cannot save without Employee Name",
+  "object": "fam_employee_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.4"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_employee_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "employee_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "department_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "employee_name",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "bd8f253708269ed8"
+}

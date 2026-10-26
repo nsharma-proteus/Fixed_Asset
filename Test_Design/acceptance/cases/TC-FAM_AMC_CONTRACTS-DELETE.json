@@ -1,0 +1,50 @@
+{
+  "id": "TC-FAM_AMC_CONTRACTS-DELETE",
+  "title": "AMC Contracts: a record can be deleted",
+  "object": "fam_amc_contracts",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.2"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_amc_contracts",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_contracts"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "delete"
+    },
+    {
+      "do": "click_action",
+      "name": "confirm"
+    },
+    {
+      "expect": "no_record",
+      "obj": "fam_amc_contracts",
+      "record": "rec"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "d0b4f8c09e6900a8"
+}

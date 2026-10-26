@@ -1,0 +1,56 @@
+{
+  "id": "TC-FAM_DEPARTMENT_MASTER-REQ-DEPARTMENT_NAME",
+  "title": "Department Master: cannot save without Department Name",
+  "object": "fam_department_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_department_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "department_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "department_name",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "704160f914f9a192"
+}

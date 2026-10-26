@@ -1,0 +1,56 @@
+{
+  "id": "TC-FAM_PHYSICAL_VERIFICATION-ADD",
+  "title": "Conduct Physical Verification: a valid record can be added",
+  "object": "fam_physical_verification",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_physical_verification"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "verifier_employee_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "ec16488a515426c3"
+}

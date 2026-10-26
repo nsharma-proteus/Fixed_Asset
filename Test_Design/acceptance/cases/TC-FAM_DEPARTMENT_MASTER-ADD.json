@@ -1,0 +1,70 @@
+{
+  "id": "TC-FAM_DEPARTMENT_MASTER-ADD",
+  "title": "Department Master: a valid record can be added",
+  "object": "fam_department_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_department_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "department_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "department_name",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_department_master",
+      "where": {
+        "department_name": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "61c88008803c7c40"
+}

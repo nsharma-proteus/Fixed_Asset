@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_AMC_CONTRACTS-SMOKE",
+  "title": "AMC Contracts: the screen opens and lists records",
+  "object": "fam_amc_contracts",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-7.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_amc_contracts"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "b578315b9ceeffa1"
+}

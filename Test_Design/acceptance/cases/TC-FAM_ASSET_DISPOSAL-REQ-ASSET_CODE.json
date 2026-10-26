@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-REQ-ASSET_CODE",
+  "title": "Asset Sale / Scrap: cannot save without Asset Code",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3",
+    "FRS-5.3.BR1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_type",
+      "value": "SCRAP"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_reason",
+      "value": "End of useful life, unit no longer functional"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "asset_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "f13a5570e9972762"
+}

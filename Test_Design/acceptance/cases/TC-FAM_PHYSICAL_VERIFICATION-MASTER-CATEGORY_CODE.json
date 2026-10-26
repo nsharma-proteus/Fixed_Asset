@@ -1,0 +1,54 @@
+{
+  "id": "TC-FAM_PHYSICAL_VERIFICATION-MASTER-CATEGORY_CODE",
+  "title": "Conduct Physical Verification: Asset Category not in its master list is refused",
+  "object": "fam_physical_verification",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_physical_verification"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "HO001"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "SERVER-ROOM"
+    },
+    {
+      "do": "fill",
+      "field": "verifier_employee_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@not_in_master"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "refused"
+    }
+  ],
+  "seed_hash": "20b250cd4cc5eb69"
+}

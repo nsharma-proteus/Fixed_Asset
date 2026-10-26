@@ -1,0 +1,62 @@
+{
+  "id": "TC-FAM_EMPLOYEE_MASTER-REQ-DEPARTMENT_CODE",
+  "title": "Employee Master: cannot save without Department Code",
+  "object": "fam_employee_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.4",
+    "FRS-2.4.BR2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_employee_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "employee_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "employee_name",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "department_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "fa92e78c63d9195a"
+}

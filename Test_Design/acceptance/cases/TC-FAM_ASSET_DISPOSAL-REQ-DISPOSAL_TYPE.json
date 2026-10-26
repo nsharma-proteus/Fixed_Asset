@@ -1,0 +1,52 @@
+{
+  "id": "TC-FAM_ASSET_DISPOSAL-REQ-DISPOSAL_TYPE",
+  "title": "Asset Sale / Scrap: cannot save without Disposal Type",
+  "object": "fam_asset_disposal",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.3",
+    "FRS-5.3.BR4"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_disposal"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "disposal_reason",
+      "value": "End of useful life, unit no longer functional"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "disposal_type",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "a0e21f8139bf054b"
+}

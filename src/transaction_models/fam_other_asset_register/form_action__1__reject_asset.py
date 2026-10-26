@@ -6,9 +6,9 @@
 # form_no: 1
 # action_name: Reject
 # language: python
-# description: Reject a submitted record back to Draft
-# functional_specification: Set STATUS back to 'DRAFT' so the record details can be corrected and resubmitted, and return {"updates": {"status": "DRAFT"}}. This function is shared by both the fam_asset_register and fam_other_asset_register transaction screens.
-# business_logic: Reject a submitted record back to Draft
+# description: Reject a submitted asset (status Rejected)
+# functional_specification: Set STATUS to 'REJECTED' so the submitter can see the asset was turned down; it can then be corrected and resubmitted (Submit for Approval accepts Draft or Rejected) or deleted. Return {"updates": {"status": "REJECTED"}}.
+# business_logic: Reject a submitted asset (status Rejected)
 
 def run(args):
-    return {'updates': {'STATUS': 'DRAFT'}}
+    return {'updates': {'STATUS': 'REJECTED'}}

@@ -1,0 +1,35 @@
+{
+  "id": "TC-FAM_ASSETS_NOT_UNDER_AMC-RENDER",
+  "title": "Assets Not Under AMC: renders without an error",
+  "object": "fam_assets_not_under_amc",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-15.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_assets_not_under_amc"
+    },
+    {
+      "expect": "visual_has_data",
+      "obj": "fam_assets_not_under_amc",
+      "allow_empty": true
+    },
+    {
+      "do": "screenshot",
+      "label": "rendered"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "45ad379d0503cc37"
+}

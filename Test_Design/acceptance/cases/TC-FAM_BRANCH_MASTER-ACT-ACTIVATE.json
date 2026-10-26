@@ -1,0 +1,55 @@
+{
+  "id": "TC-FAM_BRANCH_MASTER-ACT-ACTIVATE",
+  "title": "Branch Master: action 'Activate' runs",
+  "object": "fam_branch_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.1"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_branch_master",
+      "values": {
+        "status": "I"
+      },
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_branch_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Activate",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "f9ce472edeb9a43c"
+}

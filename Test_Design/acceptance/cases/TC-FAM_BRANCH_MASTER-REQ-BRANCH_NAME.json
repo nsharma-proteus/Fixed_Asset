@@ -1,0 +1,51 @@
+{
+  "id": "TC-FAM_BRANCH_MASTER-REQ-BRANCH_NAME",
+  "title": "Branch Master: cannot save without Branch Name",
+  "object": "fam_branch_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_branch_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "branch_name",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "a21b9d5a6c1015a8"
+}

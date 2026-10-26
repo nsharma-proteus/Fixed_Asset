@@ -1,0 +1,34 @@
+{
+  "id": "TC-FAM_LOCATION_MASTER-SMOKE",
+  "title": "Location Master: the screen opens and lists records",
+  "object": "fam_location_master",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_location_master"
+    },
+    {
+      "expect": "row_count",
+      "min": 0
+    },
+    {
+      "do": "screenshot",
+      "label": "list"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "3d4c4e399bdfc2f8"
+}

@@ -1,0 +1,87 @@
+{
+  "id": "TC-FAM_ASSET_REGISTER-REQ-BRANCH_CODE",
+  "title": "Asset Register: cannot save without Branch",
+  "object": "fam_asset_register",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-8.1",
+    "FRS-9.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_register"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "asset_name",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "asset_type",
+      "value": "FIXED_ASSET"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "purchase_date",
+      "value": "2026-01-01"
+    },
+    {
+      "do": "fill",
+      "field": "purchase_cost",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "capitalization_date",
+      "value": "2026-08-01"
+    },
+    {
+      "do": "fill",
+      "field": "companies_act_useful_life_years",
+      "value": 5
+    },
+    {
+      "do": "fill",
+      "field": "companies_act_method",
+      "value": "SLM"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "branch_code",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "aa50d38de6007e45"
+}

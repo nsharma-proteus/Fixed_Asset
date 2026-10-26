@@ -1,0 +1,63 @@
+{
+  "id": "TC-FAM_ASSET_TRANSFER-ACT-APPROVE",
+  "title": "Asset Transfer: action 'Approve' runs",
+  "object": "fam_asset_transfer",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-5.2"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_asset_transfer",
+      "values": {
+        "asset_code": "8",
+        "to_branch_code": "HO001",
+        "to_location_code": "SERVER-ROOM",
+        "transfer_reason": "Relocating equipment for department reorganization",
+        "status": "PENDING_APPROVAL"
+      },
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_transfer"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Approve",
+      "form": "1"
+    },
+    {
+      "do": "click_action",
+      "name": "confirm"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "bdeed4d97589d7ca"
+}

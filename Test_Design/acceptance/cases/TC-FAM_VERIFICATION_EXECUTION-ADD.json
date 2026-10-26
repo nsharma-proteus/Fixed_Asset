@@ -1,0 +1,55 @@
+{
+  "id": "TC-FAM_VERIFICATION_EXECUTION-ADD",
+  "title": "Execute Physical Verification: a valid record can be added",
+  "object": "fam_verification_execution",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-6.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_verification_execution"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "scan_asset_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_verification_execution",
+      "where": {
+        "scan_asset_code": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "24d91cfa6a254421"
+}

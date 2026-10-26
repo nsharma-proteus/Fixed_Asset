@@ -1,0 +1,56 @@
+{
+  "id": "TC-FAM_LOCATION_MASTER-REQ-LOCATION_NAME",
+  "title": "Location Master: cannot save without Location Name",
+  "object": "fam_location_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_location_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "branch_code",
+      "value": "@lookup"
+    },
+    {
+      "do": "fill",
+      "field": "location_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "location_name",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "eaf26802942da661"
+}

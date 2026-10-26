@@ -1,0 +1,62 @@
+{
+  "id": "TC-FAM_LOCATION_MASTER-EDIT",
+  "title": "Location Master: a record can be edited",
+  "object": "fam_location_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-2.2"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_location_master",
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_location_master"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "edit"
+    },
+    {
+      "do": "fill",
+      "field": "address_descr",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_location_master",
+      "where": {
+        "address_descr": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "ad2921383fcebf6a"
+}

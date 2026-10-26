@@ -172,7 +172,7 @@
       "data_type": "VARCHAR",
       "size": "200",
       "key": false,
-      "description": "Generated QR code / barcode tag value identifying this asset (use the Generate QR/Barcode Tag action)",
+      "description": "Optional QR/barcode payload identifying this asset. Leave blank to use the standard derived payload FAM|<Asset Code>; the Generate QR/Barcode Tag action prints whichever applies as a scannable QR label.",
       "sequence": 14
     },
     {

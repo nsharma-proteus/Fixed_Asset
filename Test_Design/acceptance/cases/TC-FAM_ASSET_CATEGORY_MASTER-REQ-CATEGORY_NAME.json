@@ -1,0 +1,57 @@
+{
+  "id": "TC-FAM_ASSET_CATEGORY_MASTER-REQ-CATEGORY_NAME",
+  "title": "Asset Category Master: cannot save without Category Name",
+  "object": "fam_asset_category_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-1.1",
+    "FRS-1.1.BR5"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_category_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "status",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "asset_type",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "category_name",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "22b1f6b06fa39e4b"
+}

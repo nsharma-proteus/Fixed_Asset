@@ -1,0 +1,70 @@
+{
+  "id": "TC-FAM_DEP_RATE_CA_MASTER-ADD",
+  "title": "Depreciation Rate Master - Companies Act: a valid record can be added",
+  "object": "fam_dep_rate_ca_master",
+  "surface": "app",
+  "type": "positive",
+  "priority": "high",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-3.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_dep_rate_ca_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "category_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "useful_life_years",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "method",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "residual_value_pct",
+      "value": "@synthetic"
+    },
+    {
+      "do": "screenshot",
+      "label": "filled"
+    },
+    {
+      "do": "click_action",
+      "name": "save_close"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "record",
+      "obj": "fam_dep_rate_ca_master",
+      "where": {
+        "category_code": "@filled"
+      }
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "a29fef6ecb8f9cef"
+}

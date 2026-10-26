@@ -1,0 +1,51 @@
+{
+  "id": "TC-FAM_DEP_RATE_IT_MASTER-REQ-BLOCK_DESCRIPTION",
+  "title": "Depreciation Rate Master - Income Tax: cannot save without Block Description",
+  "object": "fam_dep_rate_it_master",
+  "surface": "app",
+  "type": "negative",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-4.1"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_dep_rate_it_master"
+    },
+    {
+      "do": "click_action",
+      "name": "add"
+    },
+    {
+      "do": "fill",
+      "field": "block_code",
+      "value": "@synthetic"
+    },
+    {
+      "do": "fill",
+      "field": "rate_pct",
+      "value": "@synthetic"
+    },
+    {
+      "do": "click_action",
+      "name": "save"
+    },
+    {
+      "expect": "message",
+      "kind": "error"
+    },
+    {
+      "expect": "field_state",
+      "field": "block_description",
+      "state": "error"
+    },
+    {
+      "do": "screenshot",
+      "label": "blocked"
+    }
+  ],
+  "seed_hash": "2a732a2105eda999"
+}

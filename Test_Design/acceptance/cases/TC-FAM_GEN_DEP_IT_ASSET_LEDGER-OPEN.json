@@ -1,0 +1,30 @@
+{
+  "id": "TC-FAM_GEN_DEP_IT_ASSET_LEDGER-OPEN",
+  "title": "Income Tax Depreciation - Asset Ledger (Form 3CD): opens cleanly",
+  "object": "fam_gen_dep_it_asset_ledger",
+  "surface": "app",
+  "type": "smoke",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-4.3"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_gen_dep_it_asset_ledger"
+    },
+    {
+      "do": "screenshot",
+      "label": "opened"
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "seed_hash": "974450a0de3dbf6a"
+}

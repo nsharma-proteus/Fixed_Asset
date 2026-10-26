@@ -1,0 +1,61 @@
+{
+  "id": "TC-FAM_ASSET_REGISTER-ACT-REJECT",
+  "title": "Asset Register: action 'Reject' runs",
+  "object": "fam_asset_register",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-8.1",
+    "FRS-9.1"
+  ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_asset_register",
+      "values": {
+        "asset_type": "FIXED_ASSET",
+        "purchase_date": "2026-01-01",
+        "capitalization_date": "2026-08-01",
+        "companies_act_useful_life_years": 5,
+        "companies_act_method": "SLM",
+        "status": "PENDING_APPROVAL"
+      },
+      "save_as": "rec"
+    }
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_asset_register"
+    },
+    {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
+      "do": "click_action",
+      "name": "Reject",
+      "form": "1"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "d985f222f306cfb2"
+}
