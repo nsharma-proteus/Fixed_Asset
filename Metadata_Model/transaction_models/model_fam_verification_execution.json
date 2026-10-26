@@ -328,8 +328,8 @@
                 "group_name": "Cycle Details",
                 "col_type": "VARCHAR",
                 "heading": "Location Code",
-                "descr": "Location of the verification cycle. Display only on this screen.",
-                "mandatory": true,
+                "descr": "Location of the verification cycle. Display only on this screen. Blank when the cycle covers the whole branch.",
+                "mandatory": false,
                 "protect": "1",
                 "x": "80",
                 "y": "80",
@@ -790,6 +790,7 @@
           "form_no": "2",
           "parent_form_no": "1",
           "parent_key_col": "VERIFICATION_CYCLE_NO",
+          "lines_locked": true,
           "main_table": "FAM_PHYSICAL_VERIFICATION_LINE",
           "columns": [
             {
