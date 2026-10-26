@@ -197,6 +197,14 @@
       "key": false,
       "description": "Expected custodian name (display only)",
       "sequence": 12
+    },
+    {
+      "column_name": "INCLUDED",
+      "data_type": "VARCHAR",
+      "size": "1",
+      "key": false,
+      "description": "Y when the asset was ticked for this cycle (Conduct Physical Verification); only ticked lines are kept",
+      "sequence": 21
     }
   ]
 }

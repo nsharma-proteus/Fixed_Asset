@@ -835,6 +835,12 @@
           "parent_form_no": "1",
           "main_table": "FAM_PHYSICAL_VERIFICATION_LINE",
           "parent_key_col": "VERIFICATION_CYCLE_NO",
+          "row_select": {
+            "column": "included",
+            "key": "asset_code",
+            "refill_on_open": "not_verified_since_months",
+            "default_ticked": true
+          },
           "columns": [
             {
               "column": {
@@ -1539,6 +1545,34 @@
                 "default_function": "",
                 "expression": "",
                 "edit_mask": "",
+                "validations": "",
+                "lookup": ""
+              }
+            },
+            {
+              "column": {
+                "name": "included",
+                "db_name": "INCLUDED",
+                "col_type": "VARCHAR",
+                "group_name": "Basic",
+                "heading": "Selected",
+                "descr": "Ticked for this cycle; only ticked lines are saved",
+                "x": "50",
+                "y": "50",
+                "col_id": "20",
+                "table_name": "FAM_PHYSICAL_VERIFICATION_LINE",
+                "table_display_name": "Physical verification line items",
+                "db_size": "1",
+                "width": 500,
+                "key": false,
+                "mandatory": false,
+                "hidden": 1,
+                "format": "",
+                "default_function": "",
+                "default_value": "Y",
+                "expression": "",
+                "edit_mask": "",
+                "protect": "",
                 "validations": "",
                 "lookup": ""
               }

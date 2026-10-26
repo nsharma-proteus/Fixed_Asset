@@ -7,7 +7,7 @@
 # field_name: not_verified_since_months
 # language: python
 # description: Keep the not_verified_since_months fill and list the assets due for verification in Verification Lines
-# functional_specification: Header item change of Conduct Physical Verification. (1) Keep what the field's old rule did: BRANCH_CODE fills BRANCH_NAME and clears LOCATION_CODE/LOCATION_NAME; LOCATION_CODE fills LOCATION_NAME (location of the selected branch); CATEGORY_CODE fills CATEGORY_NAME; NOT_VERIFIED_SINCE_MONTHS fills nothing. (2) Only on a NEW cycle (VERIFICATION_CYCLE_NO still empty): replace the Verification Lines (form 2) with every CAPITALIZED asset of the branch (and of the location / category when set) whose LAST_VERIFIED_DATE is empty or older than today minus NOT_VERIFIED_SINCE_MONTHS months (0 = all), one line per asset with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE/NAME and EXPECTED_EMPLOYEE_CODE/NAME from the register. No branch, or no matching asset, empties the lines. On an existing cycle the lines are never touched.
+# functional_specification: Header item change of Conduct Physical Verification. (1) Keep what the field's old rule did: BRANCH_CODE fills BRANCH_NAME and clears LOCATION_CODE/LOCATION_NAME; LOCATION_CODE fills LOCATION_NAME (location of the selected branch); CATEGORY_CODE fills CATEGORY_NAME; NOT_VERIFIED_SINCE_MONTHS fills nothing. (2) While the cycle is new or PLANNED: offer as Verification Lines (form 2, a row_select form - the user ticks the ones to verify) every CAPITALIZED asset of the branch (and of the location / category when set) whose LAST_VERIFIED_DATE is empty or older than today minus NOT_VERIFIED_SINCE_MONTHS months (0 = all), one line per asset with ASSET_CODE, ASSET_NAME, EXPECTED_LOCATION_CODE/NAME and EXPECTED_EMPLOYEE_CODE/NAME from the register. No branch, or no matching asset, empties the lines. Saved (ticked) lines are never dropped; once the cycle leaves PLANNED no candidates are offered.
 # business_logic: Keep the not_verified_since_months fill and list the assets due for verification in Verification Lines
 
 FIELD = 'not_verified_since_months'
@@ -65,9 +65,11 @@ def run(args):
     if fill:
         # A plain {column: value} section sets the header's fields.
         forms['1'] = fill
-    # Lines are only (re)built for a cycle being created; an existing cycle's
-    # lines carry recorded findings and are never replaced from here.
-    if not _txt(_get(args, 'VERIFICATION_CYCLE_NO')):
+    # Candidates are listed while the cycle is being planned (new, or saved and
+    # still PLANNED). Verification Lines is a row_select form: the user ticks
+    # the assets to verify, only ticked lines are saved, and a refresh never
+    # drops a saved line. Once verification starts the saved lines stand alone.
+    if _txt(_get(args, 'STATUS')).upper() in ('', 'PLANNED'):
         rows = []
         if branch:
             sql = ('SELECT a.ASSET_CODE, a.ASSET_NAME, a.LOCATION_CODE, l.LOCATION_NAME, '
