@@ -420,7 +420,18 @@
                     "message": "Income Tax Block Code is required for a Fixed Asset category.",
                     "expression": "{form.asset_type} != \"FIXED_ASSET\" or not_empty({form.income_tax_block_code})"
                   }
-                ]
+                ],
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEP_RATE_IT_MASTER",
+                  "match_table_col": "BLOCK_CODE",
+                  "fill": [
+                    {
+                      "form_col": "income_tax_block_descr",
+                      "table_col": "BLOCK_DESCRIPTION"
+                    }
+                  ]
+                }
               }
             },
             {

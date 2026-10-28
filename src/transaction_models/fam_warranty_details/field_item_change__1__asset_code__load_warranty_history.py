@@ -7,7 +7,7 @@
 # field_name: asset_code
 # language: python
 # description: Fill the Warranty History group with the selected asset's earlier warranty records
-# functional_specification: When ASSET_CODE changes on the warranty header, read every other FAM_WARRANTY_DETAILS row for that asset (excluding the record being edited, newest end date first) and replace the rows of form 2 (Warranty History) with one read-only line per warranty: its id, provider, start date, end date, status (Active / Expired / Upcoming as of today) and terms. No earlier warranties, or the code cleared, empties the group (the screen then hides it). Changes nothing else on the form.
+# functional_specification: When ASSET_CODE changes on the warranty header, read every other FAM_WARRANTY_DETAILS row for that asset (excluding the record being edited, newest end date first) and replace the rows of form 2 (Warranty History) with one read-only line per warranty: its id, provider, start date, end date, status (Active / Expired / Upcoming as of today) and terms. No earlier warranties, or the code cleared, empties the group (the screen then hides it). Also fills the header's ASSET_NAME from FAM_ASSET_REGISTER (blank when the code is cleared or matches no asset).
 # business_logic: Fill the Warranty History group with the selected asset's earlier warranty records
 
 def _get(row, name):
@@ -64,5 +64,15 @@ def run(args):
                 'warranty_status': status,
                 'terms': _get(r, 'WARRANTY_TERMS'),
             })
-    # replace with no rows == clear the group (the screen hides an empty one)
-    return {'forms': {'2': {'replace': True, 'rows': rows}}}
+    # The asset's own name: a joined column is read on load, so a code just picked shows its
+    # name only if it is filled here.
+    asset = db.query_one(
+        'SELECT ASSET_NAME FROM ' + db.t('FAM_ASSET_REGISTER') + ' WHERE ASSET_CODE = :a',
+        {'a': asset_code},
+    ) if asset_code else None
+    # replace with no rows == clear the group (the screen hides an empty one). Both under
+    # `forms`: a result that addresses forms is read as forms only. Form 1 is the header.
+    return {'forms': {
+        '1': {'asset_name': _get(asset, 'ASSET_NAME') or ''},
+        '2': {'replace': True, 'rows': rows},
+    }}

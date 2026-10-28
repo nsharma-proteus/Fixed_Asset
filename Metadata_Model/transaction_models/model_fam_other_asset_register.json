@@ -136,7 +136,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_ASSET_CATEGORY_MASTER",
+                  "match_table_col": "CATEGORY_CODE",
+                  "fill": [
+                    {
+                      "form_col": "category_name",
+                      "table_col": "CATEGORY_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -551,7 +562,42 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_BRANCH_MASTER",
+                  "match_table_col": "BRANCH_CODE",
+                  "fill": [
+                    {
+                      "form_col": "branch_name",
+                      "table_col": "BRANCH_NAME"
+                    },
+                    {
+                      "form_col": "location_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "location_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "department_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "department_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "assigned_employee_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "assigned_employee_name",
+                      "expr": "\"\""
+                    }
+                  ]
+                }
               }
             },
             {
@@ -609,7 +655,19 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_LOCATION_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.branch_code} AND LOCATION_CODE = {form.location_code}",
+                  "fill": [
+                    {
+                      "form_col": "location_name",
+                      "table_col": "LOCATION_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -667,7 +725,19 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEPARTMENT_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.branch_code} AND DEPARTMENT_CODE = {form.department_code}",
+                  "fill": [
+                    {
+                      "form_col": "department_name",
+                      "table_col": "DEPARTMENT_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -724,7 +794,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_EMPLOYEE_MASTER",
+                  "match_table_col": "EMPLOYEE_CODE",
+                  "fill": [
+                    {
+                      "form_col": "assigned_employee_name",
+                      "table_col": "EMPLOYEE_NAME"
+                    }
+                  ]
+                }
               }
             },
             {

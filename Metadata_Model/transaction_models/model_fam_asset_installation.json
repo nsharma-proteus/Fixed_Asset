@@ -203,7 +203,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_EMPLOYEE_MASTER",
+                  "match_table_col": "EMPLOYEE_CODE",
+                  "fill": [
+                    {
+                      "form_col": "installed_by_name",
+                      "table_col": "EMPLOYEE_NAME"
+                    }
+                  ]
+                }
               }
             },
             {

@@ -101,7 +101,26 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_BRANCH_MASTER",
+                  "match_table_col": "BRANCH_CODE",
+                  "fill": [
+                    {
+                      "form_col": "branch_name",
+                      "table_col": "BRANCH_NAME"
+                    },
+                    {
+                      "form_col": "department_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "department_name",
+                      "expr": "\"\""
+                    }
+                  ]
+                }
               }
             },
             {
@@ -178,7 +197,19 @@
                 "default_value": "",
                 "expression": "",
                 "edit_mask": "",
-                "protect": ""
+                "protect": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEPARTMENT_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.branch_code} AND DEPARTMENT_CODE = {form.department_code}",
+                  "fill": [
+                    {
+                      "form_col": "department_name",
+                      "table_col": "DEPARTMENT_NAME"
+                    }
+                  ]
+                }
               }
             },
             {

@@ -172,32 +172,13 @@
                 "lookup_filter": "STATUS = 'A' AND ASSET_TYPE = {form.asset_type}",
                 "must_exist_in": "FAM_ASSET_CATEGORY_MASTER",
                 "item_change": {
-                  "mode": "rule",
-                  "source_table": "FAM_ASSET_CATEGORY_MASTER",
-                  "match_table_col": "CATEGORY_CODE",
-                  "on_no_match": "clear",
-                  "fill": [
-                    {
-                      "form_col": "companies_act_useful_life_years",
-                      "table_col": "COMPANIES_ACT_USEFUL_LIFE_YEARS"
-                    },
-                    {
-                      "form_col": "companies_act_method",
-                      "table_col": "COMPANIES_ACT_DEFAULT_METHOD"
-                    },
-                    {
-                      "form_col": "companies_act_residual_value_pct",
-                      "table_col": "COMPANIES_ACT_RESIDUAL_VALUE_PCT"
-                    },
-                    {
-                      "form_col": "income_tax_block_code",
-                      "table_col": "INCOME_TAX_BLOCK_CODE"
-                    },
-                    {
-                      "form_col": "companies_act_residual_value",
-                      "expr": "round(({form.purchase_cost} + {form.other_capitalized_cost}) * {form.companies_act_residual_value_pct} / 100, 2)"
-                    }
-                  ]
+                  "mode": "business_logic",
+                  "business_logic": {
+                    "method": "fill_category_defaults",
+                    "description": "Fill the category's name and its Companies Act / Income Tax defaults",
+                    "spec": "When CATEGORY_CODE changes, read FAM_ASSET_CATEGORY_MASTER for it and fill CATEGORY_NAME, COMPANIES_ACT_USEFUL_LIFE_YEARS, COMPANIES_ACT_METHOD (from COMPANIES_ACT_DEFAULT_METHOD), COMPANIES_ACT_RESIDUAL_VALUE_PCT and INCOME_TAX_BLOCK_CODE, plus INCOME_TAX_BLOCK_DESCR from FAM_DEP_RATE_IT_MASTER for that block; COMPANIES_ACT_RESIDUAL_VALUE = round((PURCHASE_COST + OTHER_CAPITALIZED_COST) * residual pct / 100, 2). No matching category (or the code cleared) clears every one of them and sets the residual value to 0. Same fills as the former rule, plus the two names.",
+                    "language": "python"
+                  }
                 },
                 "x": "50",
                 "y": "50",
@@ -629,7 +610,42 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_BRANCH_MASTER",
+                  "match_table_col": "BRANCH_CODE",
+                  "fill": [
+                    {
+                      "form_col": "branch_name",
+                      "table_col": "BRANCH_NAME"
+                    },
+                    {
+                      "form_col": "location_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "location_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "department_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "department_name",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "assigned_employee_code",
+                      "expr": "\"\""
+                    },
+                    {
+                      "form_col": "assigned_employee_name",
+                      "expr": "\"\""
+                    }
+                  ]
+                }
               }
             },
             {
@@ -687,7 +703,19 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_LOCATION_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.branch_code} AND LOCATION_CODE = {form.location_code}",
+                  "fill": [
+                    {
+                      "form_col": "location_name",
+                      "table_col": "LOCATION_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -745,7 +773,19 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEPARTMENT_MASTER",
+                  "match_mode": "advanced",
+                  "where_sql": "BRANCH_CODE = {form.branch_code} AND DEPARTMENT_CODE = {form.department_code}",
+                  "fill": [
+                    {
+                      "form_col": "department_name",
+                      "table_col": "DEPARTMENT_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -802,7 +842,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_EMPLOYEE_MASTER",
+                  "match_table_col": "EMPLOYEE_CODE",
+                  "fill": [
+                    {
+                      "form_col": "assigned_employee_name",
+                      "table_col": "EMPLOYEE_NAME"
+                    }
+                  ]
+                }
               }
             },
             {
@@ -1390,7 +1441,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_DEP_RATE_IT_MASTER",
+                  "match_table_col": "BLOCK_CODE",
+                  "fill": [
+                    {
+                      "form_col": "income_tax_block_descr",
+                      "table_col": "BLOCK_DESCRIPTION"
+                    }
+                  ]
+                }
               }
             },
             {

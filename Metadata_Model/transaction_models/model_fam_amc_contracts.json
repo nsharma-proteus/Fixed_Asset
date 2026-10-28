@@ -777,7 +777,18 @@
                 "default_value": "",
                 "expression": "",
                 "edit_mask": "",
-                "protect": ""
+                "protect": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_ASSET_REGISTER",
+                  "match_table_col": "ASSET_CODE",
+                  "fill": [
+                    {
+                      "form_col": "asset_name",
+                      "table_col": "ASSET_NAME"
+                    }
+                  ]
+                }
               }
             },
             {

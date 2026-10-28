@@ -35,7 +35,18 @@
                 "expression": "",
                 "edit_mask": "",
                 "protect": "",
-                "validations": ""
+                "validations": "",
+                "item_change": {
+                  "mode": "rule",
+                  "source_table": "FAM_BRANCH_MASTER",
+                  "match_table_col": "BRANCH_CODE",
+                  "fill": [
+                    {
+                      "form_col": "branch_name",
+                      "table_col": "BRANCH_NAME"
+                    }
+                  ]
+                }
               }
             },
             {

@@ -80,8 +80,8 @@
                   "mode": "business_logic",
                   "business_logic": {
                     "method": "load_warranty_history",
-                    "description": "Fill the Warranty History group with the selected asset's earlier warranty records",
-                    "spec": "When ASSET_CODE changes, read every other FAM_WARRANTY_DETAILS row for that asset (excluding the record being edited, newest end date first) and replace the rows of form 2 (Warranty History) with one read-only line per warranty: id, provider, start date, end date, status (Active / Expired / Upcoming as of today) and terms. No earlier warranties, or the code cleared, empties the group (the screen hides it). Changes nothing else on the form.",
+                    "description": "Fill the asset's name, and the Warranty History group with its earlier warranty records",
+                    "spec": "When ASSET_CODE changes, read every other FAM_WARRANTY_DETAILS row for that asset (excluding the record being edited, newest end date first) and replace the rows of form 2 (Warranty History) with one read-only line per warranty: id, provider, start date, end date, status (Active / Expired / Upcoming as of today) and terms. No earlier warranties, or the code cleared, empties the group (the screen hides it). Also fills the header's ASSET_NAME from FAM_ASSET_REGISTER (blank when the code is cleared or matches no asset).",
                     "language": "python"
                   }
                 }
