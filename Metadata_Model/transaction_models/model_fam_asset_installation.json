@@ -78,8 +78,8 @@
                   "mode": "business_logic",
                   "business_logic": {
                     "method": "load_asset_transfer_history",
-                    "description": "Fill the Transfer History tab with the selected asset's Asset Transfer records",
-                    "spec": "When ASSET_CODE changes, read every FAM_ASSET_TRANSFER row for that asset (newest first) and replace the rows of form 2 (Transfer History) with one read-only line per transfer: transfer no, date, status, from/to branch and location, to employee, reason (names fall back to the masters). No transfers, or the code cleared, empties the tab. Changes nothing else on the form.",
+                    "description": "Fill the asset's name and capitalization date, and the Transfer History tab with its Asset Transfer records",
+                    "spec": "When ASSET_CODE changes, read every FAM_ASSET_TRANSFER row for that asset (newest first) and replace the rows of form 2 (Transfer History) with one read-only line per transfer: transfer no, date, status, from/to branch and location, to employee, reason (names fall back to the masters). No transfers, or the code cleared, empties the tab. Also fills the header's ASSET_NAME and CAPITALIZATION_DATE from FAM_ASSET_REGISTER (blank when the code is cleared or matches no asset).",
                     "language": "python"
                   }
                 }
