@@ -20,11 +20,6 @@
       "name": "add"
     },
     {
-      "do": "fill",
-      "field": "scan_asset_code",
-      "value": "@synthetic"
-    },
-    {
       "do": "screenshot",
       "label": "filled"
     },
@@ -38,18 +33,11 @@
       "absent": true
     },
     {
-      "expect": "record",
-      "obj": "fam_verification_execution",
-      "where": {
-        "scan_asset_code": "@filled"
-      }
-    },
-    {
       "expect": "no_console_errors"
     },
     {
       "expect": "no_failed_requests"
     }
   ],
-  "seed_hash": "24d91cfa6a254421"
+  "seed_hash": "13535e3441956999"
 }

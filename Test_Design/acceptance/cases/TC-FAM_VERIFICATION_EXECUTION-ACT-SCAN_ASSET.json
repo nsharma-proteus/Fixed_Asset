@@ -10,15 +10,26 @@
   "requirement": [
     "FRS-6.2"
   ],
+  "preconditions": [
+    {
+      "do": "seed_record",
+      "obj": "fam_verification_execution",
+      "save_as": "rec"
+    }
+  ],
   "steps": [
     {
       "do": "open_screen",
       "obj": "fam_verification_execution"
     },
     {
+      "do": "select_row",
+      "record": "rec"
+    },
+    {
       "do": "click_action",
       "name": "Scan Asset",
-      "form": "1"
+      "form": "2"
     },
     {
       "do": "screenshot",
@@ -37,5 +48,5 @@
     }
   ],
   "notes": "Seeded smoke test of the button — the agent adds what it must change.",
-  "seed_hash": "bf3a814d108038c8"
+  "seed_hash": "f0d6a598ec2f928f"
 }

@@ -104,6 +104,14 @@
       "verify_ok": false,
       "verify_summary": "verified by the dock's post-turn BI gate",
       "verify_fingerprint": "b6b368af1ae8177e"
+    },
+    "T:fam_asset_register": {
+      "obj_type": "T",
+      "obj_name": "fam_asset_register",
+      "finalized_at": 1793000910.2073777,
+      "finalize_ok": true,
+      "finalize_issues": [],
+      "finalize_fingerprint": "fd8eb95e36405427"
     }
   }
 }

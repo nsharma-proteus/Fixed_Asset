@@ -1,7 +1,7 @@
 {
   "project_name": "Fixed Asset Management",
   "project_description": "Statutory fixed asset register, location & custody tracking, Companies Act and Income Tax depreciation, asset lifecycle (installation, transfer, disposal), physical verification and warranty/AMC management.",
-  "generated_at": "2026-10-26T07:48:30.061962+00:00",
+  "generated_at": "2026-10-27T09:09:41.186493+00:00",
   "owner_user_id": "",
   "navigation_summary": [
     {
@@ -98,7 +98,7 @@
       "obj_name": "fam_verification_execution",
       "obj_type": "T",
       "title": "Execute Physical Verification",
-      "description": "Execute an assigned verification list \u2014 scan or key an asset id, validate it belongs to the list, and record its physica"
+      "description": "Execute an assigned verification list \u2014 record the physical status, remarks and photo of each asset on it."
     },
     {
       "obj_name": "fam_warranty_details",
@@ -280,6 +280,31 @@
         "INSTALLATION_CERTIFICATE_ATTACHMENT VARCHAR",
         "REMARKS VARCHAR",
         "STATUS VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_ASSET_INSTALL_TRF_HIST",
+      "description": "Asset Transfer history of the asset, captured when its installation record is entered (read-only snapshot)",
+      "key_columns": [
+        "ID NUMBER",
+        "LINE_NO NUMBER"
+      ],
+      "other_columns": [
+        "TRANSFER_NO VARCHAR",
+        "TRANSFER_DATE DATE",
+        "TRANSFER_STATUS VARCHAR",
+        "FROM_BRANCH VARCHAR",
+        "FROM_LOCATION VARCHAR",
+        "TO_BRANCH VARCHAR",
+        "TO_LOCATION VARCHAR",
+        "TO_EMPLOYEE VARCHAR",
+        "TRANSFER_REASON VARCHAR",
         "ADD_DATE DATETIME",
         "ADD_USER VARCHAR",
         "ADD_TERM VARCHAR",
@@ -553,7 +578,8 @@
         "ADD_TERM VARCHAR",
         "CHG_DATE DATETIME",
         "CHG_USER VARCHAR",
-        "CHG_TERM VARCHAR"
+        "CHG_TERM VARCHAR",
+        "INCLUDED VARCHAR"
       ]
     },
     {
@@ -569,6 +595,28 @@
         "WARRANTY_END_DATE DATE",
         "WARRANTY_TERMS VARCHAR",
         "WARRANTY_DOCUMENT_ATTACHMENT VARCHAR",
+        "ADD_DATE DATETIME",
+        "ADD_USER VARCHAR",
+        "ADD_TERM VARCHAR",
+        "CHG_DATE DATETIME",
+        "CHG_USER VARCHAR",
+        "CHG_TERM VARCHAR"
+      ]
+    },
+    {
+      "table_name": "FAM_WARRANTY_HIST_SNAP",
+      "description": "Warranty history of the asset, captured when a warranty record is entered (read-only snapshot)",
+      "key_columns": [
+        "ID NUMBER",
+        "LINE_NO NUMBER"
+      ],
+      "other_columns": [
+        "HIST_WARRANTY_ID NUMBER",
+        "PROVIDER VARCHAR",
+        "START_DATE DATE",
+        "END_DATE DATE",
+        "WARRANTY_STATUS VARCHAR",
+        "TERMS VARCHAR",
         "ADD_DATE DATETIME",
         "ADD_USER VARCHAR",
         "ADD_TERM VARCHAR",

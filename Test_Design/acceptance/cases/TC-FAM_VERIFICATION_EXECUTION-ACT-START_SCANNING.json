@@ -1,0 +1,41 @@
+{
+  "id": "TC-FAM_VERIFICATION_EXECUTION-ACT-START_SCANNING",
+  "title": "Execute Physical Verification: action 'Start Scanning' runs",
+  "object": "fam_verification_execution",
+  "surface": "app",
+  "type": "positive",
+  "priority": "medium",
+  "persona": "owner",
+  "origin": "seed",
+  "requirement": [
+    "FRS-6.2"
+  ],
+  "steps": [
+    {
+      "do": "open_screen",
+      "obj": "fam_verification_execution"
+    },
+    {
+      "do": "click_action",
+      "name": "Start Scanning",
+      "form": "2"
+    },
+    {
+      "do": "screenshot",
+      "label": "after action"
+    },
+    {
+      "expect": "message",
+      "kind": "error",
+      "absent": true
+    },
+    {
+      "expect": "no_console_errors"
+    },
+    {
+      "expect": "no_failed_requests"
+    }
+  ],
+  "notes": "Seeded smoke test of the button — the agent adds what it must change.",
+  "seed_hash": "0228cceb6f8a7761"
+}
