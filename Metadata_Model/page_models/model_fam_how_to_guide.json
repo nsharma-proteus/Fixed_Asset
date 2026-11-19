@@ -1,0 +1,265 @@
+{
+  "page": {
+    "obj_name": "fam_how_to_guide",
+    "title": "How To Guide",
+    "kind": "internal",
+    "pageMode": "web",
+    "pageSchemaVersion": 2,
+    "inputs": [],
+    "actions": [],
+    "sections": [
+      {
+        "id": "sec_intro",
+        "tag": "main",
+        "anchorId": "top",
+        "blocks": [
+          {
+            "id": "hero_1",
+            "type": "hero",
+            "eyebrow": "User guide",
+            "title": "How To Guide",
+            "subtitle": "A step-by-step guide to setting up the masters and running the asset lifecycle in Fixed Asset Management. Work through the masters first, then use the transactions in lifecycle order.",
+            "align": "left",
+            "height": "normal",
+            "background": { "kind": "gradient", "gradientFrom": "#2E5B87", "gradientTo": "#16324f", "gradientAngle": 135 },
+            "textColor": "#ffffff",
+            "primaryCta": { "id": "hero_cta_masters", "label": "1. Set up Masters", "variant": "primary", "size": "md", "on_click": { "kind": "scroll_to", "target": "masters" } },
+            "secondaryCta": { "id": "hero_cta_txn", "label": "2. Use Transactions", "variant": "outline", "size": "md", "on_click": { "kind": "scroll_to", "target": "transactions" } },
+            "imageSide": "none",
+            "imageUrl": ""
+          },
+          { "id": "h_order", "type": "heading", "level": 2, "text": "Suggested order" },
+          { "id": "p_order", "type": "paragraph", "text": "Follow this sequence the first time you use the application. Each step relies on data created in the steps before it." },
+          {
+            "id": "nl_order",
+            "type": "numbered_list",
+            "items": [
+              { "id": "o1", "text": "Masters: Asset Category, Branch, Location, Department, Employee." },
+              { "id": "o2", "text": "Masters: Depreciation Rates for Companies Act and Income Tax." },
+              { "id": "o3", "text": "Register each asset in the Asset Register and capitalize it." },
+              { "id": "o4", "text": "Record Installation, then Warranty and AMC cover for the asset." },
+              { "id": "o5", "text": "Day to day: Transfer assets, run Physical Verification, and record Disposals." },
+              { "id": "o6", "text": "Period end: run Companies Act (monthly) and Income Tax (annual) depreciation." }
+            ]
+          },
+          { "id": "h_note", "type": "heading", "level": 3, "text": "Good to know" },
+          {
+            "id": "bl_note",
+            "type": "bullet_list",
+            "items": [
+              { "id": "n1", "text": "Fields marked mandatory on a form must be filled before you can save." },
+              { "id": "n2", "text": "Most masters have a Status (Active / Inactive). Only Active records can be used on new entries." },
+              { "id": "n3", "text": "Approval transactions move through Draft, Submit for Approval and Approve; Cancel is available from the same record." }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "sec_masters",
+        "tag": "main",
+        "anchorId": "masters",
+        "blocks": [
+          { "id": "divider_m", "type": "divider" },
+          { "id": "h_masters", "type": "heading", "level": 2, "text": "Part 1 - Masters" },
+          { "id": "p_masters", "type": "paragraph", "text": "Masters are the reference data used by every transaction. Set them up once, in the order below." },
+
+          { "id": "h_m1", "type": "heading", "level": 3, "text": "1. Asset Category Master" },
+          { "id": "p_m1", "type": "paragraph", "text": "Classifies assets and defaults their useful life, depreciation method and Income Tax block." },
+          { "id": "nl_m1", "type": "numbered_list", "items": [
+            { "id": "m1a", "text": "Open the master and add a new record." },
+            { "id": "m1b", "text": "Enter the mandatory Category Code (unique), Category Name, Asset Type and Status." },
+            { "id": "m1c", "text": "Optionally pick a Parent Category to build a hierarchy." },
+            { "id": "m1d", "text": "Set the defaults: Useful Life (Years), Default Method, Residual Value % and Income Tax Block Code." },
+            { "id": "m1e", "text": "Save. The defaults are picked up when you register assets of this category." }
+          ] },
+          { "id": "bg_m1", "type": "button_group", "buttons": [ { "id": "b_m1", "label": "Open Asset Category Master", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_category_master" } } ] },
+
+          { "id": "h_m2", "type": "heading", "level": 3, "text": "2. Branch Master" },
+          { "id": "p_m2", "type": "paragraph", "text": "The organisation branches that hold assets." },
+          { "id": "nl_m2", "type": "numbered_list", "items": [
+            { "id": "m2a", "text": "Add a new record." },
+            { "id": "m2b", "text": "Enter the mandatory Branch Code (unique), Branch Name and Status." },
+            { "id": "m2c", "text": "Optionally enter Address, City and State." },
+            { "id": "m2d", "text": "Save." }
+          ] },
+          { "id": "bg_m2", "type": "button_group", "buttons": [ { "id": "b_m2", "label": "Open Branch Master", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_branch_master" } } ] },
+
+          { "id": "h_m3", "type": "heading", "level": 3, "text": "3. Location Master" },
+          { "id": "p_m3", "type": "paragraph", "text": "Physical locations within a branch, for example a floor or a store room." },
+          { "id": "nl_m3", "type": "numbered_list", "items": [
+            { "id": "m3a", "text": "Add a new record and choose the Branch Code (created in step 2)." },
+            { "id": "m3b", "text": "Enter the mandatory Location Code, Location Name and Status." },
+            { "id": "m3c", "text": "Optionally add an Address / Description." },
+            { "id": "m3d", "text": "Save. Use Activate / Deactivate later to retire a location." }
+          ] },
+          { "id": "bg_m3", "type": "button_group", "buttons": [ { "id": "b_m3", "label": "Open Location Master", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_location_master" } } ] },
+
+          { "id": "h_m4", "type": "heading", "level": 3, "text": "4. Department Master" },
+          { "id": "p_m4", "type": "paragraph", "text": "Departments or cost centres within a branch." },
+          { "id": "nl_m4", "type": "numbered_list", "items": [
+            { "id": "m4a", "text": "Add a new record and choose the Branch Code." },
+            { "id": "m4b", "text": "Enter the mandatory Department Code, Department Name and Status." },
+            { "id": "m4c", "text": "Optionally enter the Cost Centre Code." },
+            { "id": "m4d", "text": "Save. Use Activate / Deactivate to change availability." }
+          ] },
+          { "id": "bg_m4", "type": "button_group", "buttons": [ { "id": "b_m4", "label": "Open Department Master", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_department_master" } } ] },
+
+          { "id": "h_m5", "type": "heading", "level": 3, "text": "5. Employee Master" },
+          { "id": "p_m5", "type": "paragraph", "text": "A lightweight directory of employees, used to assign custody of assets and to pick verifiers." },
+          { "id": "nl_m5", "type": "numbered_list", "items": [
+            { "id": "m5a", "text": "Add a new record." },
+            { "id": "m5b", "text": "Enter the mandatory Employee Code, Employee Name, Branch Code, Department Code and Status." },
+            { "id": "m5c", "text": "Optionally enter the Designation." },
+            { "id": "m5d", "text": "Save. Use Deactivate when an employee leaves." }
+          ] },
+          { "id": "bg_m5", "type": "button_group", "buttons": [ { "id": "b_m5", "label": "Open Employee Master", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_employee_master" } } ] },
+
+          { "id": "h_m6", "type": "heading", "level": 3, "text": "6. Depreciation Rate Master - Companies Act" },
+          { "id": "p_m6", "type": "paragraph", "text": "Schedule II norms per category." },
+          { "id": "nl_m6", "type": "numbered_list", "items": [
+            { "id": "m6a", "text": "Add a new record and enter the Category Code." },
+            { "id": "m6b", "text": "Enter the Useful Life (Years), Method and Residual Value %." },
+            { "id": "m6c", "text": "Enter the Effective From date." },
+            { "id": "m6d", "text": "Save." }
+          ] },
+          { "id": "bg_m6", "type": "button_group", "buttons": [ { "id": "b_m6", "label": "Open Companies Act Rates", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_dep_rate_ca_master" } } ] },
+
+          { "id": "h_m7", "type": "heading", "level": 3, "text": "7. Depreciation Rate Master - Income Tax" },
+          { "id": "p_m7", "type": "paragraph", "text": "Block-of-assets rates under the Income Tax Rules." },
+          { "id": "nl_m7", "type": "numbered_list", "items": [
+            { "id": "m7a", "text": "Add a new record and enter the Block Code and Block Description." },
+            { "id": "m7b", "text": "Enter the Rate % and the Effective From date." },
+            { "id": "m7c", "text": "For existing blocks, optionally enter Opening WDV (Block) and the Opening WDV As On Date." },
+            { "id": "m7d", "text": "Save. The Block Code must match the Income Tax Block Code used on the Asset Category." }
+          ] },
+          { "id": "bg_m7", "type": "button_group", "buttons": [ { "id": "b_m7", "label": "Open Income Tax Rates", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_dep_rate_it_master" } } ] }
+        ]
+      },
+      {
+        "id": "sec_txn",
+        "tag": "main",
+        "anchorId": "transactions",
+        "blocks": [
+          { "id": "divider_t", "type": "divider" },
+          { "id": "h_txn", "type": "heading", "level": 2, "text": "Part 2 - Transactions" },
+          { "id": "p_txn", "type": "paragraph", "text": "Use these in lifecycle order, from registering an asset to depreciating and disposing of it." },
+
+          { "id": "h_t1", "type": "heading", "level": 3, "text": "1. Asset Register - register an asset" },
+          { "id": "p_t1", "type": "paragraph", "text": "The statutory record of every fixed asset." },
+          { "id": "nl_t1", "type": "numbered_list", "items": [
+            { "id": "t1a", "text": "Add a new asset and enter the Asset Code, Asset Name, Asset Type and Category Code." },
+            { "id": "t1b", "text": "Choose the Branch Code and Location Code; optionally the Department and Assigned Employee." },
+            { "id": "t1c", "text": "Enter the Purchase Date, Purchase Cost and Capitalization Date. Total Capitalized Cost includes any Other Capitalized Cost." },
+            { "id": "t1d", "text": "Review the Companies Act and Income Tax fields defaulted from the category, adjust if needed, and set the Status." },
+            { "id": "t1e", "text": "Save. Only Draft assets can be deleted." }
+          ] },
+          { "id": "bg_t1", "type": "button_group", "buttons": [ { "id": "b_t1", "label": "Open Asset Register", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_register" } } ] },
+
+          { "id": "h_t2", "type": "heading", "level": 3, "text": "2. Asset Installation" },
+          { "id": "p_t2", "type": "paragraph", "text": "Records commissioning. A confirmed installation date also drives when depreciation starts." },
+          { "id": "nl_t2", "type": "numbered_list", "items": [
+            { "id": "t2a", "text": "Add a new record and choose the Asset Code." },
+            { "id": "t2b", "text": "Enter the Installation Date, Installed By and Installation Location Confirmed." },
+            { "id": "t2c", "text": "Attach the Installation Certificate and add Remarks if needed." },
+            { "id": "t2d", "text": "Use Submit for Approval, then Approve to move the status from Pending to Confirmed (Cancel is also available). Only Pending records can be edited." }
+          ] },
+          { "id": "bg_t2", "type": "button_group", "buttons": [ { "id": "b_t2", "label": "Open Asset Installation", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_installation" } } ] },
+
+          { "id": "h_t3", "type": "heading", "level": 3, "text": "3. Asset Transfer" },
+          { "id": "p_t3", "type": "paragraph", "text": "Moves an asset between branch, location, department or employee." },
+          { "id": "nl_t3", "type": "numbered_list", "items": [
+            { "id": "t3a", "text": "Add a new transfer: enter the Transfer No, Transfer Date and Asset Code. The From details show where the asset is now." },
+            { "id": "t3b", "text": "Choose the To Branch and To Location (mandatory); optionally the To Department and To Employee." },
+            { "id": "t3c", "text": "Enter the Transfer Reason and save as Draft." },
+            { "id": "t3d", "text": "Use Submit for Approval, then Approve. Review the trail later in Asset Movement History." }
+          ] },
+          { "id": "bg_t3", "type": "button_group", "buttons": [ { "id": "b_t3", "label": "Open Asset Transfer", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_transfer" } } ] },
+
+          { "id": "h_t4", "type": "heading", "level": 3, "text": "4. Asset Sale / Scrap (Disposal)" },
+          { "id": "p_t4", "type": "paragraph", "text": "Retires an asset by sale or scrap." },
+          { "id": "nl_t4", "type": "numbered_list", "items": [
+            { "id": "t4a", "text": "Add a new disposal: enter the Disposal No, Disposal Date and Asset Code." },
+            { "id": "t4b", "text": "Choose the Disposal Type (sale or scrap) and enter the mandatory Disposal Reason." },
+            { "id": "t4c", "text": "For a sale, enter the Sale Value and the Buyer / Scrap Vendor Code. Net book value and profit / loss on disposal are shown for review." },
+            { "id": "t4d", "text": "Save as Draft, then Submit for Approval and Approve. Only Draft disposals can be edited." }
+          ] },
+          { "id": "bg_t4", "type": "button_group", "buttons": [ { "id": "b_t4", "label": "Open Asset Sale / Scrap", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_disposal" } } ] },
+
+          { "id": "h_t5", "type": "heading", "level": 3, "text": "5. Physical Verification - plan a cycle" },
+          { "id": "p_t5", "type": "paragraph", "text": "Plans a verification list and assigns it to an employee." },
+          { "id": "nl_t5", "type": "numbered_list", "items": [
+            { "id": "t5a", "text": "Add a new cycle: enter the Verification Cycle No, Verification Date and Branch Code." },
+            { "id": "t5b", "text": "Optionally narrow by Location, Asset Category and Not Verified Since (months)." },
+            { "id": "t5c", "text": "Choose the Verifier Employee (mandatory)." },
+            { "id": "t5d", "text": "Click Load Assets and tick the assets to include, then save. The cycle starts as Planned." },
+            { "id": "t5e", "text": "Use Submit for Approval and Approve when the cycle is complete (Cancel is also available)." }
+          ] },
+          { "id": "bg_t5", "type": "button_group", "buttons": [ { "id": "b_t5", "label": "Open Physical Verification", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_physical_verification" } } ] },
+
+          { "id": "h_t6", "type": "heading", "level": 3, "text": "6. Verification Execution" },
+          { "id": "p_t6", "type": "paragraph", "text": "The verifier records what was found for each asset on an assigned list." },
+          { "id": "nl_t6", "type": "numbered_list", "items": [
+            { "id": "t6a", "text": "Open the Planned or In Progress cycle assigned to you." },
+            { "id": "t6b", "text": "For each asset, set the physical status: Found, Not Found, Damaged or Extra - Unregistered." },
+            { "id": "t6c", "text": "Add Remarks and a photo. Assets cannot be added or removed here; the list is fixed when planned." },
+            { "id": "t6d", "text": "Save. The cycle then goes for approval from Physical Verification." }
+          ] },
+          { "id": "bg_t6", "type": "button_group", "buttons": [ { "id": "b_t6", "label": "Open Verification Execution", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_verification_execution" } } ] },
+
+          { "id": "h_t7", "type": "heading", "level": 3, "text": "7. Warranty Details" },
+          { "id": "p_t7", "type": "paragraph", "text": "Manufacturer or vendor warranty cover for an asset." },
+          { "id": "nl_t7", "type": "numbered_list", "items": [
+            { "id": "t7a", "text": "Add a new record and choose the Asset Code." },
+            { "id": "t7b", "text": "Enter the Warranty Provider (Vendor Code), Warranty Start Date and End Date." },
+            { "id": "t7c", "text": "Add the Warranty Terms and attach the warranty document." },
+            { "id": "t7d", "text": "Save. Track upcoming expiries in the Warranty / AMC Expiry view." }
+          ] },
+          { "id": "bg_t7", "type": "button_group", "buttons": [ { "id": "b_t7", "label": "Open Warranty Details", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_warranty_details" } } ] },
+
+          { "id": "h_t8", "type": "heading", "level": 3, "text": "8. AMC Contracts" },
+          { "id": "p_t8", "type": "paragraph", "text": "Annual Maintenance Contracts and their renewals." },
+          { "id": "nl_t8", "type": "numbered_list", "items": [
+            { "id": "t8a", "text": "Add a new contract: enter the AMC Contract No, AMC Vendor / Provider, Start Date, End Date and Contract Cost." },
+            { "id": "t8b", "text": "Add the assets covered by the contract." },
+            { "id": "t8c", "text": "Use Submit for Approval, then Approve; this marks the covered assets as under AMC." },
+            { "id": "t8d", "text": "Before it ends, use Renew to create the next contract (the previous contract is linked). Cancel is also available." }
+          ] },
+          { "id": "bg_t8", "type": "button_group", "buttons": [ { "id": "b_t8", "label": "Open AMC Contracts", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_amc_contracts" } } ] },
+
+          { "id": "h_t9", "type": "heading", "level": 3, "text": "9. Generate Depreciation - Companies Act (monthly)" },
+          { "id": "p_t9", "type": "paragraph", "text": "Computes pro-rata monthly Schedule II depreciation for capitalized assets." },
+          { "id": "nl_t9", "type": "numbered_list", "items": [
+            { "id": "t9a", "text": "Open the process and enter the Financial Year (the year the financial year starts), the Period Month and the Branch (ALL for every branch)." },
+            { "id": "t9b", "text": "Run it to preview the depreciation per asset." },
+            { "id": "t9c", "text": "Check the amounts, then save the rows with status Approved to post the period." },
+            { "id": "t9d", "text": "A period that is already posted cannot be generated again." }
+          ] },
+          { "id": "bg_t9", "type": "button_group", "buttons": [ { "id": "b_t9", "label": "Open Companies Act Depreciation", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "G", "obj_name": "fam_gen_dep_companies_act" } } ] },
+
+          { "id": "h_t10", "type": "heading", "level": 3, "text": "10. Generate Depreciation - Income Tax (annual)" },
+          { "id": "p_t10", "type": "paragraph", "text": "Computes block-wise written-down-value depreciation for an assessment year." },
+          { "id": "nl_t10", "type": "numbered_list", "items": [
+            { "id": "t10a", "text": "Open the process and enter the Assessment Year, the Block Code (ALL for every block) and the Branch (ALL for every branch)." },
+            { "id": "t10b", "text": "Run it to preview depreciation per block." },
+            { "id": "t10c", "text": "Check the amounts and save to post them." },
+            { "id": "t10d", "text": "Ensure the Income Tax rates and the category Block Codes are set up first." }
+          ] },
+          { "id": "bg_t10", "type": "button_group", "buttons": [ { "id": "b_t10", "label": "Open Income Tax Depreciation", "variant": "primary", "on_click": { "kind": "navigate", "obj_type": "G", "obj_name": "fam_gen_dep_income_tax" } } ] },
+
+          {
+            "id": "cta_banner_1",
+            "type": "cta_banner",
+            "title": "Ready to get started?",
+            "subtitle": "Begin with the Asset Category Master, or jump to the Asset Register.",
+            "align": "center",
+            "background": { "kind": "color", "color": "#2E5B87" },
+            "textColor": "#ffffff",
+            "primaryCta": { "id": "cta_banner_1_primary", "label": "Open Asset Category Master", "variant": "secondary", "on_click": { "kind": "navigate", "obj_type": "T", "obj_name": "fam_asset_category_master" } },
+            "secondaryCta": { "id": "cta_banner_1_secondary", "label": "Back to top", "variant": "outline", "on_click": { "kind": "scroll_to", "target": "top" } }
+          }
+        ]
+      }
+    ],
+    "blocks": []
+  }
+}
