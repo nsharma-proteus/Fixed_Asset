@@ -1,5 +1,17 @@
 [
   {
+    "id": "473b77191aa3",
+    "name": "blog2.jpeg",
+    "file": "2de0a4728ba0bfe0.jpeg",
+    "path": "fam_asset_register_asset_photo/48/2de0a4728ba0bfe0.jpeg",
+    "docType": "fam_asset_register_asset_photo",
+    "recordId": "48",
+    "mime": "image/jpeg",
+    "size": 183801,
+    "createdAt": 1795154792,
+    "url": "/api/designers/documents/raw?project=Fixed_Asset&file=2de0a4728ba0bfe0.jpeg&name=blog2.jpeg&dt=fam_asset_register_asset_photo&rid=48"
+  },
+  {
     "id": "d5748c178191",
     "name": "Screenshot_2026-10-15-18-39-07-66_fe4e414c8f513014b1e7ffc460465483.jpg",
     "file": "432a2839da559421.jpg",

@@ -32,6 +32,18 @@
       "order": 0
     },
     {
+      "id": "fam.howto",
+      "title": "How To Use",
+      "parent_id": "",
+      "icon_image": "book-open",
+      "description": "Step-by-step guide: which masters to build first and how to use the application",
+      "obj_name": "fam_how_to_guide",
+      "obj_type": "S",
+      "menu_path": "fam.howto",
+      "functional_specs": "User guide page: suggested setup order, Part 1 masters (Asset Category, Branch, Location, Department, Employee, Depreciation Rate CA/IT) and Part 2 lifecycle transactions (Asset Register, Installation, Warranty/AMC, Transfer, Verification, Disposal, depreciation runs), with scroll links and navigation buttons.",
+      "order": 0
+    },
+    {
       "id": "fam.1",
       "title": "Asset Register",
       "parent_id": "",

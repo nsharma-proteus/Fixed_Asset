@@ -1,0 +1,35 @@
+{
+  "id": "bb62d321-82d4-4ba5-aa31-0ea97b8d47dd",
+  "project": "Fixed_Asset",
+  "backend": "autoagent",
+  "title": "Change",
+  "kind": "change",
+  "status": "completed",
+  "description": "Can you create an \"How to use\" smart page with which master to build and how to use the application",
+  "created_at": 1795414905.3344898,
+  "updated_at": 1795415306.6063,
+  "todos": [
+    {
+      "id": "change_turn",
+      "step": "change",
+      "label": "Can you create an \"How to use\" smart page with which master to build and how to use the application",
+      "status": "completed",
+      "error": null,
+      "obj_name": null,
+      "obj_type": null,
+      "phase_id": null,
+      "started_at": 1795414905.330179,
+      "completed_at": 1795414952.3395236
+    }
+  ],
+  "phases": [],
+  "originating_prompt": "Can you create an \"How to use\" smart page with which master to build and how to use the application",
+  "resume_ref": {
+    "session_id": "5ebbe4b9-6b35-429a-b002-35c0e3cb3374",
+    "plan_id": "bb62d321-82d4-4ba5-aa31-0ea97b8d47dd",
+    "scope": null
+  },
+  "depends_on": [],
+  "result_summary": "",
+  "awaiting_answer": false
+}
